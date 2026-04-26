@@ -1,0 +1,66 @@
+import { FOOTER, SITE_META } from "@/ui/home/data";
+
+const whatsappHref = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
+  SITE_META.whatsappPrefill,
+)}`;
+
+/*
+  Footer — quiet, informational. Carries CRP registration (regulatory),
+  crisis line (ethical baseline), and contact details. No newsletter.
+*/
+export function Footer() {
+  return (
+    <footer className="border-t border-paper-deep bg-paper py-[var(--space-2xl)] text-sm text-ink-quiet">
+      <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-[var(--space-xl)] px-6 sm:px-8 md:grid-cols-12 md:gap-[var(--space-2xl)]">
+        <div className="md:col-span-5">
+          <p className="font-display text-[length:var(--text-xl)] leading-tight tracking-[-0.01em] text-ink">
+            {SITE_META.name}
+          </p>
+          <p className="mt-1 font-display text-sm italic text-ink-quiet">{SITE_META.slogan}</p>
+        </div>
+
+        <div className="md:col-span-3">
+          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-faint">
+            Atendimento
+          </p>
+          <ul className="space-y-[var(--space-2xs)]">
+            <li>Online · em todo o Brasil</li>
+            <li>Presencial · {SITE_META.address}</li>
+          </ul>
+        </div>
+
+        <div className="md:col-span-4">
+          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-faint">
+            Contato
+          </p>
+          <ul className="space-y-[var(--space-2xs)]">
+            <li>
+              <a
+                href={`mailto:${SITE_META.email}`}
+                className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
+              >
+                {SITE_META.email}
+              </a>
+            </li>
+            <li>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
+              >
+                WhatsApp
+              </a>
+            </li>
+            {/* Social slot — collapses cleanly when none exist */}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-[var(--space-2xl)] flex max-w-[1240px] flex-wrap items-center justify-between gap-3 px-6 text-xs text-ink-faint sm:px-8">
+        <p>{FOOTER.rights}</p>
+        <p className="font-display italic">{SITE_META.crp}</p>
+      </div>
+    </footer>
+  );
+}

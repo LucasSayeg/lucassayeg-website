@@ -1,90 +1,188 @@
 "use client";
 
-import { Button } from "@/ui/components/ui/button";
-import { Input } from "@/ui/components/ui/input";
-import { Textarea } from "@/ui/components/ui/textarea";
 import { useContactForm } from "@/ui/contact/hooks/useContactForm";
-import { Loader2, Send } from "lucide-react";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { SITE_META } from "@/ui/home/data";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+
+const whatsappHref = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
+  SITE_META.whatsappPrefill,
+)}`;
+
+const fieldClass = cn(
+  "block w-full bg-transparent border-0 border-b border-paper-deep px-0 py-2",
+  "font-sans text-[length:var(--text-base)] leading-[1.5] text-ink",
+  "placeholder:text-ink-faint",
+  "transition-colors duration-200",
+  "focus:outline-none focus:border-ink",
+  "aria-[invalid=true]:border-error-ink aria-[invalid=true]:focus:border-error-ink",
+  "disabled:opacity-60",
+);
+
+const labelClass = "block text-[0.78rem] uppercase tracking-[0.22em] text-ink-quiet";
+const requiredMark = (
+  <span aria-hidden className="ml-1 text-ink-faint">
+    *
+  </span>
+);
 
 export function ContactForm() {
-  const { form, onSubmit, isSubmitting, submitResult } = useContactForm();
+  const { form, onSubmit, isSubmitting, submitResult, reset } = useContactForm();
   const {
     register,
     formState: { errors },
   } = form;
 
-  useEffect(() => {
-    if (!submitResult) return;
-
-    if (submitResult.success) {
-    } else {
-    }
-  }, [submitResult]);
+  if (submitResult?.success) {
+    return (
+      <div role="status" aria-live="polite" className="space-y-[var(--space-md)]">
+        <p className="font-display text-[length:var(--text-xl)] leading-snug text-ink">
+          Obrigado pela sua mensagem.
+        </p>
+        <p className="text-[length:var(--text-base)] leading-relaxed text-ink-soft">
+          Lucas responderá pessoalmente em até <em className="font-display italic">um dia útil</em>.
+          Se preferir uma conversa mais imediata, você pode me chamar pelo{" "}
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[5px] hover:decoration-accent-soft"
+          >
+            WhatsApp
+          </a>
+          .
+        </p>
+        <button
+          type="button"
+          onClick={reset}
+          className="text-sm text-ink-quiet underline decoration-ink-faint decoration-[1px] underline-offset-[5px] hover:text-ink hover:decoration-accent-soft"
+        >
+          Enviar outra mensagem
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5" aria-label="Contact form">
-      {/* Name */}
-      <div className="space-y-1.5">
-        <label htmlFor="name" className="text-sm font-medium text-foreground"></label>
-        <Input
-          id="name"
+    <form
+      onSubmit={onSubmit}
+      className="space-y-[var(--space-lg)]"
+      aria-label="Formulário de contato"
+      noValidate
+    >
+      <div className="space-y-2">
+        <label htmlFor="contact-name" className={labelClass}>
+          Nome{requiredMark}
+        </label>
+        <input
+          id="contact-name"
+          type="text"
+          autoComplete="name"
           {...register("name")}
           aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? "name-error" : undefined}
-          placeholder="Your name"
+          aria-describedby={errors.name ? "contact-name-error" : undefined}
+          placeholder="Como você gostaria de ser chamado(a)"
           disabled={isSubmitting}
+          className={fieldClass}
         />
         {errors.name && (
-          <p id="name-error" role="alert" className="text-sm text-destructive">
+          <p id="contact-name-error" role="alert" className="text-sm text-error-ink">
             {errors.name.message}
           </p>
         )}
       </div>
 
-      {/* Email */}
-      <div className="space-y-1.5">
-        <label htmlFor="email" className="text-sm font-medium text-foreground"></label>
-        <Input
-          id="email"
+      <div className="space-y-2">
+        <label htmlFor="contact-email" className={labelClass}>
+          E-mail{requiredMark}
+        </label>
+        <input
+          id="contact-email"
           type="email"
+          autoComplete="email"
           {...register("email")}
           aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          placeholder="you@example.com"
+          aria-describedby={errors.email ? "contact-email-error" : undefined}
+          placeholder="seuemail@exemplo.com"
           disabled={isSubmitting}
+          className={fieldClass}
         />
         {errors.email && (
-          <p id="email-error" role="alert" className="text-sm text-destructive">
+          <p id="contact-email-error" role="alert" className="text-sm text-error-ink">
             {errors.email.message}
           </p>
         )}
       </div>
 
-      {/* Message */}
-      <div className="space-y-1.5">
-        <label htmlFor="message" className="text-sm font-medium text-foreground"></label>
-        <Textarea
-          id="message"
+      <div className="space-y-2">
+        <label htmlFor="contact-message" className={labelClass}>
+          Mensagem{requiredMark}
+        </label>
+        <textarea
+          id="contact-message"
+          rows={5}
           {...register("message")}
           aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "message-error" : undefined}
-          placeholder="Tell me about your project..."
+          aria-describedby={errors.message ? "contact-message-error" : undefined}
+          placeholder="Conte um pouco sobre o que está te trazendo aqui — algumas linhas já bastam."
           disabled={isSubmitting}
-          className="min-h-32"
+          className={cn(fieldClass, "resize-y")}
         />
         {errors.message && (
-          <p id="message-error" role="alert" className="text-sm text-destructive">
+          <p id="contact-message-error" role="alert" className="text-sm text-error-ink">
             {errors.message.message}
           </p>
         )}
       </div>
 
-      {/* Submit */}
-      <Button type="submit" disabled={isSubmitting} className="w-full gap-2">
-        {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-      </Button>
+      {submitResult && !submitResult.success && (
+        <p
+          role="alert"
+          className="border-l-0 border-t border-paper-deep pt-[var(--space-sm)] text-sm leading-relaxed text-ink-soft"
+        >
+          Algo deu errado ao enviar sua mensagem. Você pode tentar novamente em um instante, ou
+          enviar diretamente pelo{" "}
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[5px] hover:decoration-accent-soft"
+          >
+            WhatsApp
+          </a>
+          .
+        </p>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-[var(--space-2xs)]">
+        <p className="text-xs text-ink-faint">
+          <span aria-hidden>* </span>
+          campos obrigatórios
+        </p>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={cn(
+            "inline-flex items-center gap-3 whitespace-nowrap rounded-sm bg-ink px-6 py-3 text-sm uppercase tracking-[0.16em] text-paper",
+            "transition-colors duration-200 hover:bg-accent-deep",
+            "disabled:cursor-wait disabled:bg-ink-quiet",
+          )}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+              <span>Enviando…</span>
+            </>
+          ) : (
+            <>
+              <span>Enviar mensagem</span>
+              <span aria-hidden className="font-display italic normal-case">
+                →
+              </span>
+            </>
+          )}
+        </button>
+      </div>
     </form>
   );
 }

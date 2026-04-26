@@ -13,6 +13,8 @@ export function useContactForm() {
   const form = useForm<Contact.FormValues>({
     // Zod v4.3 types not fully supported by @hookform/resolvers yet — runtime works correctly
     resolver: zodResolver(Contact.formSchema as any),
+    mode: "onBlur",
+    reValidateMode: "onBlur",
     defaultValues: {
       name: "",
       email: "",
@@ -37,5 +39,6 @@ export function useContactForm() {
     onSubmit: form.handleSubmit(onSubmit),
     isSubmitting: isPending,
     submitResult,
+    reset: () => setSubmitResult(null),
   };
 }

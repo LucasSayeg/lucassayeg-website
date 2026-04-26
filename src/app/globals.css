@@ -6,40 +6,91 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  Lucas Sayeg — design tokens.
+  Light theme only. Warm neutrals carry the page; the deep ink accent is
+  deliberately rare. Hue ~70-80 (warm, paper-leaning) for surfaces; foregrounds
+  share the same hue at low chroma so text and background feel like one material.
+*/
 :root {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.65 0.24 155);
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.65 0.24 155);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.65 0.24 155);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Surfaces — warm neutrals, tinted toward paper */
+  --paper: oklch(0.985 0.006 82); /* bone — page background */
+  --paper-soft: oklch(0.965 0.01 78); /* parchment — section break */
+  --paper-clay: oklch(0.935 0.014 74); /* putty — quiet surface, dividers, form chrome */
+  --paper-deep: oklch(0.89 0.018 70); /* soft clay — strong divider, hairline accent */
+
+  /* Ink — warm dark, never pure black */
+  --ink: oklch(0.205 0.018 50); /* primary text + headings */
+  --ink-soft: oklch(0.345 0.018 52); /* body emphasis */
+  --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
+  --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
+
+  /* Accent — single deep, considered color (oxblood-leaning ink) */
+  --accent: oklch(0.355 0.085 28); /* link, focus, primary CTA */
+  --accent-deep: oklch(0.29 0.09 26); /* hover/pressed */
+  --accent-soft: oklch(0.7 0.06 30); /* underline tint, decorative only */
+
+  /* Semantic — warm, not loud */
+  --warning-ink: oklch(0.385 0.075 60);
+  --error-ink: oklch(0.395 0.11 28);
+
+  /* shadcn token aliases — keep structural names mapped to our palette */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--accent);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper-soft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-soft);
+  --muted-foreground: var(--ink-quiet);
+  --accent-foreground: var(--ink);
+  --destructive: var(--error-ink);
+  --destructive-foreground: var(--paper);
+  --border: var(--paper-deep);
+  --input: var(--paper-deep);
+  --ring: var(--accent);
+  --radius: 0.25rem;
+
+  /* Typography scale — fluid for display, fixed for body/UI.
+     --font-display and --font-sans are injected by next/font (with metric-matched
+     fallbacks baked in), so we don't redefine them here. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --text-xs: 0.8125rem; /* 13px — captions, footer */
+  --text-sm: 0.9375rem; /* 15px — UI, secondary */
+  --text-base: 1.0625rem; /* 17px — body */
+  --text-lg: 1.1875rem; /* 19px — lede */
+  --text-xl: 1.375rem; /* 22px — small headings */
+  --text-2xl: clamp(1.625rem, 1.4rem + 1.1vw, 2.125rem); /* section headings */
+  --text-3xl: clamp(2rem, 1.55rem + 2.2vw, 2.875rem); /* hero sub-display */
+  --text-4xl: clamp(2.5rem, 1.85rem + 3.3vw, 3.875rem); /* hero */
+
+  /* Spacing scale — 4pt semantic */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6.5rem;
+  --space-4xl: 9rem;
+
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 460ms;
+  --dur-page: 680ms;
 }
 
 @theme inline {
@@ -63,116 +114,247 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-paper-clay: var(--paper-clay);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-quiet: var(--ink-quiet);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-soft: var(--accent-soft);
 
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
-  pre,
-  code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-variant-ligatures: common-ligatures;
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
     font-feature-settings:
+      "kern" 1,
       "liga" 1,
       "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  html {
-    scroll-behavior: smooth;
+
+  /* Display family — display, headings, pull quotes */
+  .font-display,
+  h1.display,
+  h2.display,
+  blockquote.display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
+
+  /* Tabular numerals where helpful */
+  .nums-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .nums-old-style {
+    font-variant-numeric: oldstyle-nums;
+  }
+
+  /* Selection — warm parchment over ink */
   ::selection {
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+    background-color: var(--paper-deep);
+    color: var(--ink);
   }
-  body {
-    @apply bg-background text-foreground;
+
+  pre,
+  code {
+    font-family: var(--font-mono);
+    font-variant-ligatures: common-ligatures;
+  }
+
+  /* Native dialog / focus rings on dark forms — keep predictable */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
   }
 }
 
-/* View Transition animations */
-/* ::view-transition-group(*) {
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-} */
-
-/* Subtle crossfade */
-/* ::view-transition-old(root) {
-  animation: vt-fade-out 200ms ease both;
+/* ─────────────────────────────────────────────────────────────────
+   Reveal-on-scroll
+   Elements get .reveal initially; an IntersectionObserver flips them
+   to .reveal--in when 12% visible. Single-shot.
+   ───────────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-quart),
+    transform var(--dur-slow) var(--ease-out-quart);
+  transition-delay: calc(var(--reveal-i, 0) * 80ms);
+  will-change: opacity, transform;
 }
-::view-transition-new(root) {
-  animation: vt-fade-in 200ms ease both;
-}
-@keyframes vt-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-@keyframes vt-fade-in {
-  from {
-    opacity: 0;
-  }
-} */
-
-/* Keep the header completely static during transitions */
-::view-transition-group(header) {
-  animation: none;
+.reveal--in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   FAQ accordion — grid-template-rows technique (no height anim)
+   ───────────────────────────────────────────────────────────────── */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-out-quart);
+}
+.accordion-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.accordion-panel > .accordion-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Hand-drawn underline — used once on Lucas's name (Hero / Sobre)
+   ───────────────────────────────────────────────────────────────── */
+.handmade-underline {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.handmade-underline::after {
+  content: "";
+  position: absolute;
+  left: -0.04em;
+  right: -0.04em;
+  bottom: -0.12em;
+  height: 0.42em;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'><path d='M2 9 C 30 4, 60 12, 100 7 S 170 5, 198 8' fill='none' stroke='%23734138' stroke-width='1.6' stroke-linecap='round' opacity='0.85'/></svg>");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Off-grid divider (used once between sections) */
+.deck-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  color: var(--ink-faint);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+.deck-divider::before,
+.deck-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--paper-deep);
+}
+.deck-divider::after {
+  flex: 4; /* asymmetric — the "off-grid" gesture */
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Portrait placeholder — until Lucas supplies the real photograph.
+   Treated as paper texture: a warm parchment block, considered
+   crop, no rounded card-frame.
+   ───────────────────────────────────────────────────────────────── */
+.portrait-placeholder {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--paper-soft) 0%,
+    var(--paper-clay) 70%,
+    var(--paper-deep) 100%
+  );
+  overflow: hidden;
+  isolation: isolate;
+}
+.portrait-placeholder::before,
+.portrait-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.portrait-placeholder::before {
+  background-image:
+    radial-gradient(ellipse at 30% 30%, oklch(0.78 0.025 60 / 0.35), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, oklch(0.55 0.03 40 / 0.25), transparent 65%);
+}
+.portrait-placeholder::after {
+  background-image: repeating-linear-gradient(
+    32deg,
+    oklch(0.3 0.02 40 / 0.04) 0,
+    oklch(0.3 0.02 40 / 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+.portrait-placeholder > .portrait-placeholder__label {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: var(--space-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-quiet);
+  z-index: 1;
+}
+
+/* Reduced motion — site fully static */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*) {
-    animation-duration: 0ms;
+  html {
+    scroll-behavior: auto;
   }
-}
-
-/* Dot-grid texture system */
-.dot-grid {
-  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-  background-size: 40px 40px;
-  color: oklch(0.8 0 0 / 0.04);
-}
-
-.dot-grid-dense {
-  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-  background-size: 32px 32px;
-  color: oklch(0.8 0 0 / 0.06);
-}
-
-/* Blinking cursor for terminal effects */
-@keyframes blink {
-  0%,
-  100% {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal {
     opacity: 1;
+    transform: none;
   }
-  50% {
-    opacity: 0;
+  .accordion-panel {
+    transition: none;
   }
 }
 
-.animate-blink {
-  animation: blink 1s step-end infinite;
+/* High-contrast / forced-colors — preserve legibility */
+@media (forced-colors: active) {
+  .handmade-underline::after {
+    display: none;
+  }
+  .portrait-placeholder {
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
 }

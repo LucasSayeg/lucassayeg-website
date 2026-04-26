@@ -42,3 +42,15 @@ CI enforces these via `scripts/arch-check.sh` (`pnpm arch:check`).
 
 - `PAYLOAD_ENABLED=false` turns the site into a pure static Next app: admin returns 404 and `getPayloadSafe()` returns `null`. Pages must tolerate that.
 - `@template:*` comment markers in code are scaffold remnants — leave them unless you're removing a whole feature block.
+
+## Design Context
+
+Personal-practice site for **Lucas Sayeg**, a mental-health practitioner (psicólogo / psicanalista) in Brazil. Full design context — audience, brand, aesthetic direction, anti-references, principles — lives in `.impeccable.md` at the project root. Read it before doing any UI/visual/copy work.
+
+Quick summary for non-design tasks:
+
+- **Audience**: Individuals in a vulnerable moment considering therapy. Tone is adult-to-adult, warm without being soft.
+- **Voice**: considered, grounded, literate. Editorial-warm, type-led, lightly handmade.
+- **Theme**: Light only. Warm neutrals (bone, parchment, putty) own the page; greens are a _guest_ accent at most.
+- **Hard avoids**: stock photography, corporate-blue + checkmark-list trust signals, decorative motion, sage-green-as-dominant, gradient text, the AI font defaults (Fraunces, Inter, DM Sans, Cormorant, Playfair, etc.).
+- **Reduced-motion support is mandatory** for this audience, not optional.
