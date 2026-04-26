@@ -17,6 +17,10 @@ export const SITE_META = {
   crp: "CRP 00/00000",
 } as const;
 
+export const WHATSAPP_HREF = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
+  SITE_META.whatsappPrefill,
+)}`;
+
 export const NAV_LINKS = [
   { href: "#como-ajuda", label: "Como ajuda" },
   { href: "#servicos", label: "Serviços" },
@@ -28,10 +32,11 @@ export const NAV_LINKS = [
 export const HERO = {
   heading: "Sentindo-se com um vazio, perdido ou sobrecarregado?",
   sub: "A psicoterapia pode te ajudar a entender o que você está vivendo com mais clareza e profundidade.",
+  ctaWhatsapp: "Conversar pelo WhatsApp",
   cta: "Agendar uma conversa",
   modality: {
-    primary: "Atendimento online",
-    secondary: "também presencial em Vila Leopoldina, São Paulo",
+    online: "Online",
+    presencial: "Presencial em Vila Leopoldina, São Paulo",
   },
 } as const;
 
@@ -107,13 +112,6 @@ export const SERVICOS = [
 
 export const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string[] }> = [
   {
-    q: "Quanto tempo dura cada sessão?",
-    a: [
-      "Cada sessão tem duração de cerca de 50 minutos. Esse tempo é pensado para permitir um trabalho aprofundado sem que a conversa se torne dispersa.",
-      "Em situações específicas — como avaliações iniciais ou processos de orientação profissional — podemos combinar uma duração diferente. Conversamos sobre isso no primeiro contato.",
-    ],
-  },
-  {
     q: "Como funciona o agendamento?",
     a: [
       "O primeiro contato pode ser feito pelo formulário acima ou pelo WhatsApp. Costumo responder pessoalmente em até um dia útil para combinarmos uma conversa inicial.",
@@ -121,30 +119,15 @@ export const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string[] }> = [
     ],
   },
   {
-    q: "Com que frequência ocorrem as sessões?",
-    a: [
-      "Em geral, atendo em frequência semanal — esse ritmo costuma ser o mais produtivo para um trabalho psicoterapêutico consistente.",
-      "Em alguns casos, podemos combinar uma frequência diferente; isso é discutido a partir do que faz sentido para o seu processo.",
-    ],
-  },
-  {
-    q: "Quanto tempo leva para ver resultados?",
-    a: [
-      "A psicoterapia não é um processo linear nem padronizado: cada pessoa tem seu próprio tempo. Algumas mudanças aparecem cedo, outras só com mais escuta e travessia.",
-      "O que posso garantir é que o trabalho não tem como objetivo entregar respostas rápidas, e sim ajudar você a se relacionar melhor com aquilo que está vivendo.",
-    ],
-  },
-  {
     q: "Qual o valor da consulta?",
     a: [
-      "O valor é combinado no primeiro contato e leva em conta a frequência e a modalidade do atendimento.",
-      "Se preferir saber antes de marcar a primeira conversa, é só me chamar pelo formulário ou pelo WhatsApp.",
+      "O valor é combinado no primeiro contato e leva em conta a frequência e a modalidade. Se preferir saber antes de marcar, é só me chamar pelo formulário ou pelo WhatsApp.",
     ],
   },
   {
-    q: "Você atende por plano de saúde?",
+    q: "Atende online e presencial?",
     a: [
-      "No momento, atendo apenas como prestador particular. Posso emitir recibo para reembolso junto ao seu plano, conforme as regras do seu convênio.",
+      "Sim, atendo nas duas modalidades. Online em todo o Brasil; presencial em Vila Leopoldina, São Paulo. O endereço completo é enviado após o primeiro contato.",
     ],
   },
   {
@@ -154,17 +137,23 @@ export const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string[] }> = [
     ],
   },
   {
-    q: "Você atende presencial?",
+    q: "Você atende por plano de saúde?",
     a: [
-      "Sim. Os atendimentos presenciais acontecem em Vila Leopoldina, São Paulo. O endereço completo é enviado após o primeiro contato.",
-      "A maior parte dos atendimentos hoje é online, mas a modalidade presencial segue disponível para quem prefere.",
+      "No momento, atendo apenas como prestador particular. Posso emitir recibo para reembolso junto ao seu plano, conforme as regras do seu convênio.",
+    ],
+  },
+  {
+    q: "Com que frequência ocorrem as sessões?",
+    a: [
+      "Em geral, atendo em frequência semanal — esse ritmo costuma ser o mais produtivo para um trabalho consistente. Em casos específicos, podemos combinar uma frequência diferente.",
     ],
   },
 ] as const;
 
 export const CONTATO = {
-  heading: "Vamos conversar",
-  lede: "Mensagens são confidenciais e respondidas pessoalmente por Lucas.",
+  heading: "Vamos conversar.",
+  invite:
+    "Conte um pouco sobre o que está te trazendo aqui. Não é preciso explicar tudo — algumas linhas já bastam para combinarmos uma conversa. Mensagens são respondidas pessoalmente e tratadas com sigilo.",
   whatsappPrompt: "Prefere conversar pelo WhatsApp?",
   whatsappLabel: "Iniciar conversa no WhatsApp",
   // Placeholder — Lucas writes the final crisis line.

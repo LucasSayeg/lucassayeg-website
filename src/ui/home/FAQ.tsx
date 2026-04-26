@@ -21,7 +21,7 @@ export function FAQ() {
           >
             Perguntas frequentes.
           </h2>
-          <p className="font-display text-[length:var(--text-lg)] italic leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
+          <p className="text-[length:var(--text-base)] leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
             O que costumam querer saber antes da primeira conversa.
           </p>
         </div>
@@ -45,9 +45,9 @@ export function FAQ() {
                     <span className="grid grid-cols-[auto_1fr] items-baseline gap-[var(--space-md)]">
                       <span
                         aria-hidden
-                        className="nums-old-style font-display text-[length:var(--text-base)] italic text-ink-faint"
+                        className="nums-old-style font-display text-[length:var(--text-base)] text-ink-faint"
                       >
-                        {String(i + 1).padStart(2, "0")}
+                        {i + 1}.
                       </span>
                       <span className="font-display text-[length:var(--text-xl)] font-medium leading-[1.25] text-ink">
                         {item.q}

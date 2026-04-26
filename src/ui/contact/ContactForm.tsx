@@ -1,18 +1,14 @@
 "use client";
 
 import { useContactForm } from "@/ui/contact/hooks/useContactForm";
-import { SITE_META } from "@/ui/home/data";
+import { WHATSAPP_HREF } from "@/ui/home/data";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-
-const whatsappHref = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
-  SITE_META.whatsappPrefill,
-)}`;
 
 const fieldClass = cn(
   "block w-full bg-transparent border-0 border-b border-paper-deep px-0 py-2",
   "font-sans text-[length:var(--text-base)] leading-[1.5] text-ink",
-  "placeholder:text-ink-faint",
+  "placeholder:text-ink-quiet",
   "transition-colors duration-200",
   "focus:outline-none focus:border-ink",
   "aria-[invalid=true]:border-error-ink aria-[invalid=true]:focus:border-error-ink",
@@ -21,7 +17,7 @@ const fieldClass = cn(
 
 const labelClass = "block text-[0.78rem] uppercase tracking-[0.22em] text-ink-quiet";
 const requiredMark = (
-  <span aria-hidden className="ml-1 text-ink-faint">
+  <span aria-hidden className="ml-1 text-ink-quiet">
     *
   </span>
 );
@@ -36,14 +32,14 @@ export function ContactForm() {
   if (submitResult?.success) {
     return (
       <div role="status" aria-live="polite" className="space-y-[var(--space-md)]">
-        <p className="font-display text-[length:var(--text-xl)] leading-snug text-ink">
+        <p className="text-[length:var(--text-lg)] leading-snug text-ink">
           Obrigado pela sua mensagem.
         </p>
         <p className="text-[length:var(--text-base)] leading-relaxed text-ink-soft">
-          Lucas responderá pessoalmente em até <em className="font-display italic">um dia útil</em>.
-          Se preferir uma conversa mais imediata, você pode me chamar pelo{" "}
+          Lucas responderá pessoalmente em até <em className="not-italic">um dia útil</em>. Se
+          preferir uma conversa mais imediata, você pode me chamar pelo{" "}
           <a
-            href={whatsappHref}
+            href={WHATSAPP_HREF}
             target="_blank"
             rel="noreferrer noopener"
             className="text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[5px] hover:decoration-accent-soft"
@@ -143,7 +139,7 @@ export function ContactForm() {
           Algo deu errado ao enviar sua mensagem. Você pode tentar novamente em um instante, ou
           enviar diretamente pelo{" "}
           <a
-            href={whatsappHref}
+            href={WHATSAPP_HREF}
             target="_blank"
             rel="noreferrer noopener"
             className="text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[5px] hover:decoration-accent-soft"
@@ -155,7 +151,7 @@ export function ContactForm() {
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-4 pt-[var(--space-2xs)]">
-        <p className="text-xs text-ink-faint">
+        <p className="text-xs text-ink-quiet">
           <span aria-hidden>* </span>
           campos obrigatórios
         </p>
@@ -176,7 +172,7 @@ export function ContactForm() {
           ) : (
             <>
               <span>Enviar mensagem</span>
-              <span aria-hidden className="font-display italic normal-case">
+              <span aria-hidden className="font-display normal-case">
                 →
               </span>
             </>

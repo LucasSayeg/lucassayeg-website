@@ -31,9 +31,10 @@ export function Sobre() {
         <div className="grid grid-cols-1 gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <figure
             className="portrait-placeholder mx-auto aspect-[4/5] w-full max-w-[380px] lg:col-span-4 lg:max-w-none"
-            aria-label="Imagem ambiente do consultório (a substituir)"
+            role="img"
+            aria-label="Retrato de Lucas Sayeg (a substituir)"
           >
-            <span className="portrait-placeholder__label">Imagem · a substituir</span>
+            <span className="portrait-placeholder__label">Retrato · a substituir</span>
           </figure>
 
           <div className="lg:col-span-8">
@@ -44,7 +45,7 @@ export function Sobre() {
               <span className="handmade-underline">{SITE_META.name}</span>
             </h2>
 
-            <p className="mt-[var(--space-md)] max-w-[60ch] font-display text-[length:var(--text-lg)] italic leading-relaxed text-ink-soft">
+            <p className="mt-[var(--space-md)] max-w-[60ch] text-[length:var(--text-lg)] leading-relaxed text-ink-soft">
               {SOBRE.intro}
             </p>
 
@@ -61,7 +62,7 @@ export function Sobre() {
                 className="inline-flex items-center gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
               >
                 {SOBRE.cta}
-                <span aria-hidden className="font-display italic">
+                <span aria-hidden className="font-display">
                   →
                 </span>
               </Link>

@@ -1,9 +1,5 @@
 import { ContactForm } from "@/ui/contact/ContactForm";
-import { CONTATO, SITE_META } from "@/ui/home/data";
-
-const whatsappHref = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
-  SITE_META.whatsappPrefill,
-)}`;
+import { CONTATO, WHATSAPP_HREF } from "@/ui/home/data";
 
 /*
   Contato — the only section that interrupts the page rhythm.
@@ -28,32 +24,27 @@ export function Contato() {
             id="contato-heading"
             className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.08] tracking-[-0.015em] text-ink"
           >
-            {CONTATO.heading}.
+            {CONTATO.heading}
           </h2>
-          <p className="mx-auto mt-[var(--space-md)] max-w-[52ch] font-display text-[length:var(--text-lg)] italic leading-relaxed text-ink-soft">
-            Conte um pouco sobre o que está te trazendo aqui. Não é preciso explicar tudo — algumas
-            linhas já bastam para combinarmos uma conversa.
+          <p className="mx-auto mt-[var(--space-md)] max-w-[52ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
+            {CONTATO.invite}
           </p>
         </div>
 
         <div className="mx-auto mt-[var(--space-2xl)] max-w-[560px]">
-          <p className="mb-[var(--space-lg)] font-display text-sm italic text-ink-quiet">
-            {CONTATO.lede}
-          </p>
-
           <ContactForm />
 
           {/* Secondary WhatsApp link */}
           <div className="mt-[var(--space-md)] flex flex-wrap items-center justify-between gap-3 text-sm text-ink-quiet">
             <span>{CONTATO.whatsappPrompt}</span>
             <a
-              href={whatsappHref}
+              href={WHATSAPP_HREF}
               target="_blank"
               rel="noreferrer noopener"
               className="inline-flex items-center gap-2 text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
             >
               {CONTATO.whatsappLabel}
-              <span aria-hidden className="font-display italic">
+              <span aria-hidden className="font-display">
                 →
               </span>
             </a>

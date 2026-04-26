@@ -21,7 +21,7 @@ export function ComoAjuda() {
           >
             Como a terapia pode ajudar.
           </h2>
-          <p className="font-display text-[length:var(--text-lg)] italic leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
+          <p className="text-[length:var(--text-base)] leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
             Algumas das questões e movimentos para os quais este trabalho costuma fazer diferença.
           </p>
         </div>
@@ -35,7 +35,7 @@ export function ComoAjuda() {
                   className="nums-old-style font-display text-[length:var(--text-2xl)] leading-none text-ink-faint"
                   style={{ fontVariantNumeric: "oldstyle-nums" }}
                 >
-                  {String(i + 1).padStart(2, "0")}
+                  {i + 1}.
                 </span>
                 <div>
                   <h3 className="font-display text-[length:var(--text-xl)] font-medium leading-[1.18] tracking-[-0.005em] text-ink">

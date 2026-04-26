@@ -144,7 +144,16 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    /* Clears the scrolled-state header (~7.5rem on mobile, ~8rem on desktop
+       once the slogan row reveals). Anchor jumps that land flush against the
+       header read as crowded; this gives the destination a breath of space. */
+    scroll-padding-top: 7.5rem;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 8rem;
+    }
   }
 
   body {
@@ -197,6 +206,33 @@
     outline-offset: 3px;
     border-radius: 1px;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Skip link — first focusable element on the page. Hidden until
+   tabbed; appears as a small ink pill at the top-left.
+   ───────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--dur-base) var(--ease-out-quart);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ─────────────────────────────────────────────────────────────────

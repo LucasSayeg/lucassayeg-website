@@ -30,14 +30,14 @@ export function Servicos() {
             <article key={s.id} className="relative">
               <span
                 aria-hidden
-                className="nums-old-style absolute -top-2 right-0 font-display text-[length:var(--text-xl)] italic text-ink-faint"
+                className="nums-old-style absolute -top-2 right-0 font-display text-[length:var(--text-xl)] text-ink-faint"
               >
                 {`№ ${String(i + 1).padStart(2, "0")}`}
               </span>
 
               <h3 className="font-display text-[length:var(--text-2xl)] font-normal leading-[1.05] tracking-[-0.012em] text-ink">
                 {s.label}
-                <span className="block font-display text-[length:var(--text-xl)] italic text-ink-quiet">
+                <span className="mt-1 block font-display text-[length:var(--text-lg)] font-normal text-ink-quiet">
                   {s.sublabel}
                 </span>
               </h3>

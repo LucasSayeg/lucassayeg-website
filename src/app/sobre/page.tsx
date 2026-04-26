@@ -42,11 +42,11 @@ export default function SobrePage() {
             <h1 className="font-display text-[length:var(--text-4xl)] font-normal leading-[1.05] tracking-[-0.018em] text-ink">
               {SITE_META.name}
             </h1>
-            <p className="mt-[var(--space-2xs)] font-display text-[length:var(--text-lg)] italic text-ink-soft">
+            <p className="mt-[var(--space-2xs)] font-display text-[length:var(--text-lg)] text-ink-soft">
               {SITE_META.slogan}
             </p>
 
-            <p className="mt-[var(--space-xl)] max-w-[60ch] font-display text-[length:var(--text-xl)] italic leading-relaxed text-ink-soft">
+            <p className="mt-[var(--space-xl)] max-w-[60ch] font-display text-[length:var(--text-xl)] leading-relaxed text-ink-soft">
               {SOBRE.intro}
             </p>
 
@@ -56,7 +56,7 @@ export default function SobrePage() {
               ))}
             </div>
 
-            <p className="mt-[var(--space-2xl)] border-t border-paper-deep pt-[var(--space-md)] font-display text-sm italic text-ink-quiet">
+            <p className="mt-[var(--space-2xl)] border-t border-paper-deep pt-[var(--space-md)] font-display text-sm text-ink-quiet">
               {SITE_META.crp}
             </p>
 
@@ -66,7 +66,7 @@ export default function SobrePage() {
                 className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.18em] text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
               >
                 Voltar para o início
-                <span aria-hidden className="font-display italic normal-case">
+                <span aria-hidden className="font-display normal-case">
                   ←
                 </span>
               </Link>

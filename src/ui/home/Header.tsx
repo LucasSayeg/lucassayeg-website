@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, SITE_META } from "@/ui/home/data";
+import { NAV_LINKS, SITE_META, WHATSAPP_HREF } from "@/ui/home/data";
 
 /*
   Sticky header with a single scroll-threshold transition. The visual
   hierarchy follows Lucas's mock: logo + "Lucas S." stacked top-left,
-  slogan justified top-right, nav + Agendar CTA on a second row.
+  slogan justified top-right, nav + WhatsApp pill on a second row.
 */
 export function Header() {
   const [scrolled, setScrolled] = React.useState(false);
@@ -21,6 +21,19 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close the mobile menu on Escape — and return focus to the toggle so
+  // keyboard users don't lose their place.
+  React.useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMobileOpen(false);
+      document.querySelector<HTMLButtonElement>('button[aria-controls="mobile-nav"]')?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
 
   // Active section observer — tracks the topmost section currently in the
   // middle band of the viewport. Falls back to "" when none qualify so the
@@ -55,7 +68,8 @@ export function Header() {
     target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", href);
     setMobileOpen(false);
-    // After scroll completes, focus first focusable when CTA is "Agendar".
+    // After scrolling to the contact section, focus its first field so
+    // keyboard users land directly on the form.
     if (href === "#contato") {
       setTimeout(
         () => {
@@ -81,14 +95,14 @@ export function Header() {
           style={{ paddingBottom: scrolled ? "0.5rem" : "0.875rem" }}
         >
           <a href="#top" onClick={(e) => handleAnchor(e, "#top")} className="group block">
-            <span className="block font-display text-[1.65rem] leading-[0.95] tracking-[-0.012em] text-ink">
+            <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
               {SITE_META.name}
             </span>
             <span className="mt-1 block text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
               {SITE_META.shortMark}
             </span>
           </a>
-          <p className="hidden max-w-[26ch] text-right font-display text-sm italic leading-snug text-ink-soft md:block">
+          <p className="hidden max-w-[26ch] text-right font-display text-sm leading-snug text-ink-soft md:block">
             {SITE_META.slogan}
           </p>
         </div>
@@ -130,15 +144,13 @@ export function Header() {
 
           <div className="flex items-center gap-2 md:ml-auto">
             <a
-              href="#contato"
-              onClick={(e) => handleAnchor(e, "#contato")}
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Iniciar conversa no WhatsApp"
               className="inline-flex items-center gap-2 rounded-sm border border-ink bg-ink px-4 py-2 text-sm text-paper transition-colors hover:bg-accent-deep hover:border-accent-deep"
             >
-              Agendar
-              <span aria-hidden className="text-paper-deep">
-                ·
-              </span>
-              <span className="font-display italic">conversa</span>
+              WhatsApp
             </a>
 
             <button

@@ -1,8 +1,4 @@
-import { FOOTER, SITE_META } from "@/ui/home/data";
-
-const whatsappHref = `https://wa.me/${SITE_META.whatsappNumber}?text=${encodeURIComponent(
-  SITE_META.whatsappPrefill,
-)}`;
+import { FOOTER, SITE_META, WHATSAPP_HREF } from "@/ui/home/data";
 
 /*
   Footer — quiet, informational. Carries CRP registration (regulatory),
@@ -16,11 +12,11 @@ export function Footer() {
           <p className="font-display text-[length:var(--text-xl)] leading-tight tracking-[-0.01em] text-ink">
             {SITE_META.name}
           </p>
-          <p className="mt-1 font-display text-sm italic text-ink-quiet">{SITE_META.slogan}</p>
+          <p className="mt-1 font-display text-sm text-ink-quiet">{SITE_META.slogan}</p>
         </div>
 
         <div className="md:col-span-3">
-          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-faint">
+          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
             Atendimento
           </p>
           <ul className="space-y-[var(--space-2xs)]">
@@ -30,7 +26,7 @@ export function Footer() {
         </div>
 
         <div className="md:col-span-4">
-          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-faint">
+          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
             Contato
           </p>
           <ul className="space-y-[var(--space-2xs)]">
@@ -44,7 +40,7 @@ export function Footer() {
             </li>
             <li>
               <a
-                href={whatsappHref}
+                href={WHATSAPP_HREF}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
@@ -57,9 +53,9 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto mt-[var(--space-2xl)] flex max-w-[1240px] flex-wrap items-center justify-between gap-3 px-6 text-xs text-ink-faint sm:px-8">
+      <div className="mx-auto mt-[var(--space-2xl)] flex max-w-[1240px] flex-wrap items-center justify-between gap-3 px-6 text-xs text-ink-quiet sm:px-8">
         <p>{FOOTER.rights}</p>
-        <p className="font-display italic">{SITE_META.crp}</p>
+        <p className="font-display">{SITE_META.crp}</p>
       </div>
     </footer>
   );
