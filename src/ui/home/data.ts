@@ -40,32 +40,51 @@ export const HERO = {
   },
 } as const;
 
-export const COMO_AJUDA: ReadonlyArray<{ title: string; body: string }> = [
-  {
-    title: "Compreender o que você está sentindo",
-    body: "Quando as emoções ficam confusas ou difíceis de nomear, a terapia oferece espaço para olhar com calma — e dar contorno ao que parecia fora de controle.",
-  },
-  {
-    title: "Atravessar momentos de crise e luto",
-    body: "Perdas e rupturas raramente seguem uma linha reta. Acompanho pessoas em crise, angústia intensa e luto — respeitando o tempo de cada processo.",
-  },
-  {
-    title: "Diminuir a ansiedade e a sensação de sobrecarga",
-    body: "Quando o cotidiano começa a pesar mais do que deveria, a terapia ajuda a desacelerar — não para fugir, mas para escutar o que esse cansaço diz.",
-  },
-  {
-    title: "Reencontrar sentido naquilo que faz",
-    body: "Sentir-se em piloto automático costuma sinalizar uma desconexão entre o que você faz e o que importa. Investigamos essa distância — e você volta a habitar as próprias escolhas.",
-  },
-  {
-    title: "Construir uma relação mais consciente consigo",
-    body: "Conhecer-se não é introspecção solitária — é um trabalho feito com outra pessoa. Aquilo que se repetia sem ser percebido ganha palavra, e perde o caráter compulsivo.",
-  },
-  {
-    title: "Tomar decisões importantes com mais clareza",
-    body: "Mudanças de carreira, escolhas profissionais, transições pessoais. Olhamos para a decisão dentro do contexto maior da sua vida — como escolha que diz quem você é, não como cálculo isolado.",
-  },
-] as const;
+/*
+  Como ajuda — recognition field. The visitor scans for their own situation,
+  so the keywords (luto, burnout, ansiedade, autossabotagem, padrões…) are
+  the visual heart of the section. Lucas's mechanisms are folded into the
+  opening + closing prose so the reader still gets the story, but bookended
+  around recognition rather than upstaging it.
+*/
+export const COMO_AJUDA = {
+  intro: "A psicoterapia atravessa muito do que talvez você esteja vivendo —",
+  groups: [
+    {
+      label: "estados emocionais",
+      words: [
+        "ansiedade",
+        "tristeza",
+        "sensação de vazio",
+        "culpa",
+        "irritação",
+        "desesperança",
+        "angústia",
+      ],
+    },
+    {
+      label: "momentos de vida",
+      words: ["luto", "término", "burnout", "crise existencial", "mudanças de vida", "traumas"],
+    },
+    {
+      label: "padrões que se repetem",
+      words: [
+        "autossabotagem",
+        "procrastinação",
+        "medo excessivo",
+        "explosões emocionais",
+        "dependência emocional",
+        "relacionamentos que machucam",
+      ],
+    },
+    {
+      label: "sensação de perda",
+      words: ["perda de energia", "perda de identidade", "falta de sentido", "desconexão consigo"],
+    },
+  ],
+  closing:
+    "Um espaço para nomear o que sente, entender as causas, atravessar crises e reconstruir um senso próprio do que importa — antes que a vida se reduza ao que dói.",
+} as const;
 
 export const SOBRE = {
   intro:
@@ -93,6 +112,10 @@ export const SERVICOS = [
       "sensação de vazio e falta de sentido",
       "medo, insegurança, baixa autoestima",
     ],
+    illustration: {
+      concept:
+        "A sala — uma cadeira, uma janela, o tempo que passa entre as palavras. Interior lento.",
+    },
   },
   {
     id: "orientacao",
@@ -107,6 +130,9 @@ export const SERVICOS = [
       "insatisfação com o trabalho atual",
       "falta de sentido naquilo que faz",
     ],
+    illustration: {
+      concept: "A bússola sobre a mesa, virada na direção certa — instrumento, não jornada.",
+    },
   },
 ] as const;
 
