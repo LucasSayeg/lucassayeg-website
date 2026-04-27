@@ -28,16 +28,8 @@ export function Sobre() {
           <span>sobre</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
-          <figure
-            className="portrait-placeholder mx-auto aspect-[4/5] w-full max-w-[380px] lg:col-span-4 lg:max-w-none"
-            role="img"
-            aria-label="Retrato de Lucas Sayeg (a substituir)"
-          >
-            <span className="portrait-placeholder__label">Retrato · a substituir</span>
-          </figure>
-
-          <div className="lg:col-span-8">
+        <div className="grid grid-cols-1 gap-[var(--space-lg)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
+          <div className="space-y-[var(--space-lg)] lg:col-span-4">
             <h2
               id="sobre-heading"
               className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.1] tracking-[-0.015em] text-ink"
@@ -45,11 +37,24 @@ export function Sobre() {
               <span className="handmade-underline">{SITE_META.name}</span>
             </h2>
 
-            <p className="mt-[var(--space-md)] max-w-[60ch] text-[length:var(--text-lg)] leading-relaxed text-ink-soft">
+            {/* Atmospheric portrait — environment / books / hands per brief.
+                Same paper-feel placeholder as the hero, but a tighter aspect
+                so it reads as a second photograph, not a duplicate. */}
+            <figure
+              className="portrait-placeholder relative aspect-[4/5] w-full max-w-[320px] lg:max-w-none"
+              role="img"
+              aria-label="Retrato de Lucas Sayeg em consultório (a substituir)"
+            >
+              <span className="portrait-placeholder__label">Em consultório · a substituir</span>
+            </figure>
+          </div>
+
+          <div className="lg:col-span-8">
+            <p className="max-w-[60ch] text-[length:var(--text-lg)] leading-relaxed text-ink-soft">
               {SOBRE.intro}
             </p>
 
-            <div className="mt-[var(--space-lg)] space-y-[var(--space-md)] max-w-[64ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
+            <div className="mt-[var(--space-lg)] max-w-[64ch] space-y-[var(--space-md)] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
               {SOBRE.paragraphs.map((p, i) => (
                 <p key={i}>{withEmphasis(p)}</p>
               ))}

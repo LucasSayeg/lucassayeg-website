@@ -43,27 +43,27 @@ export const HERO = {
 export const COMO_AJUDA: ReadonlyArray<{ title: string; body: string }> = [
   {
     title: "Compreender o que você está sentindo",
-    body: "Há momentos em que as emoções ficam confusas, contraditórias ou difíceis de nomear. A psicoterapia oferece um espaço para olhar com calma para o que se passa por dentro — e dar contorno ao que parecia fora de controle.",
+    body: "Quando as emoções ficam confusas ou difíceis de nomear, a terapia oferece espaço para olhar com calma — e dar contorno ao que parecia fora de controle.",
   },
   {
     title: "Atravessar momentos de crise e luto",
-    body: "Perdas, rupturas e transições difíceis raramente seguem uma linha reta. Tenho experiência em plantão psicológico e acompanho pessoas em situações de crise, angústia intensa e luto — sempre respeitando o tempo que cada processo exige.",
+    body: "Perdas e rupturas raramente seguem uma linha reta. Acompanho pessoas em crise, angústia intensa e luto — respeitando o tempo de cada processo.",
   },
   {
     title: "Diminuir a ansiedade e a sensação de sobrecarga",
-    body: "Quando a vida cotidiana começa a pesar mais do que deveria, a terapia ajuda a desacelerar — não para fugir, mas para escutar o que esse cansaço está dizendo. Trabalhamos juntos para reconhecer padrões que esgotam e encontrar formas mais sustentáveis de viver.",
+    body: "Quando o cotidiano começa a pesar mais do que deveria, a terapia ajuda a desacelerar — não para fugir, mas para escutar o que esse cansaço diz.",
   },
   {
     title: "Reencontrar sentido naquilo que faz",
-    body: "A sensação de vazio ou de estar em piloto automático costuma indicar uma desconexão entre o que você faz e o que importa para você. Em terapia, é possível investigar essa distância — e voltar a habitar suas próprias escolhas.",
+    body: "Sentir-se em piloto automático costuma sinalizar uma desconexão entre o que você faz e o que importa. Investigamos essa distância — e você volta a habitar as próprias escolhas.",
   },
   {
     title: "Construir uma relação mais consciente consigo",
-    body: "Conhecer-se não é introspecção solitária; é um trabalho cuidadoso, feito com outra pessoa. Aos poucos, aquilo que se repetia sem ser percebido começa a ter palavra, lugar, história — e perde o caráter compulsivo.",
+    body: "Conhecer-se não é introspecção solitária — é um trabalho feito com outra pessoa. Aquilo que se repetia sem ser percebido ganha palavra, e perde o caráter compulsivo.",
   },
   {
     title: "Tomar decisões importantes com mais clareza",
-    body: "Mudanças de carreira, escolhas profissionais, transições pessoais. A orientação profissional combinada à clínica permite olhar para a decisão dentro do contexto maior de sua vida — não como um cálculo isolado, mas como uma escolha que diz quem você é.",
+    body: "Mudanças de carreira, escolhas profissionais, transições pessoais. Olhamos para a decisão dentro do contexto maior da sua vida — como escolha que diz quem você é, não como cálculo isolado.",
   },
 ] as const;
 
@@ -99,7 +99,7 @@ export const SERVICOS = [
     label: "Orientação",
     sublabel: "Profissional",
     framing:
-      "Acompanhamento estruturado para quem está diante de uma decisão de carreira ou repensa o lugar que o trabalho ocupa em sua vida.",
+      "Acompanhamento estruturado para quem enfrenta uma decisão de carreira ou repensa o lugar do trabalho em sua vida.",
     items: [
       "dúvida de carreira",
       "escolha de profissão",
