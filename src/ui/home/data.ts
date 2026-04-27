@@ -23,8 +23,8 @@ export const WHATSAPP_HREF = `https://wa.me/${SITE_META.whatsappNumber}?text=${e
 
 export const NAV_LINKS = [
   { href: "#como-ajuda", label: "Como ajuda" },
-  { href: "#servicos", label: "Serviços" },
   { href: "#sobre", label: "Sobre" },
+  { href: "#servicos", label: "Serviços" },
   { href: "#faq", label: "FAQ" },
   { href: "#contato", label: "Contato" },
 ] as const;
