@@ -1,4 +1,4 @@
-import { SERVICOS } from "@/ui/home/data";
+import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
 
 /*
   Two services — Psicoterapia (Clínica) + Orientação Profissional —
@@ -17,7 +17,9 @@ import { SERVICOS } from "@/ui/home/data";
 */
 const NUMERALS = ["i.", "ii."] as const;
 
-export function Servicos() {
+type ServicosProps = { content?: ServicosContent };
+
+export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
   return (
     <section
       id="servicos"
@@ -39,7 +41,7 @@ export function Servicos() {
         </div>
 
         <div className="space-y-[var(--space-2xl)]">
-          {SERVICOS.map((s, i) => {
+          {content.items.map((s, i) => {
             const isFirst = i === 0;
             return (
               <article
@@ -61,7 +63,7 @@ export function Servicos() {
                     className="font-display italic leading-[0.85] text-ink-faint"
                     style={{ fontSize: "clamp(3.75rem, 2.5rem + 4vw, 6.5rem)" }}
                   >
-                    {NUMERALS[i]}
+                    {NUMERALS[i % NUMERALS.length]}
                   </span>
                 </div>
 
@@ -88,7 +90,7 @@ export function Servicos() {
                   </p>
 
                   <ul className="mt-[var(--space-2xs)] max-w-[58ch] space-y-[var(--space-3xs)] text-[length:var(--text-base)] leading-[1.55] text-ink-soft">
-                    {s.items.map((it) => (
+                    {s.areas.map((it) => (
                       <li key={it} className="grid grid-cols-[1.25rem_1fr] items-baseline">
                         <span aria-hidden className="text-ink-faint">
                           —

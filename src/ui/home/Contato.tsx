@@ -2,7 +2,8 @@
 
 import { ContactForm } from "@/ui/contact/ContactForm";
 import { useContactForm } from "@/ui/contact/hooks/useContactForm";
-import { CONTATO, WHATSAPP_HREF } from "@/ui/home/data";
+import { FALLBACK_CONTATO, type ContatoContent } from "@/lib/home-content-types";
+import { WHATSAPP_HREF } from "@/lib/home-data";
 
 /*
   Contato — the only section that interrupts the page rhythm.
@@ -12,7 +13,16 @@ import { CONTATO, WHATSAPP_HREF } from "@/ui/home/data";
   thank-you message — the page tightens around it instead of a half-
   used form scaffolding sitting beside the success state.
 */
-export function Contato() {
+
+type ContatoProps = {
+  content?: ContatoContent;
+  whatsappHref?: string;
+};
+
+export function Contato({
+  content = FALLBACK_CONTATO,
+  whatsappHref = WHATSAPP_HREF,
+}: ContatoProps = {}) {
   const formState = useContactForm();
   const isSuccess = !!formState.submitResult?.success;
 
@@ -34,11 +44,11 @@ export function Contato() {
             id="contato-heading"
             className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.08] tracking-[-0.015em] text-ink"
           >
-            {CONTATO.heading}
+            {content.heading}
           </h2>
           <div className="contact-collapse mt-[var(--space-md)]">
             <p className="mx-auto max-w-[52ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
-              {CONTATO.invite}
+              {content.invite}
             </p>
           </div>
         </div>
@@ -49,14 +59,14 @@ export function Contato() {
           {/* Secondary WhatsApp link — collapses on success. */}
           <div className="contact-collapse mt-[var(--space-md)]">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-ink-quiet">
-              <span>{CONTATO.whatsappPrompt}</span>
+              <span>{content.whatsappPrompt}</span>
               <a
-                href={WHATSAPP_HREF}
+                href={whatsappHref}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="inline-flex items-center gap-2 text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
               >
-                {CONTATO.whatsappLabel}
+                {content.whatsappLabel}
                 <span aria-hidden className="font-display">
                   →
                 </span>
@@ -64,9 +74,8 @@ export function Contato() {
             </div>
           </div>
 
-          {/* Crisis disclaimer — placeholder until Lucas writes the final */}
           <p className="mt-[var(--space-xl)] border-t border-paper-deep pt-[var(--space-md)] text-xs leading-relaxed text-ink-quiet">
-            {CONTATO.crisis}
+            {content.crisis}
           </p>
         </div>
       </div>

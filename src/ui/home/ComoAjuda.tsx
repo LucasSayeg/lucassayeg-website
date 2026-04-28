@@ -1,4 +1,4 @@
-import { COMO_AJUDA } from "@/ui/home/data";
+import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
 import { Reveal } from "@/ui/home/Reveal";
 
 /*
@@ -8,7 +8,10 @@ import { Reveal } from "@/ui/home/Reveal";
   colophon. No interaction: the section just is what it is, leaving the
   FAQ accordion below as the page's only disclosure pattern.
 */
-export function ComoAjuda() {
+
+type ComoAjudaProps = { content?: ComoAjudaContent };
+
+export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   return (
     <section
       id="como-ajuda"
@@ -26,13 +29,13 @@ export function ComoAjuda() {
 
           <div className="md:col-span-5 md:pt-2">
             <p className="font-display text-[length:var(--text-lg)] italic leading-[1.45] text-ink-quiet md:max-w-[34ch]">
-              {COMO_AJUDA.intro}
+              {content.intro}
             </p>
           </div>
         </Reveal>
 
         <div className="mx-auto max-w-[920px] space-y-[var(--space-2xl)]">
-          {COMO_AJUDA.groups.map((group, i) => (
+          {content.groups.map((group, i) => (
             <Reveal
               key={group.label}
               as="section"
@@ -61,7 +64,7 @@ export function ComoAjuda() {
 
         <Reveal className="mt-[var(--space-2xl)]">
           <p className="mx-auto max-w-[52ch] text-center font-display text-[length:var(--text-lg)] italic leading-[1.55] text-ink-soft">
-            {COMO_AJUDA.closing}
+            {content.closing}
           </p>
         </Reveal>
 

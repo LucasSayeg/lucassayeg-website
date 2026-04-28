@@ -2,13 +2,16 @@
 
 import * as React from "react";
 import { Plus } from "lucide-react";
-import { FAQ_ITEMS } from "@/ui/home/data";
+import { FALLBACK_FAQ, type FaqContent } from "@/lib/home-content-types";
 
 /*
   Accordion — single-open. Opening one closes the previous.
   Uses grid-template-rows transition (no height animation).
 */
-export function FAQ() {
+
+type FAQProps = { content?: FaqContent };
+
+export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
   const [openIdx, setOpenIdx] = React.useState<number | null>(null);
 
   return (
@@ -27,12 +30,12 @@ export function FAQ() {
         </div>
 
         <ul className="mx-auto max-w-[920px] divide-y divide-paper-deep border-y border-paper-deep">
-          {FAQ_ITEMS.map((item, i) => {
+          {content.items.map((item, i) => {
             const open = openIdx === i;
             const panelId = `faq-panel-${i}`;
             const buttonId = `faq-button-${i}`;
             return (
-              <li key={item.q}>
+              <li key={item.question}>
                 <h3>
                   <button
                     id={buttonId}
@@ -50,7 +53,7 @@ export function FAQ() {
                         {i + 1}.
                       </span>
                       <span className="font-display text-[length:var(--text-xl)] font-medium leading-[1.25] text-ink">
-                        {item.q}
+                        {item.question}
                       </span>
                     </span>
                     <span
@@ -73,7 +76,7 @@ export function FAQ() {
                     <div className="grid grid-cols-[auto_1fr] gap-[var(--space-md)] pb-[var(--space-md)] pl-[1.6rem]">
                       <span aria-hidden className="block w-px bg-paper-deep" />
                       <div className="max-w-[58ch] space-y-[var(--space-2xs)] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
-                        {item.a.map((para, j) => (
+                        {item.answer.map((para, j) => (
                           <p key={j}>{para}</p>
                         ))}
                       </div>

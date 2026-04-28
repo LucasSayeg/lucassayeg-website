@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 
 export const Settings: GlobalConfig = {
   slug: "settings",
+  label: "Configurações gerais",
+  admin: { group: "Site" },
   access: {
     read: () => true,
     update: ({ req }) => req.user?.role === "admin",

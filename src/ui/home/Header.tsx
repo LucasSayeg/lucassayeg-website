@@ -2,14 +2,29 @@
 
 import * as React from "react";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, SITE_META, WHATSAPP_HREF } from "@/ui/home/data";
+import { type SiteInfoContent } from "@/lib/home-content-types";
+import { FALLBACK_SITE_INFO } from "@/lib/home-content-types";
+import { NAV_LINKS, WHATSAPP_HREF } from "@/lib/home-data";
 
 /*
   Sticky header with a single scroll-threshold transition. The visual
   hierarchy follows Lucas's mock: logo + "Lucas S." stacked top-left,
   slogan justified top-right, nav + WhatsApp pill on a second row.
 */
-export function Header() {
+
+export type HeaderNavLink = { href: string; label: string };
+
+type HeaderProps = {
+  navLinks?: ReadonlyArray<HeaderNavLink>;
+  siteInfo?: SiteInfoContent;
+  whatsappHref?: string;
+};
+
+export function Header({
+  navLinks = NAV_LINKS,
+  siteInfo = FALLBACK_SITE_INFO,
+  whatsappHref = WHATSAPP_HREF,
+}: HeaderProps = {}) {
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [activeHash, setActiveHash] = React.useState<string>("");
@@ -39,9 +54,9 @@ export function Header() {
   // middle band of the viewport. Falls back to "" when none qualify so the
   // active state clears past the last section instead of sticking.
   React.useEffect(() => {
-    const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(
-      (n): n is Element => !!n,
-    );
+    const sections = navLinks
+      .map((l) => document.querySelector(l.href))
+      .filter((n): n is Element => !!n);
     if (sections.length === 0) return;
     const visible = new Set<Element>();
     const obs = new IntersectionObserver(
@@ -57,7 +72,7 @@ export function Header() {
     );
     sections.forEach((s) => obs.observe(s));
     return () => obs.disconnect();
-  }, []);
+  }, [navLinks]);
 
   const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.startsWith("#")) return;
@@ -96,14 +111,14 @@ export function Header() {
         >
           <a href="#top" onClick={(e) => handleAnchor(e, "#top")} className="group block">
             <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
-              {SITE_META.name}
+              {siteInfo.name}
             </span>
             <span className="mt-1 block text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
-              {SITE_META.shortMark}
+              {siteInfo.shortMark}
             </span>
           </a>
           <p className="hidden max-w-[26ch] text-right font-display text-sm leading-snug text-ink-soft md:block">
-            {SITE_META.slogan}
+            {siteInfo.slogan}
           </p>
         </div>
 
@@ -118,7 +133,7 @@ export function Header() {
         <div className="flex items-center justify-between gap-4 py-3">
           <nav aria-label="Seções da página" className="hidden md:block">
             <ul className="flex items-center gap-7 text-sm text-ink-soft">
-              {NAV_LINKS.map((l) => {
+              {navLinks.map((l) => {
                 const isActive = activeHash === l.href;
                 return (
                   <li key={l.href}>
@@ -144,7 +159,7 @@ export function Header() {
 
           <div className="flex items-center gap-2 md:ml-auto">
             <a
-              href={WHATSAPP_HREF}
+              href={whatsappHref}
               target="_blank"
               rel="noreferrer noopener"
               aria-label="Iniciar conversa no WhatsApp"
@@ -170,7 +185,7 @@ export function Header() {
         <div id="mobile-nav" data-open={mobileOpen} className="accordion-panel md:hidden">
           <div className="accordion-panel-inner">
             <ul className="flex flex-col gap-1 border-t border-paper-deep pb-4 pt-2 text-base">
-              {NAV_LINKS.map((l) => (
+              {navLinks.map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}

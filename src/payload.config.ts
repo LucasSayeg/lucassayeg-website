@@ -2,12 +2,21 @@ import { buildConfig } from "payload";
 import { vercelPostgresAdapter } from "@payloadcms/db-vercel-postgres";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { pt } from "@payloadcms/translations/languages/pt";
 import path from "path";
 import { fileURLToPath } from "url";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
+import { HomeComoAjuda } from "./globals/HomeComoAjuda";
+import { HomeContato } from "./globals/HomeContato";
+import { HomeFaq } from "./globals/HomeFaq";
+import { HomeHero } from "./globals/HomeHero";
+import { HomeLayout } from "./globals/HomeLayout";
+import { HomeServicos } from "./globals/HomeServicos";
+import { HomeSobre } from "./globals/HomeSobre";
 import { Settings } from "./globals/Settings";
+import { SiteInfo } from "./globals/SiteInfo";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,8 +25,22 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
+  i18n: {
+    fallbackLanguage: "pt",
+    supportedLanguages: { pt },
+  },
   collections: [Users, Media],
-  globals: [Settings],
+  globals: [
+    Settings,
+    SiteInfo,
+    HomeLayout,
+    HomeHero,
+    HomeComoAjuda,
+    HomeSobre,
+    HomeServicos,
+    HomeFaq,
+    HomeContato,
+  ],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures],
   }),

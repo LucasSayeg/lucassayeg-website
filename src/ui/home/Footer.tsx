@@ -1,18 +1,29 @@
-import { FOOTER, SITE_META, WHATSAPP_HREF } from "@/ui/home/data";
+import { FALLBACK_SITE_INFO, type SiteInfoContent } from "@/lib/home-content-types";
+import { WHATSAPP_HREF } from "@/lib/home-data";
 
 /*
   Footer — quiet, informational. Carries CRP registration (regulatory),
   crisis line (ethical baseline), and contact details. No newsletter.
 */
-export function Footer() {
+
+type FooterProps = {
+  siteInfo?: SiteInfoContent;
+  whatsappHref?: string;
+};
+
+export function Footer({
+  siteInfo = FALLBACK_SITE_INFO,
+  whatsappHref = WHATSAPP_HREF,
+}: FooterProps = {}) {
+  const rights = `© ${new Date().getFullYear()} ${siteInfo.name}. Todos os direitos reservados.`;
   return (
     <footer className="border-t border-paper-deep bg-paper py-[var(--space-2xl)] text-sm text-ink-quiet">
       <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-[var(--space-xl)] px-6 sm:px-8 md:grid-cols-12 md:gap-[var(--space-2xl)]">
         <div className="md:col-span-5">
           <p className="font-display text-[length:var(--text-xl)] leading-tight tracking-[-0.01em] text-ink">
-            {SITE_META.name}
+            {siteInfo.name}
           </p>
-          <p className="mt-1 font-display text-sm text-ink-quiet">{SITE_META.slogan}</p>
+          <p className="mt-1 font-display text-sm text-ink-quiet">{siteInfo.slogan}</p>
         </div>
 
         <div className="md:col-span-3">
@@ -21,7 +32,7 @@ export function Footer() {
           </p>
           <ul className="space-y-[var(--space-2xs)]">
             <li>Online · em todo o Brasil</li>
-            <li>Presencial · {SITE_META.address}</li>
+            <li>Presencial · {siteInfo.address}</li>
           </ul>
         </div>
 
@@ -32,15 +43,15 @@ export function Footer() {
           <ul className="space-y-[var(--space-2xs)]">
             <li>
               <a
-                href={`mailto:${SITE_META.email}`}
+                href={`mailto:${siteInfo.email}`}
                 className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
               >
-                {SITE_META.email}
+                {siteInfo.email}
               </a>
             </li>
             <li>
               <a
-                href={WHATSAPP_HREF}
+                href={whatsappHref}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
@@ -54,8 +65,8 @@ export function Footer() {
       </div>
 
       <div className="mx-auto mt-[var(--space-2xl)] flex max-w-[1240px] flex-wrap items-center justify-between gap-3 px-6 text-xs text-ink-quiet sm:px-8">
-        <p>{FOOTER.rights}</p>
-        <p className="font-display">{SITE_META.crp}</p>
+        <p>{rights}</p>
+        <p className="font-display">{siteInfo.crp}</p>
       </div>
     </footer>
   );
