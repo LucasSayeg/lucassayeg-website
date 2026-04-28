@@ -20,3 +20,5 @@ src/payload-types.ts
 next-env.d.ts
 tsconfig.tsbuildinfo
 docs/
+.vercel
+.env*.local
