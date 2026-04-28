@@ -48,7 +48,7 @@ export const HERO = {
   around recognition rather than upstaging it.
 */
 export const COMO_AJUDA = {
-  intro: "A psicoterapia atravessa muito do que talvez você esteja vivendo —",
+  intro: "A psicoterapia atravessa muito do que talvez você esteja vivendo.",
   groups: [
     {
       label: "estados emocionais",
