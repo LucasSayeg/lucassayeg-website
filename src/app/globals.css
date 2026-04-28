@@ -271,25 +271,157 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Hand-drawn underline — used once on Lucas's name (Hero / Sobre)
+   Hand-drawn underline — used once on Lucas's name (Sobre).
+   Inline SVG so it can draw itself in via stroke-dashoffset when the
+   name first enters the viewport. SSR / no-JS / reduced-motion: the
+   path renders fully drawn at rest (no --armed class).
    ───────────────────────────────────────────────────────────────── */
 .handmade-underline {
   position: relative;
   display: inline-block;
   white-space: nowrap;
 }
-.handmade-underline::after {
-  content: "";
+.handmade-underline__svg {
   position: absolute;
   left: -0.04em;
-  right: -0.04em;
   bottom: -0.12em;
+  width: calc(100% + 0.08em);
   height: 0.42em;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'><path d='M2 9 C 30 4, 60 12, 100 7 S 170 5, 198 8' fill='none' stroke='%23734138' stroke-width='1.6' stroke-linecap='round' opacity='0.85'/></svg>");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   pointer-events: none;
   opacity: 0.85;
+  overflow: visible;
+}
+.handmade-underline__svg path {
+  fill: none;
+  stroke: #734138;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+/* JS arms the underline before it scrolls into view. */
+.handmade-underline__svg--armed path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+/* Observer flips it to drawn — single-shot. */
+.handmade-underline__svg--armed.handmade-underline__svg--drawn path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1300ms var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Contact form ↔ success swap — pure opacity cross-fade.
+   Both panes are stacked in the same grid cell (grid-template-areas
+   "stack") so the container height never changes between states.
+   No layout shift, no jank: only opacity transitions, simultaneous,
+   no delays. The form pane is the taller of the two, so its height
+   sets the cell height and the success message sits inside it
+   top-aligned, where the form fields used to be.
+   ───────────────────────────────────────────────────────────────── */
+.contact-swap {
+  display: grid;
+  grid-template-areas: "stack";
+}
+.contact-swap__pane {
+  grid-area: stack;
+  align-self: start;
+  transition: opacity 320ms var(--ease-out-quart);
+}
+.contact-swap[data-state="form"] .contact-swap__pane--form,
+.contact-swap[data-state="success"] .contact-swap__pane--success {
+  opacity: 1;
+}
+.contact-swap[data-state="form"] .contact-swap__pane--success,
+.contact-swap[data-state="success"] .contact-swap__pane--form {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Section-level peripheral elements (invite, WhatsApp prompt) fade
+   out on success but keep their layout — collapsing them caused a
+   visible page reflow. Pointer-events go off so they're not tabbable. */
+.contact-collapse {
+  transition: opacity 280ms var(--ease-out-quart);
+  opacity: 1;
+}
+[data-contact-state="success"] .contact-collapse {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Field hint slot — reserved space below each input so validation
+   messages don't shove the layout. Three states:
+     idle    → empty (slot reserved)
+     valid   → editorial italic affirmation ("Anotado.") in ink-quiet
+     invalid → accent mark + soft message text
+   Different vocabularies for different signals: warnings get the
+   accent dot; affirmations get the display-italic margin note.
+   ───────────────────────────────────────────────────────────────── */
+.field-hint {
+  min-height: 1.4rem;
+}
+.field-hint__text {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity 220ms var(--ease-out-quart),
+    transform 220ms var(--ease-out-quart);
+}
+.field-hint[data-status="invalid"] .field-hint__text,
+.field-hint[data-status="valid"] .field-hint__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+.field-hint__mark {
+  display: inline-block;
+  margin-right: 0.4em;
+  font-weight: 600;
+  color: var(--accent);
+}
+.field-hint__valid {
+  font-family: var(--font-display);
+  font-style: italic;
+  /* tiny optical bump — italics at small sizes read smaller */
+  font-size: 0.84rem;
+  letter-spacing: 0.01em;
+  color: var(--ink-quiet);
+}
+
+/* Form-level banner (submit failure) — same vocabulary as field hints,
+   reserved a touch more space and gets a hairline separator above. */
+.form-banner {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-out-quart);
+}
+.form-banner[data-visible="true"] {
+  grid-template-rows: 1fr;
+}
+.form-banner__text {
+  overflow: hidden;
+  border-top: 1px solid var(--paper-deep);
+  padding-top: var(--space-sm);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity var(--dur-base) var(--ease-out-quart),
+    transform var(--dur-base) var(--ease-out-quart);
+}
+.form-banner[data-visible="true"] .form-banner__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+.form-banner__mark {
+  display: inline-block;
+  margin-right: 0.4em;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 /* Off-grid divider (used once between sections) */
@@ -522,11 +654,29 @@
   .accordion-panel {
     transition: none;
   }
+  /* Underline always drawn at rest — no flash, same final visual. */
+  .handmade-underline__svg path {
+    stroke-dashoffset: 0 !important;
+  }
+  /* Contact swap + peripheral fades collapse to instant state change. */
+  .contact-swap__pane,
+  .contact-collapse {
+    transition: none;
+  }
+  /* Field hints + submit banner appear/disappear instantly. */
+  .field-hint__text,
+  .form-banner,
+  .form-banner__text {
+    transition: none;
+  }
+  .field-hint[data-status="idle"] .field-hint__text {
+    transform: none;
+  }
 }
 
 /* High-contrast / forced-colors — preserve legibility */
 @media (forced-colors: active) {
-  .handmade-underline::after {
+  .handmade-underline__svg {
     display: none;
   }
   .portrait-placeholder {

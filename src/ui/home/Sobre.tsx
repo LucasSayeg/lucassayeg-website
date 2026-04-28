@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
 import { SOBRE, SITE_META } from "@/ui/home/data";
 
 /*
@@ -34,7 +35,7 @@ export function Sobre() {
               id="sobre-heading"
               className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.1] tracking-[-0.015em] text-ink"
             >
-              <span className="handmade-underline">{SITE_META.name}</span>
+              <HandmadeUnderline>{SITE_META.name}</HandmadeUnderline>
             </h2>
 
             {/* Atmospheric portrait — environment / books / hands per brief.

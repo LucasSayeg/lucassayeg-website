@@ -13,8 +13,13 @@ export function useContactForm() {
   const form = useForm<Contact.FormValues>({
     // Zod v4.3 types not fully supported by @hookform/resolvers yet — runtime works correctly
     resolver: zodResolver(Contact.formSchema as any),
-    mode: "onBlur",
-    reValidateMode: "onBlur",
+    // Eager mode: silent until first blur, then re-validate on every keystroke
+    // until the field is valid, then quiet again.
+    mode: "onTouched",
+    reValidateMode: "onChange",
+    // Errors render inline below each field (with role="alert"), so the
+    // default scroll-to-first-error is just an unwanted jump for sighted users.
+    shouldFocusError: false,
     defaultValues: {
       name: "",
       email: "",

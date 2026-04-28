@@ -1,16 +1,26 @@
+"use client";
+
 import { ContactForm } from "@/ui/contact/ContactForm";
+import { useContactForm } from "@/ui/contact/hooks/useContactForm";
 import { CONTATO, WHATSAPP_HREF } from "@/ui/home/data";
 
 /*
   Contato — the only section that interrupts the page rhythm.
   Slightly warmer surface, larger top/bottom padding. Form is primary;
-  WhatsApp is secondary. Privacy note + crisis disclaimer flank the form.
+  WhatsApp is secondary. On submit success, the invite paragraph and
+  the secondary WhatsApp prompt collapse so attention rests on the
+  thank-you message — the page tightens around it instead of a half-
+  used form scaffolding sitting beside the success state.
 */
 export function Contato() {
+  const formState = useContactForm();
+  const isSuccess = !!formState.submitResult?.success;
+
   return (
     <section
       id="contato"
       aria-labelledby="contato-heading"
+      data-contact-state={isSuccess ? "success" : "form"}
       className="border-t border-paper-deep bg-paper-clay/40 py-[var(--space-4xl)]"
     >
       <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
@@ -26,28 +36,32 @@ export function Contato() {
           >
             {CONTATO.heading}
           </h2>
-          <p className="mx-auto mt-[var(--space-md)] max-w-[52ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
-            {CONTATO.invite}
-          </p>
+          <div className="contact-collapse mt-[var(--space-md)]">
+            <p className="mx-auto max-w-[52ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
+              {CONTATO.invite}
+            </p>
+          </div>
         </div>
 
         <div className="mx-auto mt-[var(--space-2xl)] max-w-[560px]">
-          <ContactForm />
+          <ContactForm {...formState} />
 
-          {/* Secondary WhatsApp link */}
-          <div className="mt-[var(--space-md)] flex flex-wrap items-center justify-between gap-3 text-sm text-ink-quiet">
-            <span>{CONTATO.whatsappPrompt}</span>
-            <a
-              href={WHATSAPP_HREF}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-2 text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
-            >
-              {CONTATO.whatsappLabel}
-              <span aria-hidden className="font-display">
-                →
-              </span>
-            </a>
+          {/* Secondary WhatsApp link — collapses on success. */}
+          <div className="contact-collapse mt-[var(--space-md)]">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-ink-quiet">
+              <span>{CONTATO.whatsappPrompt}</span>
+              <a
+                href={WHATSAPP_HREF}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex items-center gap-2 text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
+              >
+                {CONTATO.whatsappLabel}
+                <span aria-hidden className="font-display">
+                  →
+                </span>
+              </a>
+            </div>
           </div>
 
           {/* Crisis disclaimer — placeholder until Lucas writes the final */}
