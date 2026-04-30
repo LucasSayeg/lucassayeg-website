@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FALLBACK_SOBRE, type SobreContent } from "@/lib/home-content-types";
 import { SITE_META } from "@/lib/home-data";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
+import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
 
 /*
@@ -46,16 +47,16 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
               <HandmadeUnderline>{siteName}</HandmadeUnderline>
             </h2>
 
-            {/* Atmospheric portrait — environment / books / hands per brief.
-                Same paper-feel placeholder as the hero, but a tighter aspect
-                so it reads as a second photograph, not a duplicate. */}
-            <figure
-              className="portrait-placeholder relative aspect-[4/5] w-full max-w-[320px] lg:max-w-none"
-              role="img"
-              aria-label="Retrato de Lucas Sayeg em consultório (a substituir)"
-            >
-              <span className="portrait-placeholder__label">Em consultório · a substituir</span>
-            </figure>
+            {/* Atmospheric illustration — environment / books / hands per brief.
+                Tighter aspect than the hero portrait, so it reads as a
+                companion piece rather than a duplicate. */}
+            <div className="w-full max-w-[320px] lg:max-w-none">
+              <IllustrationSlot
+                concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."
+                shape="portrait"
+                className="w-full"
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-8">

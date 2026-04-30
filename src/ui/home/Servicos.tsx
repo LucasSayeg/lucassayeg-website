@@ -1,4 +1,5 @@
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
+import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
   Two services — Psicoterapia (Clínica) + Orientação Profissional —
@@ -11,11 +12,22 @@ import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-type
   graphic weight that an icon would otherwise carry — typography over
   ornament, per brief.
 
+  An editorial illustration slot sits opposite the numeral on each
+  article — the service's metaphor as a small considered drawing,
+  marginal rather than central. The diagonal of numeral ↔ slot is
+  what does the page-stepping; the body holds the centre.
+
   Topic items are laid out as a vertical em-dash list so each area of
   practice is legible at a glance. The earlier inline-punctuated single
   line obscured them.
 */
 const NUMERALS = ["i.", "ii."] as const;
+
+const ILLUSTRATION_BY_SERVICE: Record<string, string> = {
+  clinica:
+    "A sala — uma cadeira, uma janela, o tempo que passa entre as palavras. Interior lento, hatching contido.",
+  orientacao: "A bússola sobre a mesa, virada na direção certa — instrumento, não jornada.",
+};
 
 type ServicosProps = { content?: ServicosContent };
 
@@ -34,7 +46,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
           >
             Serviços.
           </h2>
-          <p className="max-w-[34ch] font-display text-[length:var(--text-base)] italic leading-[1.55] text-ink-quiet">
+          <p className="max-w-[34ch] text-[length:var(--text-base)] leading-[1.55] text-ink-quiet">
             Dois trabalhos próximos, com escutas distintas. O primeiro contato ajuda a decidir qual
             faz mais sentido para você.
           </p>
@@ -43,12 +55,13 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
         <div className="space-y-[var(--space-2xl)]">
           {content.items.map((s, i) => {
             const isFirst = i === 0;
+            const illustrationConcept = ILLUSTRATION_BY_SERVICE[s.id];
             return (
               <article
                 key={s.id}
                 className="grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12"
               >
-                {/* Roman numeral — display italic, oversized, as graphic anchor.
+                {/* Roman numeral — display, oversized, as graphic anchor.
                     Service I sits on the far-left; Service II on the far-right —
                     the diagonal that breaks the symmetry of the old 50/50 grid. */}
                 <div
@@ -60,7 +73,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                 >
                   <span
                     aria-hidden
-                    className="font-display italic leading-[0.85] text-ink-faint"
+                    className="font-display leading-[0.85] text-ink-faint"
                     style={{ fontSize: "clamp(3.75rem, 2.5rem + 4vw, 6.5rem)" }}
                   >
                     {NUMERALS[i % NUMERALS.length]}
@@ -76,7 +89,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                 >
                   <h3 className="font-display text-[length:var(--text-2xl)] font-normal leading-[1.04] tracking-[-0.018em] text-ink">
                     {s.label}
-                    <span className="mt-1 block font-display text-[length:var(--text-lg)] font-normal italic text-ink-quiet">
+                    <span className="mt-1 block font-display text-[length:var(--text-lg)] font-normal text-ink-quiet">
                       {s.sublabel}
                     </span>
                   </h3>
@@ -100,6 +113,22 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     ))}
                   </ul>
                 </div>
+
+                {/* Illustration — opposite the numeral. Service I drawing
+                    sits far-right (cols 10–12); Service II drawing sits
+                    far-left (cols 1–3). Decorative, aria-hidden by the
+                    component itself. Skipped if no concept is registered. */}
+                {illustrationConcept ? (
+                  <div
+                    className={
+                      isFirst
+                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:justify-end md:pt-[var(--space-sm)]"
+                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-sm)]"
+                    }
+                  >
+                    <IllustrationSlot concept={illustrationConcept} shape="service" />
+                  </div>
+                ) : null}
               </article>
             );
           })}

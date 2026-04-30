@@ -101,7 +101,7 @@ export function Header({
   return (
     <header
       data-scrolled={scrolled}
-      className="sticky top-0 z-40 bg-paper/85 backdrop-blur-[6px] transition-[box-shadow,padding] duration-300 ease-[var(--ease-out-quart)] data-[scrolled=true]:shadow-[0_1px_0_var(--paper-deep),0_8px_24px_-22px_oklch(0.20_0.02_45/0.45)]"
+      className="sticky top-0 z-40 bg-paper transition-[box-shadow,padding] duration-300 ease-[var(--ease-out-quart)] data-[scrolled=true]:shadow-[0_1px_0_var(--paper-deep),0_8px_24px_-22px_oklch(0.20_0.02_45/0.45)]"
     >
       <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
         {/* Top row — logo + slogan */}

@@ -1,12 +1,21 @@
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
+import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 import { Reveal } from "@/ui/home/Reveal";
 
 /*
   "Como a terapia pode ajudar" — recognition field. Heading + opening prose
   on a 12-col grid, four labeled clusters of words wrapped as a flowing
-  field, closing prose folded with the practice's mechanisms, then the §
-  colophon. No interaction: the section just is what it is, leaving the
-  FAQ accordion below as the page's only disclosure pattern.
+  field accompanied by a tall editorial illustration in the right margin
+  (the section's literary metaphor — a notebook, columns of lived terms),
+  closing prose folded with the practice's mechanisms, then the § colophon.
+  No interaction: the section just is what it is, leaving the FAQ accordion
+  below as the page's only disclosure pattern.
+
+  Italic-display use is rationed here: the opening pull-line keeps it (one
+  per section, per the typeset brief); the cluster labels, the words
+  themselves, and the closing prose run upright so the italic never reads
+  as a default body voice. The § colophon keeps italic — it's a glyph, not
+  prose.
 */
 
 type ComoAjudaProps = { content?: ComoAjudaContent };
@@ -34,36 +43,47 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
           </div>
         </Reveal>
 
-        <div className="mx-auto max-w-[920px] space-y-[var(--space-2xl)]">
-          {content.groups.map((group, i) => (
-            <Reveal
-              key={group.label}
-              as="section"
-              index={i % 3}
-              aria-labelledby={`cluster-label-${i}`}
-            >
-              <h3
-                id={`cluster-label-${i}`}
-                className="mb-[var(--space-md)] font-display text-[length:var(--text-sm)] font-normal italic leading-none tracking-[0.01em] text-ink-quiet"
+        <div className="grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-xl)] md:grid-cols-12">
+          <div className="space-y-[var(--space-2xl)] md:col-span-8 md:col-start-1 lg:col-span-7 lg:col-start-2">
+            {content.groups.map((group, i) => (
+              <Reveal
+                key={group.label}
+                as="section"
+                index={i % 3}
+                aria-labelledby={`cluster-label-${i}`}
               >
-                {group.label}
-              </h3>
-              <ul className="flex list-none flex-wrap gap-x-[clamp(1.5rem,3.5vw,2.75rem)] gap-y-[var(--space-2xs)] p-0">
-                {group.words.map((word) => (
-                  <li
-                    key={word}
-                    className="font-display text-[length:var(--text-xl)] font-normal italic leading-[1.7] text-ink-soft"
-                  >
-                    {word}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          ))}
+                <h3
+                  id={`cluster-label-${i}`}
+                  className="mb-[var(--space-md)] text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet"
+                >
+                  {group.label}
+                </h3>
+                <ul className="flex list-none flex-wrap gap-x-[clamp(1.5rem,3.5vw,2.75rem)] gap-y-[var(--space-2xs)] p-0">
+                  {group.words.map((word) => (
+                    <li
+                      key={word}
+                      className="font-display text-[length:var(--text-xl)] font-normal leading-[1.7] text-ink-soft"
+                    >
+                      {word}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Tall illustration slot — opens the right margin so the field
+              of words has a literary anchor instead of floating centred. */}
+          <div className="hidden md:col-span-4 md:col-start-9 md:flex md:justify-end md:pt-[var(--space-md)] lg:col-span-3 lg:col-start-10">
+            <IllustrationSlot
+              concept="Caderno aberto, anotações em colunas curtas — listar o que se sente, antes de explicar."
+              shape="tall"
+            />
+          </div>
         </div>
 
         <Reveal className="mt-[var(--space-2xl)]">
-          <p className="mx-auto max-w-[52ch] text-center font-display text-[length:var(--text-lg)] italic leading-[1.55] text-ink-soft">
+          <p className="mx-auto max-w-[52ch] text-center font-display text-[length:var(--text-lg)] leading-[1.55] text-ink-soft">
             {content.closing}
           </p>
         </Reveal>

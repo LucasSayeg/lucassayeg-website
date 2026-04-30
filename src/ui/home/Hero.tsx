@@ -1,5 +1,6 @@
 import { FALLBACK_HERO, type HeroContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
+import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
   Hero — question heading + reassurance + portrait + CTA + modality strip.
@@ -91,13 +92,13 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
             </div>
           </div>
 
-          <figure
-            className="portrait-placeholder relative mx-auto aspect-[4/5] w-full max-w-[360px] lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none"
-            role="img"
-            aria-label="Retrato de Lucas Sayeg (a substituir)"
-          >
-            <span className="portrait-placeholder__label">Retrato · a substituir</span>
-          </figure>
+          <div className="mx-auto w-full max-w-[360px] lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none">
+            <IllustrationSlot
+              concept="Retrato editorial — figura sentada, três-quartos, livros ao fundo, luz lateral. Linha solta, hatching contido."
+              shape="portrait"
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
     </section>

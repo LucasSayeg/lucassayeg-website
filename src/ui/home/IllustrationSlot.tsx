@@ -12,7 +12,7 @@
 
 import * as React from "react";
 
-type Shape = "square" | "wide" | "tall" | "service";
+type Shape = "square" | "wide" | "tall" | "service" | "portrait";
 
 type Props = {
   concept: string;
@@ -27,6 +27,7 @@ const aspectByShape: Record<Shape, string> = {
   wide: "7 / 4",
   tall: "3 / 4",
   service: "1 / 1",
+  portrait: "4 / 5",
 };
 
 const widthByShape: Record<Shape, string> = {
@@ -34,6 +35,7 @@ const widthByShape: Record<Shape, string> = {
   wide: "clamp(8.5rem, 15vw, 11rem)",
   tall: "clamp(5rem, 9vw, 6.25rem)",
   service: "clamp(8rem, 18vw, 13.5rem)",
+  portrait: "100%",
 };
 
 export function IllustrationSlot({ concept, shape = "square", src, className }: Props) {

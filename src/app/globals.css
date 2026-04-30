@@ -29,6 +29,7 @@
   --accent: oklch(0.355 0.085 28); /* link, focus, primary CTA */
   --accent-deep: oklch(0.29 0.09 26); /* hover/pressed */
   --accent-soft: oklch(0.7 0.06 30); /* underline tint, decorative only */
+  --accent-mark: oklch(0.42 0.07 40); /* handmade ink — name underline, signature gestures */
 
   /* Semantic — warm, not loud */
   --warning-ink: oklch(0.385 0.075 60);
@@ -293,7 +294,7 @@
 }
 .handmade-underline__svg path {
   fill: none;
-  stroke: #734138;
+  stroke: var(--accent-mark);
   stroke-width: 1.6;
   stroke-linecap: round;
 }
@@ -447,59 +448,11 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Portrait placeholder — until Lucas supplies the real photograph.
-   Treated as paper texture: a warm parchment block, considered
-   crop, no rounded card-frame.
-   ───────────────────────────────────────────────────────────────── */
-.portrait-placeholder {
-  position: relative;
-  background: linear-gradient(
-    135deg,
-    var(--paper-soft) 0%,
-    var(--paper-clay) 70%,
-    var(--paper-deep) 100%
-  );
-  overflow: hidden;
-  isolation: isolate;
-}
-.portrait-placeholder::before,
-.portrait-placeholder::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.portrait-placeholder::before {
-  background-image:
-    radial-gradient(ellipse at 30% 30%, oklch(0.78 0.025 60 / 0.35), transparent 60%),
-    radial-gradient(ellipse at 70% 80%, oklch(0.55 0.03 40 / 0.25), transparent 65%);
-}
-.portrait-placeholder::after {
-  background-image: repeating-linear-gradient(
-    32deg,
-    oklch(0.3 0.02 40 / 0.04) 0,
-    oklch(0.3 0.02 40 / 0.04) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-.portrait-placeholder > .portrait-placeholder__label {
-  position: absolute;
-  bottom: var(--space-sm);
-  left: var(--space-sm);
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--ink-quiet);
-  z-index: 1;
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   Illustration slot — placeholder for editorial drawings (Como ajuda,
-   Serviços). Paper-clay panel with crop-mark corners, hatched texture,
-   and the metaphor concept inscribed. Unmistakably a placeholder —
-   not finished art. Swap to <img src> via the component prop.
+   Illustration slot — single placeholder vocabulary used everywhere
+   art will live (hero portrait, Sobre, Como ajuda, Serviços). Paper-
+   clay panel with crop-mark corners, hatched texture, and the
+   metaphor concept inscribed. Unmistakably a placeholder — not
+   finished art. Swap to <img src> via the component prop.
    ───────────────────────────────────────────────────────────────── */
 .illustration-slot {
   background: var(--paper-clay);
@@ -678,9 +631,5 @@
 @media (forced-colors: active) {
   .handmade-underline__svg {
     display: none;
-  }
-  .portrait-placeholder {
-    background: Canvas;
-    border: 1px solid CanvasText;
   }
 }

@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
-import { Spectral, Geist } from "next/font/google";
+import { Petrona, IBM_Plex_Sans } from "next/font/google";
 import { getSettings } from "@/lib/payload";
 import { Toaster } from "sonner";
 import "@/app/globals.css";
 
 /*
-  Display: Spectral (Production Type) — editorial workhorse, sharp terminals.
-  Body/UI: Geist (Vercel) — refined neo-grotesque, free analog to Söhne.
+  Type stack — interim, en route to a paid/Velvetyne pairing.
+
+  Display: Petrona (Indestructible Type, libre) — a transitional serif with
+  generous counters and a calm italic. Stands in for the eventual licensed
+  display face (PP Editorial New / Reckless / GT Sectra / a Velvetyne face
+  like Le Murmure or Cirruscumulus) without falling back to the AI-default
+  serifs the brief explicitly excludes (Fraunces, Newsreader, Lora, Crimson,
+  Cormorant, Playfair, DM Serif).
+
+  Body/UI: IBM Plex Sans (IBM, libre) — a humanist-mechanical sans with a
+  slight literary warmth. Stands in for ABC Diatype / Söhne. Avoids the
+  excluded defaults (Inter, DM Sans, Geist).
+
+  When the licensed faces arrive, drop them as local files in
+  `public/fonts/` and swap these `next/font/google` calls for
+  `next/font/local`, keeping the same `--font-display` / `--font-sans`
+  variables — no consumer change.
 
   `adjustFontFallback` defaults to true: Next emits a `size-adjust`-tuned
   fallback (Times New Roman for serif, Arial for sans) that closely matches
@@ -14,7 +29,7 @@ import "@/app/globals.css";
   shift. The explicit `fallback` chain below is the second line of defence,
   for browsers that skip the override or fail the fetch.
 */
-const spectral = Spectral({
+const displaySerif = Petrona({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-display",
@@ -23,7 +38,7 @@ const spectral = Spectral({
   fallback: ["Iowan Old Style", "Charter", "Georgia", "Cambria", "serif"],
 });
 
-const geist = Geist({
+const bodySans = IBM_Plex_Sans({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-sans",
@@ -67,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${spectral.variable} ${geist.variable}`}
+      className={`${displaySerif.variable} ${bodySans.variable}`}
     >
       <body>
         <a href="#main" className="skip-link">

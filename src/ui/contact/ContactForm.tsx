@@ -28,21 +28,22 @@ const requiredMark = (
 
 type FieldStatus = "idle" | "valid" | "invalid";
 
+const VALID_HINT = "Anotado.";
+
 type FieldHintProps = {
   id: string;
   status: FieldStatus;
   message?: string;
-  validMessage: string;
   children?: ReactNode;
 };
 
 /**
- * Reserved-height slot below an input. Distinct vocabularies for distinct
- * signals: warnings carry the accent dot + soft message; affirmations
- * carry an editorial display-italic margin note ("Anotado."). The ink-soft
- * tone keeps things steady for an audience that doesn't need to feel scolded.
+ * Reserved-height slot below an input. Warnings carry the accent dot + soft
+ * message; affirmations are a single, consistent editorial italic note
+ * ("Anotado.") across all fields — three different chirpy acknowledgements
+ * read as performative for an audience that doesn't need to feel cheered on.
  */
-function FieldHint({ id, status, message, validMessage, children }: FieldHintProps) {
+function FieldHint({ id, status, message, children }: FieldHintProps) {
   const visible = status !== "idle";
   return (
     <div className="field-hint" data-status={status}>
@@ -60,7 +61,7 @@ function FieldHint({ id, status, message, validMessage, children }: FieldHintPro
             {message}
           </>
         ) : status === "valid" ? (
-          <span className="field-hint__valid">{validMessage}</span>
+          <span className="field-hint__valid">{VALID_HINT}</span>
         ) : (
           (children ?? " ")
         )}
@@ -138,7 +139,6 @@ export function ContactForm({
               id="contact-name-hint"
               status={fieldStatus("name", !!errors.name)}
               message={errors.name?.message}
-              validMessage="Bom te conhecer."
             />
           </div>
 
@@ -161,7 +161,6 @@ export function ContactForm({
               id="contact-email-hint"
               status={fieldStatus("email", !!errors.email)}
               message={errors.email?.message}
-              validMessage="Anotado."
             />
           </div>
 
@@ -183,7 +182,6 @@ export function ContactForm({
               id="contact-message-hint"
               status={fieldStatus("message", !!errors.message)}
               message={errors.message?.message}
-              validMessage="Grato pela mensagem."
             />
           </div>
 
