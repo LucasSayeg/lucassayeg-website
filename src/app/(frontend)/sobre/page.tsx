@@ -64,10 +64,10 @@ export default async function SobrePage() {
     <>
       <Header navLinks={navLinks} siteInfo={siteInfo} whatsappHref={whatsappHref} />
       <main id="main">
-        {/* Band 1 — Identity + lede */}
+        {/* Band 1 — Identity + Formação merged */}
         <section
           aria-labelledby="sobre-page-heading"
-          className="pb-[var(--space-3xl)] pt-[var(--space-2xl)] sm:pt-[var(--space-3xl)]"
+          className="pb-[var(--space-2xl)] pt-[var(--space-2xl)] sm:pt-[var(--space-3xl)]"
         >
           <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
             <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
@@ -86,6 +86,22 @@ export default async function SobrePage() {
                 <p className="mt-[var(--space-xl)] max-w-[60ch] font-display text-[length:var(--text-lg)] leading-relaxed text-ink-soft">
                   {content.lede}
                 </p>
+
+                <h2
+                  id="formacao-heading"
+                  className="mb-[var(--space-md)] mt-[var(--space-xl)] flex items-center gap-3 text-[0.78rem] font-normal uppercase tracking-[0.24em] text-ink-quiet"
+                >
+                  <span aria-hidden className="inline-block h-px w-8 bg-ink-faint" />
+                  <span>Formação</span>
+                </h2>
+
+                <div className="max-w-[60ch] space-y-[var(--space-md)] text-[length:var(--text-base)] leading-[1.75] text-ink-soft">
+                  <FormacaoBody content={content} />
+                </div>
+
+                <p className="mt-[var(--space-2xl)] font-display text-sm text-ink-quiet">
+                  {siteInfo.crp}
+                </p>
               </div>
 
               <div className="order-first mx-auto w-full max-w-[320px] lg:order-last lg:col-span-5 lg:mx-0 lg:max-w-none">
@@ -101,26 +117,11 @@ export default async function SobrePage() {
           </div>
         </section>
 
-        {/* Band 2 — Formação */}
-        <section aria-labelledby="formacao-heading" className="py-[var(--space-3xl)]">
-          <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
-            <p className="mb-[var(--space-md)] flex items-center gap-3 text-[0.78rem] uppercase tracking-[0.24em] text-ink-quiet">
-              <span aria-hidden className="inline-block h-px w-8 bg-ink-faint" />
-              <span id="formacao-heading">Formação</span>
-            </p>
-
-            <div className="max-w-[64ch] space-y-[var(--space-md)] text-[length:var(--text-base)] leading-[1.75] text-ink-soft">
-              <FormacaoBody content={content} />
-            </div>
-
-            <p className="mt-[var(--space-2xl)] font-display text-sm text-ink-quiet">
-              {siteInfo.crp}
-            </p>
-          </div>
-        </section>
-
-        {/* Band 3 — Bottom CTA */}
-        <section aria-labelledby="sobre-cta-heading" className="py-[var(--space-3xl)]">
+        {/* Band 2 — Bottom CTA */}
+        <section
+          aria-labelledby="sobre-cta-heading"
+          className="pb-[var(--space-3xl)] pt-[var(--space-xl)]"
+        >
           <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
             <h2
               id="sobre-cta-heading"
