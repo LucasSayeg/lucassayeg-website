@@ -17,15 +17,15 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
   return (
     <section id="faq" aria-labelledby="faq-heading" className="py-[var(--space-3xl)]">
       <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
-        <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-[var(--space-md)] md:grid-cols-12">
+        <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="faq-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.08] tracking-[-0.015em] text-ink md:col-span-7"
+            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
           >
             Perguntas frequentes.
           </h2>
           <p className="text-[length:var(--text-base)] leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
-            O que costumam querer saber antes da primeira conversa.
+            {content.subtitle}
           </p>
         </div>
 

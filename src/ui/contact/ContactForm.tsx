@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import type { useContactForm } from "@/ui/contact/hooks/useContactForm";
-import { SITE_META, WHATSAPP_HREF } from "@/ui/home/data";
+import { FALLBACK_CONTACT_FORM, type ContactFormContent } from "@/lib/home-content-types";
+import { CONTACT_FORM, SITE_META, WHATSAPP_HREF } from "@/lib/home-data";
 import { Loader2 } from "lucide-react";
 import type { MouseEvent, ReactNode } from "react";
 
@@ -19,7 +20,8 @@ const fieldClass = cn(
   "disabled:opacity-60",
 );
 
-const labelClass = "block text-[0.78rem] uppercase tracking-[0.22em] text-ink-quiet";
+const labelClass =
+  "block text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet";
 const requiredMark = (
   <span aria-hidden className="ml-1 text-ink-quiet">
     *
@@ -28,22 +30,21 @@ const requiredMark = (
 
 type FieldStatus = "idle" | "valid" | "invalid";
 
-const VALID_HINT = "Anotado.";
-
 type FieldHintProps = {
   id: string;
   status: FieldStatus;
   message?: string;
+  validMessage: string;
   children?: ReactNode;
 };
 
 /**
  * Reserved-height slot below an input. Warnings carry the accent dot + soft
- * message; affirmations are a single, consistent editorial italic note
- * ("Anotado.") across all fields — three different chirpy acknowledgements
- * read as performative for an audience that doesn't need to feel cheered on.
+ * message; affirmations carry an editorial display-italic margin note. The
+ * acknowledgement varies by field so each completion lands as its own small
+ * moment, kept ink-soft so it reads as a quiet aside rather than applause.
  */
-function FieldHint({ id, status, message, children }: FieldHintProps) {
+function FieldHint({ id, status, message, validMessage, children }: FieldHintProps) {
   const visible = status !== "idle";
   return (
     <div className="field-hint" data-status={status}>
@@ -61,7 +62,7 @@ function FieldHint({ id, status, message, children }: FieldHintProps) {
             {message}
           </>
         ) : status === "valid" ? (
-          <span className="field-hint__valid">{VALID_HINT}</span>
+          <span className="field-hint__valid">{validMessage}</span>
         ) : (
           (children ?? " ")
         )}
@@ -70,7 +71,9 @@ function FieldHint({ id, status, message, children }: FieldHintProps) {
   );
 }
 
-type ContactFormProps = ReturnType<typeof useContactForm>;
+type ContactFormProps = ReturnType<typeof useContactForm> & {
+  copy?: ContactFormContent;
+};
 
 export function ContactForm({
   form,
@@ -78,6 +81,7 @@ export function ContactForm({
   isSubmitting,
   submitResult,
   reset,
+  copy = FALLBACK_CONTACT_FORM,
 }: ContactFormProps) {
   const {
     register,
@@ -117,12 +121,13 @@ export function ContactForm({
         <form
           onSubmit={onSubmit}
           className="space-y-(--space-md)"
-          aria-label="Formulário de contato"
+          aria-label={CONTACT_FORM.ariaLabel}
           noValidate
         >
           <div className="space-y-2">
             <label htmlFor="contact-name" className={labelClass}>
-              Nome{requiredMark}
+              {CONTACT_FORM.nameLabel}
+              {requiredMark}
             </label>
             <input
               id="contact-name"
@@ -131,7 +136,7 @@ export function ContactForm({
               {...register("name")}
               aria-invalid={!!errors.name}
               aria-describedby="contact-name-hint"
-              placeholder="Como você gostaria de ser chamado(a)"
+              placeholder={copy.namePlaceholder}
               disabled={isSubmitting}
               className={fieldClass}
             />
@@ -139,12 +144,14 @@ export function ContactForm({
               id="contact-name-hint"
               status={fieldStatus("name", !!errors.name)}
               message={errors.name?.message}
+              validMessage={copy.nameValidHint}
             />
           </div>
 
           <div className="space-y-2">
             <label htmlFor="contact-email" className={labelClass}>
-              E-mail{requiredMark}
+              {CONTACT_FORM.emailLabel}
+              {requiredMark}
             </label>
             <input
               id="contact-email"
@@ -153,7 +160,7 @@ export function ContactForm({
               {...register("email")}
               aria-invalid={!!errors.email}
               aria-describedby="contact-email-hint"
-              placeholder="seuemail@exemplo.com"
+              placeholder={copy.emailPlaceholder}
               disabled={isSubmitting}
               className={fieldClass}
             />
@@ -161,12 +168,14 @@ export function ContactForm({
               id="contact-email-hint"
               status={fieldStatus("email", !!errors.email)}
               message={errors.email?.message}
+              validMessage={copy.emailValidHint}
             />
           </div>
 
           <div className="space-y-2">
             <label htmlFor="contact-message" className={labelClass}>
-              Mensagem{requiredMark}
+              {CONTACT_FORM.messageLabel}
+              {requiredMark}
             </label>
             <textarea
               id="contact-message"
@@ -174,7 +183,7 @@ export function ContactForm({
               {...register("message")}
               aria-invalid={!!errors.message}
               aria-describedby="contact-message-hint"
-              placeholder="Conte um pouco sobre o que está te trazendo aqui — algumas linhas já bastam."
+              placeholder={copy.messagePlaceholder}
               disabled={isSubmitting}
               className={cn(fieldClass, "resize-y min-h-32 max-h-80")}
             />
@@ -182,6 +191,7 @@ export function ContactForm({
               id="contact-message-hint"
               status={fieldStatus("message", !!errors.message)}
               message={errors.message?.message}
+              validMessage={copy.messageValidHint}
             />
           </div>
 
@@ -216,34 +226,37 @@ export function ContactForm({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-(--space-2xs)">
-            <p className="text-xs text-ink-quiet">
-              <span aria-hidden>* </span>
-              campos obrigatórios
-            </p>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={cn(
-                "inline-flex items-center gap-3 whitespace-nowrap rounded-sm bg-ink px-6 py-3 text-sm uppercase tracking-[0.16em] text-paper",
-                "transition-colors duration-200 hover:bg-accent-deep",
-                "disabled:cursor-wait disabled:bg-ink-quiet",
-              )}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                  <span>Enviando…</span>
-                </>
-              ) : (
-                <>
-                  <span>Enviar mensagem</span>
-                  <span aria-hidden className="font-display normal-case">
-                    →
-                  </span>
-                </>
-              )}
-            </button>
+          <div className="space-y-3 pt-(--space-2xs)">
+            <p className="text-xs leading-relaxed text-ink-quiet">{copy.disclaimer}</p>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <p className="text-xs text-ink-quiet">
+                <span aria-hidden>* </span>
+                {CONTACT_FORM.requiredHint}
+              </p>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={cn(
+                  "inline-flex items-center gap-3 whitespace-nowrap rounded-sm bg-ink px-6 py-3 text-sm uppercase tracking-[0.16em] text-paper",
+                  "transition-colors duration-200 hover:bg-accent-deep",
+                  "disabled:cursor-wait disabled:bg-ink-quiet",
+                )}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                    <span>{CONTACT_FORM.submitLoadingLabel}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{CONTACT_FORM.submitLabel}</span>
+                    <span aria-hidden className="font-display normal-case">
+                      →
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -255,19 +268,19 @@ export function ContactForm({
         inert={!isSuccess}
       >
         <div className="space-y-(--space-md)">
-          <p className="text-(length:--text-lg) leading-snug text-ink">
-            Obrigado pela sua mensagem.
+          <p className="text-(length:--text-lg) leading-snug text-ink">{copy.successHeading}</p>
+          <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
+            {copy.successBody}
           </p>
           <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
-            Lucas responderá pessoalmente em até <em className="not-italic">um dia útil</em>. Se
-            preferir uma conversa mais imediata, você pode me chamar pelo{" "}
+            {copy.successWhatsappPrompt}{" "}
             <a
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noreferrer noopener"
               className="text-ink underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:decoration-accent-soft"
             >
-              WhatsApp
+              {CONTACT_FORM.successWhatsappLabel}
             </a>
             .
           </p>
@@ -276,7 +289,7 @@ export function ContactForm({
             onClick={reset}
             className="text-sm text-ink-quiet underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:text-ink hover:decoration-accent-soft"
           >
-            Enviar outra mensagem
+            {CONTACT_FORM.successResetLabel}
           </button>
         </div>
       </div>

@@ -7,25 +7,27 @@
   eventual commissioned illustrator.
 
   Decorative: aria-hidden. Lives outside the document outline.
-  Optional `src` prop short-circuits to a real <img> once art exists.
+  Optional `src` prop short-circuits to a real next/image once art exists.
 */
 
-import * as React from "react";
+import Image from "next/image";
+import type { CSSProperties } from "react";
 
-type Shape = "square" | "wide" | "tall" | "service" | "portrait";
+type Shape = "square" | "wide" | "service" | "portrait";
 
 type Props = {
   concept: string;
   shape?: Shape;
   /** When set, renders the final art in place of the placeholder. */
   src?: string;
+  /** Alt text for the final art. Empty string is treated as decorative. */
+  alt?: string;
   className?: string;
 };
 
 const aspectByShape: Record<Shape, string> = {
   square: "1 / 1",
   wide: "7 / 4",
-  tall: "3 / 4",
   service: "1 / 1",
   portrait: "4 / 5",
 };
@@ -33,28 +35,48 @@ const aspectByShape: Record<Shape, string> = {
 const widthByShape: Record<Shape, string> = {
   square: "clamp(5.5rem, 10vw, 7rem)",
   wide: "clamp(8.5rem, 15vw, 11rem)",
-  tall: "clamp(5rem, 9vw, 6.25rem)",
   service: "clamp(8rem, 18vw, 13.5rem)",
   portrait: "100%",
 };
 
-export function IllustrationSlot({ concept, shape = "square", src, className }: Props) {
-  const style: React.CSSProperties = {
+// `sizes` mirrors the CSS column the slot occupies in its parent grid.
+// Portrait sits in lg:col-span-5 of a max-w-[1240px] container (≈ ~500px
+// at desktop, capped); below the lg breakpoint it stretches to ~100vw
+// minus gutters. The other shapes are small fixed-width vignettes — a
+// generous mobile-first fallback is fine since they cap via widthByShape.
+const sizesByShape: Record<Shape, string> = {
+  square: "(min-width: 1024px) 7rem, 10vw",
+  wide: "(min-width: 1024px) 11rem, 15vw",
+  service: "(min-width: 1024px) 13.5rem, 18vw",
+  portrait: "(min-width: 1024px) 40vw, 100vw",
+};
+
+export function IllustrationSlot({ concept, shape = "square", src, alt, className }: Props) {
+  const style: CSSProperties = {
     aspectRatio: aspectByShape[shape],
     width: widthByShape[shape],
   };
 
   if (src) {
+    // `alt` falls back to the concept brief so screen readers get *something*
+    // descriptive when the CMS doesn't provide explicit alt text. Empty
+    // string is honored — that's the "decorative image" signal.
+    const resolvedAlt = alt !== undefined ? alt : concept;
+    const isDecorative = resolvedAlt === "";
     return (
-      <img
-        src={src}
-        alt=""
-        aria-hidden
-        className={`block select-none object-contain ${className ?? ""}`}
+      <div
+        className={`relative block select-none ${className ?? ""}`}
         style={style}
-        loading="lazy"
-        decoding="async"
-      />
+        {...(isDecorative ? { "aria-hidden": true } : {})}
+      >
+        <Image
+          src={src}
+          alt={resolvedAlt}
+          fill
+          sizes={sizesByShape[shape]}
+          className="object-contain"
+        />
+      </div>
     );
   }
 

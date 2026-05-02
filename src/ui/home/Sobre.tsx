@@ -42,7 +42,7 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
           <div className="space-y-[var(--space-lg)] lg:col-span-4">
             <h2
               id="sobre-heading"
-              className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.1] tracking-[-0.015em] text-ink"
+              className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.1] tracking-[-0.02em] text-ink"
             >
               <HandmadeUnderline>{siteName}</HandmadeUnderline>
             </h2>

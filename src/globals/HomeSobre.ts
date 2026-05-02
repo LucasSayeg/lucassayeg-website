@@ -21,11 +21,12 @@ export const HomeSobre: GlobalConfig = {
     ],
   },
   fields: [
-    { name: "intro", type: "textarea", required: true },
+    { name: "intro", type: "textarea", required: true, label: "Introdução" },
     {
       name: "body",
       type: "richText",
       required: true,
+      label: "Corpo",
       admin: {
         description: "Conteúdo principal. Use o editor para parágrafos, negrito e ênfase.",
       },
@@ -34,6 +35,7 @@ export const HomeSobre: GlobalConfig = {
       name: "ctaLabel",
       type: "text",
       required: true,
+      label: "Texto do link",
       admin: {
         description:
           "Texto do link que leva para /sobre (default: 'Saiba mais sobre meu percurso').",

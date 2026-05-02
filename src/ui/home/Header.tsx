@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { type SiteInfoContent } from "@/lib/home-content-types";
 import { FALLBACK_SITE_INFO } from "@/lib/home-content-types";
 import { NAV_LINKS, WHATSAPP_HREF } from "@/lib/home-data";
+import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 
 /*
   Sticky header with a single scroll-threshold transition. The visual
@@ -28,6 +30,14 @@ export function Header({
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [activeHash, setActiveHash] = React.useState<string>("");
+  const pathname = usePathname();
+  // Home owns the section anchors. On any other route the nav links must
+  // navigate back to "/#anchor" — otherwise they scroll to nothing.
+  const isHome = pathname === "/";
+  const resolveAnchor = React.useCallback(
+    (href: string) => (isHome || !href.startsWith("#") ? href : `/${href}`),
+    [isHome],
+  );
 
   // Single-threshold scroll state — flips at ~hero height.
   React.useEffect(() => {
@@ -54,6 +64,10 @@ export function Header({
   // middle band of the viewport. Falls back to "" when none qualify so the
   // active state clears past the last section instead of sticking.
   React.useEffect(() => {
+    if (!isHome) {
+      setActiveHash("");
+      return;
+    }
     const sections = navLinks
       .map((l) => document.querySelector(l.href))
       .filter((n): n is Element => !!n);
@@ -72,10 +86,12 @@ export function Header({
     );
     sections.forEach((s) => obs.observe(s));
     return () => obs.disconnect();
-  }, [navLinks]);
+  }, [navLinks, isHome]);
 
   const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.startsWith("#")) return;
+    // Off-home: let the browser handle the navigation back to "/#anchor".
+    if (!isHome) return;
     e.preventDefault();
     const target = document.querySelector(href);
     if (!target) return;
@@ -109,7 +125,11 @@ export function Header({
           className="flex items-start justify-between pt-5 transition-[padding] duration-300 ease-[var(--ease-out-quart)]"
           style={{ paddingBottom: scrolled ? "0.5rem" : "0.875rem" }}
         >
-          <a href="#top" onClick={(e) => handleAnchor(e, "#top")} className="group block">
+          <a
+            href={resolveAnchor("#top")}
+            onClick={(e) => handleAnchor(e, "#top")}
+            className="group block"
+          >
             <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
               {siteInfo.name}
             </span>
@@ -138,17 +158,17 @@ export function Header({
                 return (
                   <li key={l.href}>
                     <a
-                      href={l.href}
+                      href={resolveAnchor(l.href)}
                       onClick={(e) => handleAnchor(e, l.href)}
-                      aria-current={isActive ? "true" : undefined}
+                      aria-current={isActive ? "location" : undefined}
                       className="relative inline-block py-1 transition-colors hover:text-ink"
                       data-active={isActive}
                     >
                       {l.label}
                       <span
                         aria-hidden
-                        className="absolute -bottom-0.5 left-0 h-px bg-accent transition-[width] duration-300 ease-[var(--ease-out-quart)]"
-                        style={{ width: isActive ? "100%" : "0" }}
+                        className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-accent transition-transform duration-300 ease-[var(--ease-out-quart)]"
+                        style={{ transform: isActive ? "scaleX(1)" : "scaleX(0)" }}
                       />
                     </a>
                   </li>
@@ -163,9 +183,16 @@ export function Header({
               target="_blank"
               rel="noreferrer noopener"
               aria-label="Iniciar conversa no WhatsApp"
-              className="inline-flex items-center gap-2 rounded-sm border border-ink bg-ink px-4 py-2 text-sm text-paper transition-colors hover:bg-accent-deep hover:border-accent-deep"
+              className="group inline-flex items-center gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
             >
+              <WhatsappIcon size={14} className="text-[#25D366]" />
               WhatsApp
+              <span
+                aria-hidden
+                className="font-display transition-transform group-hover:translate-x-0.5"
+              >
+                →
+              </span>
             </a>
 
             <button
@@ -174,7 +201,7 @@ export function Header({
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
               onClick={() => setMobileOpen((v) => !v)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-paper-deep text-ink-soft transition-colors hover:bg-paper-soft md:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-paper-deep text-ink-soft transition-colors hover:bg-paper-soft md:hidden"
             >
               {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
@@ -188,7 +215,7 @@ export function Header({
               {navLinks.map((l) => (
                 <li key={l.href}>
                   <a
-                    href={l.href}
+                    href={resolveAnchor(l.href)}
                     onClick={(e) => handleAnchor(e, l.href)}
                     className="block rounded-sm px-2 py-3 text-ink-soft hover:bg-paper-soft hover:text-ink"
                   >

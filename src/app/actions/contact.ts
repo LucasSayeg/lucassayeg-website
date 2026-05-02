@@ -27,7 +27,9 @@ export async function sendContactEmail(values: Contact.FormValues): Promise<Cont
 
   const apiKey = trim(process.env.RESEND_API_KEY);
   const to = trim(process.env.CONTACT_EMAIL_TO);
-  const from = trim(process.env.CONTACT_EMAIL_FROM) ?? "onboarding@resend.dev";
+  // Resend requires the From address domain to be verified on the account,
+  // or the shared `onboarding@resend.dev` sender (handy for local/dev).
+  const from = trim(process.env.CONTACT_EMAIL_FROM) ?? "Site Lucas Sayeg <onboarding@resend.dev>";
 
   if (!apiKey) {
     console.error("[contact] RESEND_API_KEY is not configured.");
@@ -45,9 +47,9 @@ export async function sendContactEmail(values: Contact.FormValues): Promise<Cont
     const { error } = await resend.emails.send({
       from,
       to,
-      subject: `Portfolio Contact: ${name}`,
+      subject: `Novo contato pelo site — ${name}`,
       replyTo: email,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      text: [`Nome: ${name}`, `E-mail: ${email}`, "", "Mensagem:", message].join("\n"),
     });
 
     if (error) {

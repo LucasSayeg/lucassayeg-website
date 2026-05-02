@@ -27,7 +27,9 @@ const SECTION_RENDERERS: Record<
   sobre: (c, s) => <Sobre content={c.sobre} siteName={s.siteInfo.name} />,
   servicos: (c) => <Servicos content={c.servicos} />,
   faq: (c) => <FAQ content={c.faq} />,
-  contato: (c, s) => <Contato content={c.contato} whatsappHref={s.whatsappHref} />,
+  contato: (c, s) => (
+    <Contato content={c.contato} formCopy={c.contactForm} whatsappHref={s.whatsappHref} />
+  ),
 };
 
 export default async function Home() {

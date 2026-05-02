@@ -21,6 +21,8 @@ export const SITE_META = {
   whatsappNumber: "",
   whatsappPrefill: "Olá, Lucas. Vim pelo seu site e gostaria de conversar.",
   crp: "",
+  crisis:
+    "Em caso de emergência ou risco imediato, ligue 188 (CVV) ou 192 (SAMU). Esses serviços oferecem escuta e atendimento 24 horas.",
 } as const;
 
 export const WHATSAPP_HREF = buildWhatsappHref(SITE_META.whatsappNumber, SITE_META.whatsappPrefill);
@@ -42,6 +44,15 @@ export const HERO = {
     online: "Online",
     presencial: "Presencial em Vila Leopoldina, São Paulo",
   },
+  quickPickIntro: "O que está pesando hoje?",
+  quickPickTopics: [
+    "Ansiedade",
+    "Luto",
+    "Burnout",
+    "Relacionamentos",
+    "Crise existencial",
+    "Dúvida de carreira",
+  ],
 } as const;
 
 export const COMO_AJUDA = {
@@ -94,6 +105,16 @@ export const SOBRE = {
   cta: "Saiba mais sobre meu percurso",
 } as const;
 
+export const SOBRE_BOTTOM_CTA = {
+  heading: "Vamos conversar.",
+  body: "Me chame pelo WhatsApp ou pelo formulário do início.",
+  whatsappLabel: "Conversar pelo WhatsApp",
+  formLabel: "Voltar ao formulário",
+} as const;
+
+export const SERVICOS_SUBTITLE =
+  "Dois trabalhos próximos, com escutas distintas. O primeiro contato ajuda a decidir qual faz mais sentido para você.";
+
 export const SERVICOS = [
   {
     id: "clinica",
@@ -132,6 +153,8 @@ export const SERVICOS = [
     },
   },
 ] as const;
+
+export const FAQ_SUBTITLE = "O que costumam querer saber antes da primeira conversa.";
 
 export const FAQ_ITEMS: ReadonlyArray<{ q: string; a: string[] }> = [
   {
@@ -177,10 +200,37 @@ export const CONTATO = {
   heading: "Vamos conversar.",
   invite:
     "Conte um pouco sobre o que está te trazendo aqui. Não é preciso explicar tudo — algumas linhas já bastam para combinarmos uma conversa. Mensagens são respondidas pessoalmente e tratadas com sigilo.",
+  responseTimeLabel: "Tempo de resposta",
+  responseTimeBody: "Respondo pessoalmente, em geral em até um dia útil.",
+  whatsappBlockLabel: "WhatsApp",
   whatsappPrompt: "Prefere conversar pelo WhatsApp?",
   whatsappLabel: "Iniciar conversa no WhatsApp",
-  crisis:
-    "Em caso de emergência ou risco imediato, ligue 188 (CVV) ou 192 (SAMU). Esses serviços oferecem escuta e atendimento 24 horas.",
+  sigiloLabel: "Sigilo",
+  sigiloBody: "Apenas eu recebo. Tratadas com sigilo.",
+} as const;
+
+export const CONTACT_FORM = {
+  ariaLabel: "Formulário de contato",
+  nameLabel: "Nome",
+  namePlaceholder: "Como você gostaria de ser chamado(a)",
+  nameValidHint: "Bom te conhecer.",
+  emailLabel: "E-mail",
+  emailPlaceholder: "seuemail@exemplo.com",
+  emailValidHint: "Anotado.",
+  messageLabel: "Mensagem",
+  messagePlaceholder:
+    "Conte um pouco sobre o que está te trazendo aqui — algumas linhas já bastam.",
+  messageValidHint: "Grato pela mensagem.",
+  disclaimer: "Mensagens chegam apenas para mim. Nenhum cadastro, nenhum disparo.",
+  requiredHint: "campos obrigatórios",
+  submitLabel: "Enviar mensagem",
+  submitLoadingLabel: "Enviando…",
+  successHeading: "Obrigado pela sua mensagem.",
+  successBody:
+    "Lucas responderá pessoalmente em até um dia útil. Em geral, é uma proposta de horário ou algumas perguntas para entender melhor o que está te trazendo aqui — você pode responder no seu tempo.",
+  successWhatsappPrompt: "Se preferir uma conversa mais imediata, você pode me chamar pelo",
+  successWhatsappLabel: "WhatsApp",
+  successResetLabel: "Enviar outra mensagem",
 } as const;
 
 export const FOOTER = {

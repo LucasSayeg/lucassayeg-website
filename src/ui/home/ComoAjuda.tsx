@@ -1,14 +1,15 @@
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
-import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
-import { Reveal } from "@/ui/home/Reveal";
+import { MarkedWord } from "@/ui/components/MarkedWord";
+import { RevealStagger } from "@/ui/home/RevealStagger";
 
 /*
   "Como a terapia pode ajudar" — recognition field. Heading + opening prose
   on a 12-col grid, four labeled clusters of words wrapped as a flowing
-  field accompanied by a tall editorial illustration in the right margin
-  (the section's literary metaphor — a notebook, columns of lived terms),
-  closing prose folded with the practice's mechanisms, then the § colophon.
-  No interaction: the section just is what it is, leaving the FAQ accordion
+  field, closing prose folded with the practice's mechanisms, then the §
+  colophon. The section's metaphor (columns of lived terms — what one
+  notices, before explaining) is enacted by the marked-word clusters
+  themselves; the right margin is left as deliberate silence. No
+  interaction: the section just is what it is, leaving the FAQ accordion
   below as the page's only disclosure pattern.
 
   Italic-display use is rationed here: the opening pull-line keeps it (one
@@ -18,7 +19,9 @@ import { Reveal } from "@/ui/home/Reveal";
   prose.
 */
 
-type ComoAjudaProps = { content?: ComoAjudaContent };
+type ComoAjudaProps = {
+  content?: ComoAjudaContent;
+};
 
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   return (
@@ -28,7 +31,7 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
       className="relative bg-paper-soft/60 py-[var(--space-3xl)]"
     >
       <div className="relative mx-auto max-w-[1240px] px-6 sm:px-8">
-        <Reveal className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-md)] gap-y-[var(--space-lg)] md:grid-cols-12">
+        <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="como-ajuda-heading"
             className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
@@ -36,57 +39,38 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
             Como a terapia pode ajudar.
           </h2>
 
-          <div className="md:col-span-5 md:pt-2">
+          <div className="md:col-span-5 md:pt-3">
             <p className="font-display text-[length:var(--text-lg)] italic leading-[1.45] text-ink-quiet md:max-w-[34ch]">
               {content.intro}
             </p>
           </div>
-        </Reveal>
+        </div>
 
         <div className="grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-xl)] md:grid-cols-12">
-          <div className="space-y-[var(--space-2xl)] md:col-span-8 md:col-start-1 lg:col-span-7 lg:col-start-2">
+          <RevealStagger className="space-y-[var(--space-2xl)] md:col-span-8 md:col-start-1 lg:col-span-7 lg:col-start-2">
             {content.groups.map((group, i) => (
-              <Reveal
-                key={group.label}
-                as="section"
-                index={i % 3}
-                aria-labelledby={`cluster-label-${i}`}
-              >
+              <section key={group.label} aria-labelledby={`cluster-label-${i}`}>
                 <h3
                   id={`cluster-label-${i}`}
                   className="mb-[var(--space-md)] text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet"
                 >
                   {group.label}
                 </h3>
-                <ul className="flex list-none flex-wrap gap-x-[clamp(1.5rem,3.5vw,2.75rem)] gap-y-[var(--space-2xs)] p-0">
+                <ul className="flex list-none flex-wrap gap-x-[var(--space-sm)] gap-y-[var(--space-xs)] p-0">
                   {group.words.map((word) => (
-                    <li
-                      key={word}
-                      className="font-display text-[length:var(--text-xl)] font-normal leading-[1.7] text-ink-soft"
-                    >
-                      {word}
+                    <li key={word}>
+                      <MarkedWord topic={word} />
                     </li>
                   ))}
                 </ul>
-              </Reveal>
+              </section>
             ))}
-          </div>
-
-          {/* Tall illustration slot — opens the right margin so the field
-              of words has a literary anchor instead of floating centred. */}
-          <div className="hidden md:col-span-4 md:col-start-9 md:flex md:justify-end md:pt-[var(--space-md)] lg:col-span-3 lg:col-start-10">
-            <IllustrationSlot
-              concept="Caderno aberto, anotações em colunas curtas — listar o que se sente, antes de explicar."
-              shape="tall"
-            />
-          </div>
+          </RevealStagger>
         </div>
 
-        <Reveal className="mt-[var(--space-2xl)]">
-          <p className="mx-auto max-w-[52ch] text-center font-display text-[length:var(--text-lg)] leading-[1.55] text-ink-soft">
-            {content.closing}
-          </p>
-        </Reveal>
+        <p className="mx-auto mt-[var(--space-2xl)] max-w-[52ch] text-center font-display text-[length:var(--text-lg)] leading-[1.55] text-ink-soft">
+          {content.closing}
+        </p>
 
         {/* Editorial colophon — § flanked by hairlines with end-caps. */}
         <div

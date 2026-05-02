@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Petrona, IBM_Plex_Sans } from "next/font/google";
-import { getSettings } from "@/lib/payload";
+import { cookies } from "next/headers";
+import { COOKIE_NAME, DEFAULT_PALETTE_ID, PICKER_COOKIE_NAME, isPaletteId } from "@/core/palettes";
+import { PalettePanel } from "@/ui/dev/PalettePanel";
 import { Toaster } from "sonner";
 import "@/app/globals.css";
 
@@ -53,35 +55,36 @@ const bodySans = IBM_Plex_Sans({
   ],
 });
 
-const SITE_NAME_FALLBACK = "Lucas Sayeg — Psicólogo clínico e orientador profissional";
-const SITE_DESCRIPTION_FALLBACK =
+const SITE_TITLE = "Lucas Sayeg — Psicólogo clínico e orientador profissional";
+const SITE_DESCRIPTION =
   "Atendimento online e presencial em Vila Leopoldina, São Paulo. Psicoterapia clínica e orientação profissional para adultos.";
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const settings = await getSettings();
-  const title = settings?.siteName?.trim() || SITE_NAME_FALLBACK;
-  const description = settings?.description?.trim() || SITE_DESCRIPTION_FALLBACK;
-
-  return {
-    title: {
-      default: title,
-      template: `%s — ${settings?.siteName?.trim() || "Lucas Sayeg"}`,
-    },
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      locale: "pt_BR",
-    },
-  };
+export const metadata: Metadata = {
+  title: {
+    default: SITE_TITLE,
+    template: "%s — Lucas Sayeg",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "pt_BR",
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Palette exploration — see src/core/palettes.ts. Temporary; remove during cleanup.
+  const store = await cookies();
+  const cookiePalette = store.get(COOKIE_NAME)?.value;
+  const palette = isPaletteId(cookiePalette) ? cookiePalette : DEFAULT_PALETTE_ID;
+  const showPalettePanel = store.get(PICKER_COOKIE_NAME)?.value === "1";
+
   return (
     <html
       lang="pt-BR"
       suppressHydrationWarning
+      data-palette={palette}
       className={`${displaySerif.variable} ${bodySans.variable}`}
     >
       <body>
@@ -90,6 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         {children}
         <Toaster position="top-center" theme="light" closeButton richColors={false} />
+        {showPalettePanel ? <PalettePanel current={palette} /> : null}
       </body>
     </html>
   );

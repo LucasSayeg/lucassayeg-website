@@ -6,7 +6,19 @@
 */
 
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
-import { COMO_AJUDA, CONTATO, FAQ_ITEMS, HERO, SERVICOS, SITE_META, SOBRE } from "@/lib/home-data";
+import {
+  COMO_AJUDA,
+  CONTACT_FORM,
+  CONTATO,
+  FAQ_ITEMS,
+  FAQ_SUBTITLE,
+  HERO,
+  SERVICOS,
+  SERVICOS_SUBTITLE,
+  SITE_META,
+  SOBRE,
+  SOBRE_BOTTOM_CTA,
+} from "@/lib/home-data";
 import type { SectionKey } from "@/lib/section-anchors";
 
 export type SectionLayout = { key: SectionKey; enabled: boolean; navLabel: string };
@@ -18,6 +30,8 @@ export type HeroContent = {
   modalityPresencial: string;
   ctaWhatsapp: string;
   cta: string;
+  quickPickIntro: string;
+  quickPickTopics: string[];
 };
 
 export type ComoAjudaGroup = { label: string; words: string[] };
@@ -41,17 +55,39 @@ export type ServicoItem = {
   framing: string;
   areas: string[];
 };
-export type ServicosContent = { items: ServicoItem[] };
+export type ServicosContent = { subtitle: string; items: ServicoItem[] };
 
 export type FaqItem = { question: string; answer: string[] };
-export type FaqContent = { items: FaqItem[] };
+export type FaqContent = { subtitle: string; items: FaqItem[] };
 
 export type ContatoContent = {
   heading: string;
   invite: string;
+  responseTimeLabel: string;
+  responseTimeBody: string;
+  whatsappBlockLabel: string;
   whatsappPrompt: string;
   whatsappLabel: string;
-  crisis: string;
+  sigiloLabel: string;
+  sigiloBody: string;
+};
+
+export type ContactFormContent = {
+  namePlaceholder: string;
+  nameValidHint: string;
+  emailPlaceholder: string;
+  emailValidHint: string;
+  messagePlaceholder: string;
+  messageValidHint: string;
+  disclaimer: string;
+  successHeading: string;
+  successBody: string;
+  successWhatsappPrompt: string;
+};
+
+export type SitePortrait = {
+  url: string;
+  alt: string;
 };
 
 export type SiteInfoContent = {
@@ -61,9 +97,21 @@ export type SiteInfoContent = {
   region: string;
   address: string;
   crp: string;
+  crisis: string;
   email: string;
   whatsappNumber: string;
   whatsappPrefill: string;
+  portrait: SitePortrait | null;
+};
+
+export type SobrePageContent = {
+  lede: string;
+  body: SerializedEditorState | null;
+  bodyParagraphs: string[];
+  bottomCtaHeading: string;
+  bottomCtaBody: string;
+  bottomCtaWhatsappLabel: string;
+  bottomCtaFormLabel: string;
 };
 
 export type HomeContent = {
@@ -74,6 +122,7 @@ export type HomeContent = {
   servicos: ServicosContent;
   faq: FaqContent;
   contato: ContatoContent;
+  contactForm: ContactFormContent;
 };
 
 export const FALLBACK_SECTIONS: SectionLayout[] = [
@@ -92,6 +141,8 @@ export const FALLBACK_HERO: HeroContent = {
   modalityPresencial: HERO.modality.presencial,
   ctaWhatsapp: HERO.ctaWhatsapp,
   cta: HERO.cta,
+  quickPickIntro: HERO.quickPickIntro,
+  quickPickTopics: [...HERO.quickPickTopics],
 };
 
 export const FALLBACK_COMO_AJUDA: ComoAjudaContent = {
@@ -108,6 +159,7 @@ export const FALLBACK_SOBRE: SobreContent = {
 };
 
 export const FALLBACK_SERVICOS: ServicosContent = {
+  subtitle: SERVICOS_SUBTITLE,
   items: SERVICOS.map((s) => ({
     id: s.id,
     label: s.label,
@@ -118,15 +170,33 @@ export const FALLBACK_SERVICOS: ServicosContent = {
 };
 
 export const FALLBACK_FAQ: FaqContent = {
+  subtitle: FAQ_SUBTITLE,
   items: FAQ_ITEMS.map((it) => ({ question: it.q, answer: [...it.a] })),
 };
 
 export const FALLBACK_CONTATO: ContatoContent = {
   heading: CONTATO.heading,
   invite: CONTATO.invite,
+  responseTimeLabel: CONTATO.responseTimeLabel,
+  responseTimeBody: CONTATO.responseTimeBody,
+  whatsappBlockLabel: CONTATO.whatsappBlockLabel,
   whatsappPrompt: CONTATO.whatsappPrompt,
   whatsappLabel: CONTATO.whatsappLabel,
-  crisis: CONTATO.crisis,
+  sigiloLabel: CONTATO.sigiloLabel,
+  sigiloBody: CONTATO.sigiloBody,
+};
+
+export const FALLBACK_CONTACT_FORM: ContactFormContent = {
+  namePlaceholder: CONTACT_FORM.namePlaceholder,
+  nameValidHint: CONTACT_FORM.nameValidHint,
+  emailPlaceholder: CONTACT_FORM.emailPlaceholder,
+  emailValidHint: CONTACT_FORM.emailValidHint,
+  messagePlaceholder: CONTACT_FORM.messagePlaceholder,
+  messageValidHint: CONTACT_FORM.messageValidHint,
+  disclaimer: CONTACT_FORM.disclaimer,
+  successHeading: CONTACT_FORM.successHeading,
+  successBody: CONTACT_FORM.successBody,
+  successWhatsappPrompt: CONTACT_FORM.successWhatsappPrompt,
 };
 
 export const FALLBACK_HOME: HomeContent = {
@@ -137,6 +207,7 @@ export const FALLBACK_HOME: HomeContent = {
   servicos: FALLBACK_SERVICOS,
   faq: FALLBACK_FAQ,
   contato: FALLBACK_CONTATO,
+  contactForm: FALLBACK_CONTACT_FORM,
 };
 
 export const FALLBACK_SITE_INFO: SiteInfoContent = {
@@ -146,7 +217,19 @@ export const FALLBACK_SITE_INFO: SiteInfoContent = {
   region: SITE_META.region,
   address: SITE_META.address,
   crp: SITE_META.crp,
+  crisis: SITE_META.crisis,
   email: SITE_META.email,
   whatsappNumber: SITE_META.whatsappNumber,
   whatsappPrefill: SITE_META.whatsappPrefill,
+  portrait: null,
+};
+
+export const FALLBACK_SOBRE_PAGE: SobrePageContent = {
+  lede: SOBRE.intro,
+  body: null,
+  bodyParagraphs: [...SOBRE.paragraphs],
+  bottomCtaHeading: SOBRE_BOTTOM_CTA.heading,
+  bottomCtaBody: SOBRE_BOTTOM_CTA.body,
+  bottomCtaWhatsappLabel: SOBRE_BOTTOM_CTA.whatsappLabel,
+  bottomCtaFormLabel: SOBRE_BOTTOM_CTA.formLabel,
 };

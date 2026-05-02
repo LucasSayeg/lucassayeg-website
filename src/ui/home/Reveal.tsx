@@ -43,7 +43,7 @@ export function Reveal({ index = 0, as: Tag = "div", className, children }: Reve
           }
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.01, rootMargin: "0px 0px -5% 0px" },
     );
     obs.observe(el);
     return () => obs.disconnect();

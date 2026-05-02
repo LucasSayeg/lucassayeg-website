@@ -11,7 +11,7 @@ const sectionsField: ArrayField = {
   required: true,
   admin: {
     description:
-      "Arraste para reordenar as seções da home. Desmarque 'Exibir' para esconder uma seção. 'Rótulo no menu' vazio = não aparece no menu de navegação.",
+      "Arraste para reordenar as seções da home. Desmarque 'Exibir' para esconder uma seção. 'Rótulo no menu de navegação' vazio = não aparece no menu de navegação.",
   },
   validate: (rows) => {
     const list = (rows ?? []) as Array<{ key?: string }>;
@@ -47,9 +47,9 @@ const sectionsField: ArrayField = {
     {
       name: "navLabel",
       type: "text",
-      label: "Rótulo no menu",
+      label: "Rótulo no menu de navegação",
       admin: {
-        description: "Vazio = seção não aparece no menu (mas continua na página).",
+        description: "Vazio = seção não aparece no menu de navegação (mas continua na página).",
       },
     },
   ],

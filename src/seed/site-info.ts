@@ -11,6 +11,7 @@ export async function seedSiteInfo(payload: Payload, _opts: { force?: boolean })
       region: SITE_META.region,
       address: SITE_META.address,
       crp: SITE_META.crp || "CRP 00/00000",
+      crisis: SITE_META.crisis,
       email: SITE_META.email || "contato@example.com",
       whatsappNumber: SITE_META.whatsappNumber || "5511000000000",
       whatsappPrefill: SITE_META.whatsappPrefill,

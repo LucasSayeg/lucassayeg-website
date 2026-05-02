@@ -13,9 +13,10 @@ export function useContactForm() {
   const form = useForm<Contact.FormValues>({
     // Zod v4.3 types not fully supported by @hookform/resolvers yet — runtime works correctly
     resolver: zodResolver(Contact.formSchema as any),
-    // Eager mode: silent until first blur, then re-validate on every keystroke
-    // until the field is valid, then quiet again.
-    mode: "onTouched",
+    // Lazy by default: silent while typing, validates on blur or submit.
+    // Once a field is errored, re-validates on change so the success state
+    // appears the instant the user fixes it; then goes quiet again.
+    mode: "onBlur",
     reValidateMode: "onChange",
     // Errors render inline below each field (with role="alert"), so the
     // default scroll-to-first-error is just an unwanted jump for sighted users.

@@ -1,5 +1,7 @@
 import { FALLBACK_HERO, type HeroContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
+import { MarkedWord } from "@/ui/components/MarkedWord";
+import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -18,6 +20,7 @@ type HeroProps = {
 };
 
 export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: HeroProps = {}) {
+  const quickPickTopics = content.quickPickTopics.slice(0, 6);
   return (
     <section
       id="top"
@@ -34,7 +37,7 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
 
             <h1
               id="hero-heading"
-              className="max-w-[16ch] font-display text-[length:var(--text-4xl)] font-normal leading-[1.05] tracking-[-0.018em] text-ink sm:max-w-[20ch] lg:max-w-[18ch]"
+              className="max-w-[18ch] font-display text-[length:var(--text-3xl)] font-normal leading-[1.05] tracking-[-0.018em] text-ink sm:max-w-[20ch] sm:text-[length:var(--text-4xl)] lg:max-w-[18ch]"
             >
               {content.heading}
             </h1>
@@ -43,16 +46,35 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
               {content.sub}
             </p>
 
+            {quickPickTopics.length > 0 ? (
+              <div className="mt-[var(--space-xl)]">
+                <p className="mb-[var(--space-sm)] font-display text-[length:var(--text-base)] italic leading-[1.5] text-ink-quiet">
+                  {content.quickPickIntro}
+                </p>
+                <ul
+                  aria-label="Temas para começar uma conversa"
+                  className="flex list-none flex-wrap gap-x-[var(--space-sm)] gap-y-[var(--space-xs)] p-0"
+                >
+                  {quickPickTopics.map((topic) => (
+                    <li key={topic}>
+                      <MarkedWord topic={topic} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
             <div className="mt-[var(--space-xl)] flex flex-wrap items-center gap-x-5 gap-y-3">
-              {/* Primary — WhatsApp (mirrors the header pill's weight) */}
+              {/* Primary — WhatsApp (the only solid CTA on the page) */}
               <a
                 href={whatsappHref}
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label="Iniciar conversa no WhatsApp"
-                className="group inline-flex items-baseline gap-3 rounded-sm bg-ink px-6 py-3.5 text-paper transition-colors hover:bg-accent-deep"
+                className="group inline-flex items-center gap-2.5 rounded-sm bg-ink px-5 py-3 text-paper transition-colors hover:bg-accent-deep"
               >
-                <span className="text-sm uppercase tracking-[0.18em]">{content.ctaWhatsapp}</span>
+                <WhatsappIcon size={16} />
+                <span className="font-display text-base">{content.ctaWhatsapp}</span>
                 <span
                   aria-hidden
                   className="font-display text-base text-paper-deep transition-transform group-hover:translate-x-0.5"

@@ -1,0 +1,163 @@
+/*
+  Palette exploration — temporary scaffolding.
+  Each html[data-palette="<id>"] block overrides the canonical token set
+  defined in :root (globals.css). Component CSS is unchanged; only token
+  *values* swap. Listed in src/core/palettes.ts.
+
+  Authoring rules (per design brief):
+  - All values stay in OKLCH.
+  - Chroma stays moderate (≤ 0.13); no garish accents at extreme lightness.
+  - Dark palettes never use absolute black or near-black surfaces.
+  - --ink-soft / --ink-quiet / --ink-faint walk away from --ink toward the
+    paper, so the same component CSS keeps its visual rhythm in either
+    direction (light ink on dark paper or dark ink on light paper).
+
+  This iteration deliberately tests *different approaches* to within-palette
+  contrast — the previous batch made everything monochromatic-warm and the
+  4 papers / 4 inks / 4 accents inside each palette read as one smear.
+  Each palette below is an answer to a different design question.
+*/
+
+/* ─────────────────────────────────────────────────────────────────
+   1. Bone — light, monochromatic warm. The control.
+   Hypothesis: cohesion via shared hue family. Paper, ink, and accent
+   all sit in hue 28–82 (warm), with neutrals tinted toward the accent.
+   Reads as "one warm sheet of paper" — refined but flat. The other
+   palettes test alternatives to this recipe.
+   ───────────────────────────────────────────────────────────────── */
+html[data-palette="bone"] {
+  --paper: oklch(0.985 0.006 82);
+  --paper-soft: oklch(0.965 0.01 78);
+  --paper-clay: oklch(0.935 0.014 74);
+  --paper-deep: oklch(0.89 0.018 70);
+
+  --ink: oklch(0.205 0.018 50);
+  --ink-soft: oklch(0.345 0.018 52);
+  --ink-quiet: oklch(0.49 0.014 56);
+  --ink-faint: oklch(0.64 0.012 60);
+
+  --accent: oklch(0.355 0.085 28);
+  --accent-deep: oklch(0.29 0.09 26);
+  --accent-soft: oklch(0.7 0.06 30);
+  --accent-mark: oklch(0.42 0.07 40);
+
+  --warning-ink: oklch(0.385 0.075 60);
+  --error-ink: oklch(0.395 0.11 28);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. Cold Press — light, neutral substrate + saturated accent.
+   Hypothesis: the accent reads as "an accent" only when nothing else
+   competes for chroma. Paper and ink are pushed near-neutral (chroma
+   0.003 / 0.008 — barely tinted). The accent jumps to chroma 0.13
+   (vs Bone's 0.085) and lands at L=0.45 — visibly lighter than the
+   ink at L=0.205. Result: a clear three-color hierarchy (cream / dark
+   / red) instead of a warm gradient.
+   ───────────────────────────────────────────────────────────────── */
+html[data-palette="cold-press"] {
+  --paper: oklch(0.985 0.003 85);
+  --paper-soft: oklch(0.96 0.005 82);
+  --paper-clay: oklch(0.91 0.008 78);
+  --paper-deep: oklch(0.84 0.012 75);
+
+  --ink: oklch(0.205 0.008 80);
+  --ink-soft: oklch(0.36 0.008 78);
+  --ink-quiet: oklch(0.52 0.008 75);
+  --ink-faint: oklch(0.68 0.008 72);
+
+  --accent: oklch(0.45 0.13 28);
+  --accent-deep: oklch(0.36 0.145 26);
+  --accent-soft: oklch(0.72 0.085 32);
+  --accent-mark: oklch(0.55 0.115 30);
+
+  --warning-ink: oklch(0.42 0.08 60);
+  --error-ink: oklch(0.42 0.13 28);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. Ink Slate — dark, monochromatic warm. The dark control.
+   Same hypothesis as Bone, inverted. Paper L=0.22 (warm slate),
+   ink L=0.92 (cream), accent L=0.62 (oxblood, lightened so it reads
+   on dark). All hues in the warm band; subtle steps between the
+   four paper / ink / accent variants.
+   ───────────────────────────────────────────────────────────────── */
+html[data-palette="ink-slate"] {
+  --paper: oklch(0.22 0.012 60);
+  --paper-soft: oklch(0.26 0.014 60);
+  --paper-clay: oklch(0.3 0.016 60);
+  --paper-deep: oklch(0.36 0.018 60);
+
+  --ink: oklch(0.92 0.01 80);
+  --ink-soft: oklch(0.84 0.01 78);
+  --ink-quiet: oklch(0.7 0.012 74);
+  --ink-faint: oklch(0.56 0.014 70);
+
+  --accent: oklch(0.62 0.085 32);
+  --accent-deep: oklch(0.55 0.09 30);
+  --accent-soft: oklch(0.72 0.07 34);
+  --accent-mark: oklch(0.66 0.08 38);
+
+  --warning-ink: oklch(0.72 0.075 70);
+  --error-ink: oklch(0.66 0.11 28);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. Foundry — dark, same warm recipe as Ink Slate but with sharper
+   within-palette steps.
+   Hypothesis: "darker" doesn't mean a different hue family — it means
+   wider lightness gaps within the same recipe. Paper pushed to L=0.16
+   (Ink Slate is 0.22), ink lifted to L=0.96, accent boosted to L=0.7
+   with chroma 0.115 (vs Ink Slate's 0.085). The four paper variants
+   span L=0.16 → 0.36 (gap 0.20) vs Ink Slate's 0.22 → 0.36 (gap 0.14).
+   Result: more weight, more drama, the accent visibly louder.
+   ───────────────────────────────────────────────────────────────── */
+html[data-palette="foundry"] {
+  --paper: oklch(0.16 0.012 55);
+  --paper-soft: oklch(0.22 0.014 55);
+  --paper-clay: oklch(0.28 0.016 55);
+  --paper-deep: oklch(0.36 0.018 55);
+
+  --ink: oklch(0.96 0.012 82);
+  --ink-soft: oklch(0.86 0.012 80);
+  --ink-quiet: oklch(0.7 0.012 76);
+  --ink-faint: oklch(0.54 0.012 70);
+
+  --accent: oklch(0.7 0.115 32);
+  --accent-deep: oklch(0.62 0.13 30);
+  --accent-soft: oklch(0.8 0.085 34);
+  --accent-mark: oklch(0.74 0.105 36);
+
+  --warning-ink: oklch(0.76 0.08 70);
+  --error-ink: oklch(0.7 0.115 28);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. Pressed Navy — dark, cool surface + warm text + warm accent.
+   Hypothesis: within-palette contrast can come from *hue* instead of
+   from chroma jumps. Surface is hue 260 (warm-leaning navy, slightly
+   violet so it reads as ink-blue not cyan), text is hue 75 (warm cream),
+   accent is hue 32 (oxblood — the proven accent from Ink Slate). The
+   surface and accent sit ~130° apart on the hue wheel — the accent
+   visibly *separates* from the substrate instead of blending into it.
+   Picks up the "blueish was alright" thread from iteration 1 and
+   pairs it with the accent that actually works.
+   ───────────────────────────────────────────────────────────────── */
+html[data-palette="pressed-navy"] {
+  --paper: oklch(0.2 0.045 260);
+  --paper-soft: oklch(0.25 0.05 258);
+  --paper-clay: oklch(0.3 0.052 256);
+  --paper-deep: oklch(0.36 0.055 254);
+
+  --ink: oklch(0.93 0.018 75);
+  --ink-soft: oklch(0.84 0.018 72);
+  --ink-quiet: oklch(0.7 0.016 68);
+  --ink-faint: oklch(0.56 0.014 64);
+
+  --accent: oklch(0.65 0.12 32);
+  --accent-deep: oklch(0.58 0.13 30);
+  --accent-soft: oklch(0.75 0.08 34);
+  --accent-mark: oklch(0.7 0.11 36);
+
+  --warning-ink: oklch(0.76 0.08 70);
+  --error-ink: oklch(0.7 0.13 28);
+}

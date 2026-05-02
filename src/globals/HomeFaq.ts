@@ -21,19 +21,23 @@ export const HomeFaq: GlobalConfig = {
     ],
   },
   fields: [
+    { name: "subtitle", type: "textarea", required: true, label: "Subtítulo" },
     {
       name: "items",
       type: "array",
       minRows: 1,
+      label: "Perguntas",
+      labels: { singular: "pergunta", plural: "perguntas" },
       fields: [
-        { name: "question", type: "text", required: true },
+        { name: "question", type: "text", required: true, label: "Pergunta" },
         {
           name: "answer",
           type: "array",
           minRows: 1,
+          label: "Resposta",
           labels: { singular: "parágrafo", plural: "parágrafos" },
           admin: { description: "Cada item é um parágrafo da resposta." },
-          fields: [{ name: "body", type: "textarea", required: true }],
+          fields: [{ name: "body", type: "textarea", required: true, label: "Parágrafo" }],
         },
       ],
     },

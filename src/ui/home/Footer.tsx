@@ -64,9 +64,14 @@ export function Footer({
         </div>
       </div>
 
-      <div className="mx-auto mt-[var(--space-2xl)] flex max-w-[1240px] flex-wrap items-center justify-between gap-3 px-6 text-xs text-ink-quiet sm:px-8">
-        <p>{rights}</p>
-        <p className="font-display">{siteInfo.crp}</p>
+      <div className="mx-auto mt-[var(--space-2xl)] max-w-[1240px] px-6 sm:px-8">
+        <p className="border-t border-paper-deep pt-[var(--space-md)] text-xs leading-relaxed text-ink-quiet">
+          {siteInfo.crisis}
+        </p>
+        <div className="mt-[var(--space-md)] flex flex-wrap items-center justify-between gap-3 text-xs text-ink-quiet">
+          <p>{rights}</p>
+          <p className="font-display">{siteInfo.crp}</p>
+        </div>
       </div>
     </footer>
   );

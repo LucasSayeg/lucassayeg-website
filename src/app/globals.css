@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* Palette exploration — see src/app/palettes.css. Temporary; the winning
+   palette will be promoted into :root below and this import deleted. */
+@import "./palettes.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -92,6 +95,11 @@
   --dur-base: 240ms;
   --dur-slow: 460ms;
   --dur-page: 680ms;
+
+  /* Per-child reveal — fade duration and lateral offset that alternates
+     direction per row. */
+  --reveal-stagger-dur: 1100ms;
+  --reveal-stagger-shift: 36px;
 }
 
 @theme inline {
@@ -243,7 +251,7 @@
    ───────────────────────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(28px);
   transition:
     opacity var(--dur-slow) var(--ease-out-quart),
     transform var(--dur-slow) var(--ease-out-quart);
@@ -253,6 +261,33 @@
 .reveal--in {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Reveal-on-scroll, coordinated stagger
+   Parent ships visible from SSR. After mount, JS sets
+   data-reveal-armed="true" on the parent and an IntersectionObserver
+   flips each child to .reveal-stagger-item--in when scrolled into view.
+   The hidden off-state is gated behind [data-reveal-armed] so no-JS /
+   slow-JS clients never see a flash of hidden content.
+   ───────────────────────────────────────────────────────────────── */
+.reveal-stagger[data-reveal-armed="true"] > *:not(.reveal-stagger-item--in) {
+  opacity: 0;
+  transform: translateX(var(--reveal-stagger-x, calc(var(--reveal-stagger-shift) * -1)));
+  transition:
+    opacity var(--reveal-stagger-dur) var(--ease-out-quart),
+    transform var(--reveal-stagger-dur) var(--ease-out-quart);
+  will-change: opacity, transform;
+}
+/* Alternating x-offset: odd children come from the left, even from the right. */
+.reveal-stagger > *:nth-child(odd) { --reveal-stagger-x: calc(var(--reveal-stagger-shift) * -1); }
+.reveal-stagger > *:nth-child(even) { --reveal-stagger-x: var(--reveal-stagger-shift); }
+.reveal-stagger > .reveal-stagger-item--in {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity var(--reveal-stagger-dur) var(--ease-out-quart),
+    transform var(--reveal-stagger-dur) var(--ease-out-quart);
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -280,7 +315,8 @@
 .handmade-underline {
   position: relative;
   display: inline-block;
-  white-space: nowrap;
+  /* Allow wrap so long names don't overflow on narrow viewports; the SVG underline only tracks the first line. */
+  white-space: normal;
 }
 .handmade-underline__svg {
   position: absolute;
@@ -307,6 +343,64 @@
 .handmade-underline__svg--armed.handmade-underline__svg--drawn path {
   stroke-dashoffset: 0;
   transition: stroke-dashoffset 1300ms var(--ease-out-expo);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Marked Words — topic words held inside a soft marker sweep.
+   A muted --accent-mark wash sits behind ~70% of the word height
+   (highlighter gesture, not full background) so the topics feel
+   *marked* in the editorial sense — annotations on a page rather
+   than chrome around chips. Each palette already defines
+   --accent-mark, so the hue retunes per palette automatically.
+   ───────────────────────────────────────────────────────────────── */
+.marked-word {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  padding: 0.05em 0.3em;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  isolation: isolate;
+}
+.marked-word::before {
+  content: "";
+  position: absolute;
+  inset: 0.18em -0.02em 0.05em -0.02em;
+  background: var(--accent-mark);
+  opacity: 0.18;
+  border-radius: 0.12em;
+  z-index: -1;
+}
+.marked-word__text {
+  white-space: normal;
+}
+
+/* Size register — xl matches Hero/ComoAjuda's display rhythm; base
+   reads as the smaller "áreas de escuta" register in Servicos.
+   xl steps down on mobile so the chips harmonize with the Hero's
+   text-lg surrounding copy and don't crowd narrow viewports. */
+.marked-word--xl {
+  font-size: var(--text-lg);
+}
+@media (min-width: 640px) {
+  .marked-word--xl {
+    font-size: var(--text-xl);
+  }
+}
+.marked-word--base {
+  font-size: var(--text-base);
+  padding: 0.05em 0.28em;
+}
+
+/* High-contrast — ::before is suppressed in forced-colors, so fall
+   back to a visible underline that survives the system override. */
+@media (forced-colors: active) {
+  .marked-word {
+    text-decoration: underline;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -403,8 +497,6 @@
 }
 .form-banner__text {
   overflow: hidden;
-  border-top: 1px solid var(--paper-deep);
-  padding-top: var(--space-sm);
   font-size: var(--text-sm);
   line-height: 1.55;
   color: var(--ink-soft);
@@ -571,9 +663,8 @@
   overflow: hidden;
 }
 
-/* On smaller / shorter shapes the inscription would crowd the panel —
+/* On the wide shape the inscription would crowd the panel —
    suppress it and let the corners + label carry the placeholder cue. */
-.illustration-slot[style*="3 / 4"] .illustration-slot__concept,
 .illustration-slot[style*="7 / 4"] .illustration-slot__concept {
   display: none;
 }
@@ -601,6 +692,10 @@
     transition-delay: 0ms !important;
   }
   .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-stagger[data-reveal-armed="true"] > * {
     opacity: 1;
     transform: none;
   }

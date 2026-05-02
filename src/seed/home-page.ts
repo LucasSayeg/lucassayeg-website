@@ -1,6 +1,17 @@
 import type { Payload } from "payload";
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
-import { COMO_AJUDA, CONTATO, FAQ_ITEMS, HERO, SERVICOS, SOBRE } from "@/lib/home-data";
+import {
+  COMO_AJUDA,
+  CONTACT_FORM,
+  CONTATO,
+  FAQ_ITEMS,
+  FAQ_SUBTITLE,
+  HERO,
+  SERVICOS,
+  SERVICOS_SUBTITLE,
+  SOBRE,
+  SOBRE_BOTTOM_CTA,
+} from "@/lib/home-data";
 
 const IS_BOLD = 1;
 
@@ -73,6 +84,8 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
       modalityPresencial: HERO.modality.presencial,
       ctaWhatsapp: HERO.ctaWhatsapp,
       cta: HERO.cta,
+      quickPickIntro: HERO.quickPickIntro,
+      quickPickTopics: HERO.quickPickTopics.map((value) => ({ value })),
     },
   });
 
@@ -100,6 +113,7 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
   await payload.updateGlobal({
     slug: "home-servicos",
     data: {
+      subtitle: SERVICOS_SUBTITLE,
       items: SERVICOS.map((s) => ({
         id: s.id,
         label: s.label,
@@ -113,6 +127,7 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
   await payload.updateGlobal({
     slug: "home-faq",
     data: {
+      subtitle: FAQ_SUBTITLE,
       items: FAQ_ITEMS.map((it) => ({
         question: it.q,
         answer: it.a.map((p) => ({ body: p })),
@@ -125,9 +140,41 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
     data: {
       heading: CONTATO.heading,
       invite: CONTATO.invite,
+      responseTimeLabel: CONTATO.responseTimeLabel,
+      responseTimeBody: CONTATO.responseTimeBody,
+      whatsappBlockLabel: CONTATO.whatsappBlockLabel,
       whatsappPrompt: CONTATO.whatsappPrompt,
       whatsappLabel: CONTATO.whatsappLabel,
-      crisis: CONTATO.crisis,
+      sigiloLabel: CONTATO.sigiloLabel,
+      sigiloBody: CONTATO.sigiloBody,
+    },
+  });
+
+  await payload.updateGlobal({
+    slug: "home-contact-form",
+    data: {
+      namePlaceholder: CONTACT_FORM.namePlaceholder,
+      nameValidHint: CONTACT_FORM.nameValidHint,
+      emailPlaceholder: CONTACT_FORM.emailPlaceholder,
+      emailValidHint: CONTACT_FORM.emailValidHint,
+      messagePlaceholder: CONTACT_FORM.messagePlaceholder,
+      messageValidHint: CONTACT_FORM.messageValidHint,
+      disclaimer: CONTACT_FORM.disclaimer,
+      successHeading: CONTACT_FORM.successHeading,
+      successBody: CONTACT_FORM.successBody,
+      successWhatsappPrompt: CONTACT_FORM.successWhatsappPrompt,
+    },
+  });
+
+  await payload.updateGlobal({
+    slug: "sobre-page",
+    data: {
+      lede: SOBRE.intro,
+      body: buildSobreLexical(SOBRE.paragraphs) as unknown as Record<string, unknown>,
+      bottomCtaHeading: SOBRE_BOTTOM_CTA.heading,
+      bottomCtaBody: SOBRE_BOTTOM_CTA.body,
+      bottomCtaWhatsappLabel: SOBRE_BOTTOM_CTA.whatsappLabel,
+      bottomCtaFormLabel: SOBRE_BOTTOM_CTA.formLabel,
     },
   });
 }

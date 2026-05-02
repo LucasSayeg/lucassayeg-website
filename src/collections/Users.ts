@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
   slug: "users",
+  labels: { singular: "Usuário", plural: "Usuários" },
   auth: true,
   admin: {
     useAsTitle: "email",
@@ -16,11 +17,13 @@ export const Users: CollectionConfig = {
     {
       name: "name",
       type: "text",
+      label: "Nome",
     },
     {
       name: "role",
       type: "select",
-      options: ["admin"],
+      label: "Função",
+      options: [{ label: "Administrador", value: "admin" }],
       defaultValue: "admin",
       access: {
         update: ({ req }) => req.user?.role === "admin",

@@ -1,21 +1,23 @@
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
+import { MarkedWord } from "@/ui/components/MarkedWord";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
   Two services — Psicoterapia (Clínica) + Orientação Profissional —
-  rendered as a diagonal editorial cascade rather than two equal blocks.
+  rendered as an editorial cascade rather than two equal blocks.
 
   The earlier 50/50 grid read as "blocky": same-shape twin cards. Here,
-  each service is offset on the 12-col grid (one anchored left, one
-  anchored right) so the eye steps down the page instead of ping-pong
-  between mirrored columns. Display Roman numerals (i. / ii.) carry the
-  graphic weight that an icon would otherwise carry — typography over
-  ornament, per brief.
+  each service body is offset on the 12-col grid (one anchored left,
+  one anchored right) so the eye steps down the page instead of
+  ping-pong between mirrored columns. The Roman numeral (i. / ii.)
+  stacks above the heading as a chapter mark — typography over
+  ornament, per brief — keeping the numeral inside the body column so
+  there are no orphan quadrants when the body wraps long.
 
-  An editorial illustration slot sits opposite the numeral on each
+  An editorial illustration slot sits opposite the body on each
   article — the service's metaphor as a small considered drawing,
-  marginal rather than central. The diagonal of numeral ↔ slot is
-  what does the page-stepping; the body holds the centre.
+  marginal rather than central. The body/slot swap is what does the
+  page-stepping; the type does the rest.
 
   Topic items are laid out as a vertical em-dash list so each area of
   practice is legible at a glance. The earlier inline-punctuated single
@@ -29,7 +31,9 @@ const ILLUSTRATION_BY_SERVICE: Record<string, string> = {
   orientacao: "A bússola sobre a mesa, virada na direção certa — instrumento, não jornada.",
 };
 
-type ServicosProps = { content?: ServicosContent };
+type ServicosProps = {
+  content?: ServicosContent;
+};
 
 export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
   return (
@@ -39,16 +43,15 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
       className="border-t border-paper-deep bg-paper-soft/40 py-[var(--space-3xl)]"
     >
       <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
-        <div className="mb-[var(--space-2xl)] flex flex-wrap items-end justify-between gap-x-[var(--space-lg)] gap-y-[var(--space-md)]">
+        <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="servicos-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink"
+            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
           >
             Serviços.
           </h2>
-          <p className="max-w-[34ch] text-[length:var(--text-base)] leading-[1.55] text-ink-quiet">
-            Dois trabalhos próximos, com escutas distintas. O primeiro contato ajuda a decidir qual
-            faz mais sentido para você.
+          <p className="max-w-[34ch] text-[length:var(--text-base)] leading-[1.55] text-ink-quiet md:col-span-5 md:pt-3">
+            {content.subtitle}
           </p>
         </div>
 
@@ -61,33 +64,24 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                 key={s.id}
                 className="grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12"
               >
-                {/* Roman numeral — display, oversized, as graphic anchor.
-                    Service I sits on the far-left; Service II on the far-right —
-                    the diagonal that breaks the symmetry of the old 50/50 grid. */}
+                {/* Body — Service I anchors left (cols 1–8), Service II
+                    shifts right (cols 5–12). The numeral lives at the top
+                    of this column as a chapter mark, so heading and body
+                    stay tied together regardless of how long the copy runs. */}
                 <div
                   className={
-                    isFirst
-                      ? "flex items-start md:col-span-2 md:col-start-1 md:justify-start"
-                      : "order-first flex items-start md:order-none md:col-span-2 md:col-start-11 md:justify-end"
+                    isFirst ? "md:col-span-8 md:col-start-1" : "md:col-span-8 md:col-start-5"
                   }
                 >
                   <span
                     aria-hidden
-                    className="font-display leading-[0.85] text-ink-faint"
-                    style={{ fontSize: "clamp(3.75rem, 2.5rem + 4vw, 6.5rem)" }}
+                    className="block font-display leading-[0.85] text-ink-faint"
+                    style={{ fontSize: "clamp(3rem, 2rem + 2.5vw, 5rem)" }}
                   >
                     {NUMERALS[i % NUMERALS.length]}
                   </span>
-                </div>
 
-                {/* Body — Service I anchors left, Service II shifts right.
-                    The cascade does the asymmetry; the type does the rest. */}
-                <div
-                  className={
-                    isFirst ? "md:col-span-7 md:col-start-3" : "md:col-span-7 md:col-start-4"
-                  }
-                >
-                  <h3 className="font-display text-[length:var(--text-2xl)] font-normal leading-[1.04] tracking-[-0.018em] text-ink">
+                  <h3 className="mt-[var(--space-sm)] font-display text-[length:var(--text-2xl)] font-normal leading-[1.04] tracking-[-0.018em] text-ink">
                     {s.label}
                     <span className="mt-1 block font-display text-[length:var(--text-lg)] font-normal text-ink-quiet">
                       {s.sublabel}
@@ -98,32 +92,30 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     {s.framing}
                   </p>
 
-                  <p className="mt-[var(--space-lg)] text-[0.78rem] uppercase tracking-[0.22em] text-ink-quiet">
+                  <p className="mt-[var(--space-lg)] text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
                     Áreas de escuta
                   </p>
 
-                  <ul className="mt-[var(--space-2xs)] max-w-[58ch] space-y-[var(--space-3xs)] text-[length:var(--text-base)] leading-[1.55] text-ink-soft">
+                  <ul className="mt-[var(--space-sm)] flex max-w-[58ch] list-none flex-wrap gap-x-[var(--space-xs)] gap-y-[var(--space-2xs)] p-0">
                     {s.areas.map((it) => (
-                      <li key={it} className="grid grid-cols-[1.25rem_1fr] items-baseline">
-                        <span aria-hidden className="text-ink-faint">
-                          —
-                        </span>
-                        <span>{it}</span>
+                      <li key={it}>
+                        <MarkedWord topic={it} size="base" />
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Illustration — opposite the numeral. Service I drawing
+                {/* Illustration — opposite the body block. Service I drawing
                     sits far-right (cols 10–12); Service II drawing sits
-                    far-left (cols 1–3). Decorative, aria-hidden by the
-                    component itself. Skipped if no concept is registered. */}
+                    far-left (cols 1–3) and is pinned to row 1 so it sits
+                    beside the heading instead of wrapping below. Decorative,
+                    aria-hidden by the component itself. */}
                 {illustrationConcept ? (
                   <div
                     className={
                       isFirst
-                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:justify-end md:pt-[var(--space-sm)]"
-                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-sm)]"
+                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:justify-end md:pt-[var(--space-md)]"
+                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-md)]"
                     }
                   >
                     <IllustrationSlot concept={illustrationConcept} shape="service" />

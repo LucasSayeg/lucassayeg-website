@@ -21,21 +21,24 @@ export const HomeComoAjuda: GlobalConfig = {
     ],
   },
   fields: [
-    { name: "intro", type: "textarea", required: true },
-    { name: "closing", type: "textarea", required: true },
+    { name: "intro", type: "textarea", required: true, label: "Introdução" },
+    { name: "closing", type: "textarea", required: true, label: "Encerramento" },
     {
       name: "groups",
       type: "array",
       minRows: 1,
+      label: "Grupos",
+      labels: { singular: "grupo", plural: "grupos" },
       admin: { description: "Arraste para reordenar." },
       fields: [
-        { name: "label", type: "text", required: true },
+        { name: "label", type: "text", required: true, label: "Rótulo" },
         {
           name: "words",
           type: "array",
           minRows: 1,
+          label: "Palavras",
           labels: { singular: "palavra", plural: "palavras" },
-          fields: [{ name: "value", type: "text", required: true }],
+          fields: [{ name: "value", type: "text", required: true, label: "Palavra" }],
         },
       ],
     },
