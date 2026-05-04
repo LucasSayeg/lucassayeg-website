@@ -32,6 +32,7 @@
     "@payloadcms/storage-vercel-blob": "3.78.0",
     "@payloadcms/translations": "3.78.0",
     "@tailwindcss/typography": "^0.5.19",
+    "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "graphql": "^16.13.0",

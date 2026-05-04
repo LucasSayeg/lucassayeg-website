@@ -3,6 +3,7 @@ import { Petrona, IBM_Plex_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, DEFAULT_PALETTE_ID, PICKER_COOKIE_NAME, isPaletteId } from "@/core/palettes";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import "@/app/globals.css";
 
@@ -94,6 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {children}
         <Toaster position="top-center" theme="light" closeButton richColors={false} />
         {showPalettePanel ? <PalettePanel current={palette} /> : null}
+        <Analytics />
       </body>
     </html>
   );
