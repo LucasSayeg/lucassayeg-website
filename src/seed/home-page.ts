@@ -93,11 +93,7 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
     slug: "home-como-ajuda",
     data: {
       intro: COMO_AJUDA.intro,
-      closing: COMO_AJUDA.closing,
-      groups: COMO_AJUDA.groups.map((g) => ({
-        label: g.label,
-        words: g.words.map((w) => ({ value: w })),
-      })),
+      items: COMO_AJUDA.items.map((it) => ({ title: it.title, body: it.body })),
     },
   });
 

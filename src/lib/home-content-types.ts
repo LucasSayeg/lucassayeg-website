@@ -34,11 +34,10 @@ export type HeroContent = {
   quickPickTopics: string[];
 };
 
-export type ComoAjudaGroup = { label: string; words: string[] };
+export type ComoAjudaItem = { title: string; body: string };
 export type ComoAjudaContent = {
   intro: string;
-  closing: string;
-  groups: ComoAjudaGroup[];
+  items: ComoAjudaItem[];
 };
 
 export type SobreContent = {
@@ -147,8 +146,7 @@ export const FALLBACK_HERO: HeroContent = {
 
 export const FALLBACK_COMO_AJUDA: ComoAjudaContent = {
   intro: COMO_AJUDA.intro,
-  closing: COMO_AJUDA.closing,
-  groups: COMO_AJUDA.groups.map((g) => ({ label: g.label, words: [...g.words] })),
+  items: COMO_AJUDA.items.map((it) => ({ title: it.title, body: it.body })),
 };
 
 export const FALLBACK_SOBRE: SobreContent = {

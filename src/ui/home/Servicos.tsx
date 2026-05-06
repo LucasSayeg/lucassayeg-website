@@ -1,5 +1,5 @@
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
-import { MarkedWord } from "@/ui/components/MarkedWord";
+import { TopicChip } from "@/ui/components/TopicChip";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -96,10 +96,10 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     Áreas de escuta
                   </p>
 
-                  <ul className="mt-[var(--space-sm)] flex max-w-[58ch] list-none flex-wrap gap-x-[var(--space-xs)] gap-y-[var(--space-2xs)] p-0">
+                  <ul className="mt-[var(--space-sm)] flex max-w-[58ch] list-none flex-wrap gap-x-[var(--space-md)] gap-y-[var(--space-sm)] p-0">
                     {s.areas.map((it) => (
                       <li key={it}>
-                        <MarkedWord topic={it} size="base" />
+                        <TopicChip topic={it} size="base" />
                       </li>
                     ))}
                   </ul>

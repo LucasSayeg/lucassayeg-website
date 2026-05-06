@@ -233,15 +233,7 @@ export function ContactForm({
                 <span aria-hidden>* </span>
                 {CONTACT_FORM.requiredHint}
               </p>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={cn(
-                  "inline-flex items-center gap-3 whitespace-nowrap rounded-sm bg-ink px-6 py-3 text-sm uppercase tracking-[0.16em] text-paper",
-                  "transition-colors duration-200 hover:bg-accent-deep",
-                  "disabled:cursor-wait disabled:bg-ink-quiet",
-                )}
-              >
+              <button type="submit" disabled={isSubmitting} className="btn-primary btn-primary--lg">
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />

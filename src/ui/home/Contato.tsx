@@ -93,11 +93,14 @@ export function Contato({
                   href={whatsappHref}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="mt-[var(--space-2xs)] inline-flex items-center gap-2 text-[length:var(--text-base)] text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
+                  className="btn-primary group mt-[var(--space-sm)]"
                 >
-                  <WhatsappIcon size={14} className="text-[#25D366]" />
+                  <WhatsappIcon size={16} className="text-[#25D366]" />
                   {content.whatsappLabel}
-                  <span aria-hidden className="font-display">
+                  <span
+                    aria-hidden
+                    className="font-display text-paper-deep transition-transform group-hover:translate-x-0.5"
+                  >
                     →
                   </span>
                 </a>

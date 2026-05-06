@@ -14,7 +14,7 @@ import {
   FALLBACK_SOBRE,
   FALLBACK_SOBRE_PAGE,
   type ComoAjudaContent,
-  type ComoAjudaGroup,
+  type ComoAjudaItem,
   type ContactFormContent,
   type ContatoContent,
   type FaqContent,
@@ -47,7 +47,7 @@ import type {
 
 export type {
   ComoAjudaContent,
-  ComoAjudaGroup,
+  ComoAjudaItem,
   ContactFormContent,
   ContatoContent,
   FaqContent,
@@ -127,23 +127,18 @@ function mergeComoAjuda(
   fb: ComoAjudaContent,
 ): ComoAjudaContent {
   if (!g) return fb;
-  const groups: ComoAjudaGroup[] = Array.isArray(g.groups)
-    ? g.groups
-        .filter((row): row is NonNullable<typeof row> => !!row && typeof row.label === "string")
-        .map((row) => ({
-          label: row.label,
-          words: Array.isArray(row.words)
-            ? row.words
-                .map((w) => w?.value)
-                .filter((v): v is string => typeof v === "string" && v.length > 0)
-            : [],
-        }))
-        .filter((row) => row.words.length > 0)
+  const items: ComoAjudaItem[] = Array.isArray(g.items)
+    ? g.items
+        .filter(
+          (row): row is NonNullable<typeof row> =>
+            !!row && typeof row.title === "string" && typeof row.body === "string",
+        )
+        .map((row) => ({ title: row.title.trim(), body: row.body.trim() }))
+        .filter((row) => row.title.length > 0 && row.body.length > 0)
     : [];
   return {
     intro: g.intro || fb.intro,
-    closing: g.closing || fb.closing,
-    groups: groups.length > 0 ? groups : fb.groups,
+    items: items.length > 0 ? items : fb.items,
   };
 }
 

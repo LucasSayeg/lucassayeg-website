@@ -139,9 +139,9 @@ export default async function SobrePage() {
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label="Iniciar conversa no WhatsApp"
-                className="group inline-flex items-center gap-2.5 rounded-sm bg-ink px-5 py-3 text-paper transition-colors hover:bg-accent-deep"
+                className="btn-primary group font-display"
               >
-                <WhatsappIcon size={16} />
+                <WhatsappIcon size={16} className="text-[#25D366]" />
                 <span className="font-display text-base">{content.bottomCtaWhatsappLabel}</span>
                 <span
                   aria-hidden

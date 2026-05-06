@@ -56,42 +56,33 @@ export const HERO = {
 } as const;
 
 export const COMO_AJUDA = {
-  intro: "A psicoterapia atravessa muito do que talvez você esteja vivendo.",
-  groups: [
+  intro: "Algumas das questões e movimentos para os quais este trabalho pode contribuir.",
+  items: [
     {
-      label: "estados emocionais",
-      words: [
-        "ansiedade",
-        "tristeza",
-        "sensação de vazio",
-        "culpa",
-        "irritação",
-        "desesperança",
-        "angústia",
-      ],
+      title: "Compreender o que você está sentindo",
+      body: "Nomear o que está confuso antes de querer resolvê-lo.",
     },
     {
-      label: "momentos de vida",
-      words: ["luto", "término", "burnout", "crise existencial", "mudanças de vida", "traumas"],
+      title: "Atravessar momentos de crise e luto",
+      body: "Um lugar firme nos tempos em que tudo parece tremer.",
     },
     {
-      label: "padrões que se repetem",
-      words: [
-        "autossabotagem",
-        "procrastinação",
-        "medo excessivo",
-        "explosões emocionais",
-        "dependência emocional",
-        "relacionamentos que machucam",
-      ],
+      title: "Diminuir a ansiedade e a sobrecarga",
+      body: "Espaço para respirar e voltar ao próprio ritmo.",
     },
     {
-      label: "sensação de perda",
-      words: ["perda de energia", "perda de identidade", "falta de sentido", "desconexão consigo"],
+      title: "Reencontrar sentido naquilo que faz",
+      body: "Recolocar trabalho, escolhas e desejo numa mesma conversa.",
+    },
+    {
+      title: "Construir uma relação mais consciente consigo",
+      body: "Reconhecer padrões antes que eles decidam por você.",
+    },
+    {
+      title: "Tomar decisões importantes com mais clareza",
+      body: "Pensar a vida que se quer, não só a que veio.",
     },
   ],
-  closing:
-    "Um espaço para nomear o que sente, entender as causas, atravessar crises e reconstruir um senso próprio do que importa — antes que a vida se reduza ao que dói.",
 } as const;
 
 export const SOBRE = {

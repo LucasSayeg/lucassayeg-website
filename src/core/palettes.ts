@@ -74,7 +74,7 @@ export type PaletteId = (typeof PALETTES)[number]["id"];
 
 export const PALETTE_IDS: ReadonlySet<string> = new Set(PALETTES.map((p) => p.id));
 
-export const DEFAULT_PALETTE_ID: PaletteId = "ink-slate";
+export const DEFAULT_PALETTE_ID: PaletteId = "bone";
 
 export const COOKIE_NAME = "palette";
 export const PICKER_COOKIE_NAME = "palette-picker";

@@ -1,6 +1,6 @@
 import { FALLBACK_HERO, type HeroContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
-import { MarkedWord } from "@/ui/components/MarkedWord";
+import { TopicChip } from "@/ui/components/TopicChip";
 import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
@@ -53,11 +53,11 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
                 </p>
                 <ul
                   aria-label="Temas para começar uma conversa"
-                  className="flex list-none flex-wrap gap-x-[var(--space-sm)] gap-y-[var(--space-xs)] p-0"
+                  className="flex list-none flex-wrap gap-x-[var(--space-lg)] gap-y-[var(--space-md)] p-0"
                 >
                   {quickPickTopics.map((topic) => (
                     <li key={topic}>
-                      <MarkedWord topic={topic} />
+                      <TopicChip topic={topic} />
                     </li>
                   ))}
                 </ul>
@@ -71,9 +71,9 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label="Iniciar conversa no WhatsApp"
-                className="group inline-flex items-center gap-2.5 rounded-sm bg-ink px-5 py-3 text-paper transition-colors hover:bg-accent-deep"
+                className="btn-primary group font-display"
               >
-                <WhatsappIcon size={16} />
+                <WhatsappIcon size={16} className="text-[#25D366]" />
                 <span className="font-display text-base">{content.ctaWhatsapp}</span>
                 <span
                   aria-hidden
