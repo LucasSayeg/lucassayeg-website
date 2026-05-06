@@ -34,6 +34,11 @@
   --accent-soft: oklch(0.7 0.06 30); /* underline tint, decorative only */
   --accent-mark: oklch(0.42 0.07 40); /* handmade ink — name underline, signature gestures */
 
+  /* Button surface — warm brown, distinct from --ink (which is too neutral
+     for solid CTAs against bone paper). Hover deepens lightness + chroma. */
+  --ink-brown: oklch(0.32 0.045 50);
+  --ink-brown-hover: oklch(0.25 0.055 44);
+
   /* Semantic — warm, not loud */
   --warning-ink: oklch(0.385 0.075 60);
   --error-ink: oklch(0.395 0.11 28);
@@ -280,8 +285,12 @@
   will-change: opacity, transform;
 }
 /* Alternating x-offset: odd children come from the left, even from the right. */
-.reveal-stagger > *:nth-child(odd) { --reveal-stagger-x: calc(var(--reveal-stagger-shift) * -1); }
-.reveal-stagger > *:nth-child(even) { --reveal-stagger-x: var(--reveal-stagger-shift); }
+.reveal-stagger > *:nth-child(odd) {
+  --reveal-stagger-x: calc(var(--reveal-stagger-shift) * -1);
+}
+.reveal-stagger > *:nth-child(even) {
+  --reveal-stagger-x: var(--reveal-stagger-shift);
+}
 .reveal-stagger > .reveal-stagger-item--in {
   opacity: 1;
   transform: translateX(0);
@@ -346,60 +355,93 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Marked Words — topic words held inside a soft marker sweep.
-   A muted --accent-mark wash sits behind ~70% of the word height
-   (highlighter gesture, not full background) so the topics feel
-   *marked* in the editorial sense — annotations on a page rather
-   than chrome around chips. Each palette already defines
-   --accent-mark, so the hue retunes per palette automatically.
+   Primary button — warm brown surface with paper text. Used for the
+   single-primary CTA pattern (Hero, Sobre, Header, Contato, form
+   submit). Dark enough that the WhatsApp brand-green icon reads
+   cleanly against it; warmer than --ink so the button doesn't drop
+   to neutral black on the bone paper.
+   Modifiers: --sm for the header (denser row), --lg for the long
+   uppercase form-submit register.
    ───────────────────────────────────────────────────────────────── */
-.marked-word {
-  position: relative;
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--ink-brown);
+  color: var(--paper);
+  font-size: var(--text-base);
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 200ms var(--ease-out-quart);
+}
+.btn-primary:hover {
+  background-color: var(--ink-brown-hover);
+}
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  background-color: var(--ink-quiet);
+  cursor: wait;
+}
+.btn-primary--sm {
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  font-size: var(--text-sm);
+}
+.btn-primary--lg {
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Topic Chip — recognition tokens framed by a quiet outlined capsule.
+   1px ink-faint border, no fill, full-pill radius. Reads as a
+   typographic frame, not a button. The earlier hand-drawn pen circle
+   was retired: per .impeccable.md, the home page carries a single
+   handmade gesture (the underline on Lucas's name in Sobre) and not
+   one per chip.
+   ───────────────────────────────────────────────────────────────── */
+.topic-chip {
   display: inline-flex;
   align-items: baseline;
-  padding: 0.05em 0.3em;
+  padding: 0.32em 0.95em;
+  border: 1px solid var(--ink-faint);
+  border-radius: 9999px;
   color: var(--ink);
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.2;
-  isolation: isolate;
-}
-.marked-word::before {
-  content: "";
-  position: absolute;
-  inset: 0.18em -0.02em 0.05em -0.02em;
-  background: var(--accent-mark);
-  opacity: 0.18;
-  border-radius: 0.12em;
-  z-index: -1;
-}
-.marked-word__text {
   white-space: normal;
 }
 
-/* Size register — xl matches Hero/ComoAjuda's display rhythm; base
-   reads as the smaller "áreas de escuta" register in Servicos.
-   xl steps down on mobile so the chips harmonize with the Hero's
-   text-lg surrounding copy and don't crowd narrow viewports. */
-.marked-word--xl {
+/* Size register — xl matches Hero's display rhythm; base reads as
+   the smaller "áreas de escuta" register in Servicos. xl steps down
+   on mobile so the chips harmonize with the Hero's text-lg surrounding
+   copy and don't crowd narrow viewports. */
+.topic-chip--xl {
   font-size: var(--text-lg);
 }
 @media (min-width: 640px) {
-  .marked-word--xl {
+  .topic-chip--xl {
     font-size: var(--text-xl);
   }
 }
-.marked-word--base {
+.topic-chip--base {
   font-size: var(--text-base);
-  padding: 0.05em 0.28em;
+  padding: 0.28em 0.78em;
 }
 
-/* High-contrast — ::before is suppressed in forced-colors, so fall
-   back to a visible underline that survives the system override. */
+/* High-contrast — keep the capsule shape; the existing 1px ink-faint
+   border maps cleanly to CanvasText, so we only swap the color. */
 @media (forced-colors: active) {
-  .marked-word {
-    text-decoration: underline;
+  .topic-chip {
+    border-color: CanvasText;
   }
 }
 

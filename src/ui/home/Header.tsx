@@ -183,13 +183,13 @@ export function Header({
               target="_blank"
               rel="noreferrer noopener"
               aria-label="Iniciar conversa no WhatsApp"
-              className="group inline-flex items-center gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
+              className="btn-primary btn-primary--sm group"
             >
               <WhatsappIcon size={14} className="text-[#25D366]" />
               WhatsApp
               <span
                 aria-hidden
-                className="font-display transition-transform group-hover:translate-x-0.5"
+                className="font-display text-paper-deep transition-transform group-hover:translate-x-0.5"
               >
                 →
               </span>

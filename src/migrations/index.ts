@@ -5,6 +5,7 @@ import * as migration_20260430_202251_move_crisis_to_site_info from "./20260430_
 import * as migration_20260501_025531_extend_contato_and_form_globals from "./20260501_025531_extend_contato_and_form_globals";
 import * as migration_20260501_163119_cleanup_cms_unused_fields from "./20260501_163119_cleanup_cms_unused_fields";
 import * as migration_20260502_012941_sobre_page from "./20260502_012941_sobre_page";
+import * as migration_20260506_194234_reshape_como_ajuda from "./20260506_194234_reshape_como_ajuda";
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260502_012941_sobre_page.up,
     down: migration_20260502_012941_sobre_page.down,
     name: "20260502_012941_sobre_page",
+  },
+  {
+    up: migration_20260506_194234_reshape_como_ajuda.up,
+    down: migration_20260506_194234_reshape_como_ajuda.down,
+    name: "20260506_194234_reshape_como_ajuda",
   },
 ];
