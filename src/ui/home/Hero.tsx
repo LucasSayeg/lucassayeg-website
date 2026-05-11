@@ -1,6 +1,5 @@
 import { FALLBACK_HERO, FALLBACK_SITE_INFO, type HeroContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
-import { TopicChip } from "@/ui/components/TopicChip";
 import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
@@ -24,7 +23,6 @@ export function Hero({
   slogan = FALLBACK_SITE_INFO.slogan,
   whatsappHref = WHATSAPP_HREF,
 }: HeroProps = {}) {
-  const quickPickTopics = content.quickPickTopics.slice(0, 6);
   return (
     <section
       id="top"
@@ -48,21 +46,6 @@ export function Hero({
             <p className="mt-[var(--space-lg)] max-w-[42ch] font-display text-[length:var(--text-lg)] leading-relaxed text-ink-soft md:text-xl">
               {content.sub}
             </p>
-
-            {quickPickTopics.length > 0 ? (
-              <div className="mt-[var(--space-xl)]">
-                <ul
-                  aria-label="Temas para começar uma conversa"
-                  className="flex list-none flex-wrap gap-x-[var(--space-lg)] gap-y-[var(--space-md)] p-0"
-                >
-                  {quickPickTopics.map((topic) => (
-                    <li key={topic}>
-                      <TopicChip topic={topic} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
 
             <div className="mt-[var(--space-xl)]">
               <a
