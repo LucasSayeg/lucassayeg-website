@@ -26,10 +26,10 @@
    palettes test alternatives to this recipe.
    ───────────────────────────────────────────────────────────────── */
 html[data-palette="bone"] {
-  --paper: oklch(0.985 0.006 82);
-  --paper-soft: oklch(0.965 0.01 78);
-  --paper-clay: oklch(0.935 0.014 74);
-  --paper-deep: oklch(0.89 0.018 70);
+  --paper: oklch(0.99 0.002 85);
+  --paper-soft: oklch(0.97 0.004 85);
+  --paper-clay: oklch(0.94 0.007 82);
+  --paper-deep: oklch(0.89 0.011 78);
 
   --ink: oklch(0.205 0.018 50);
   --ink-soft: oklch(0.345 0.018 52);

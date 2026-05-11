@@ -1,25 +1,29 @@
-import { FALLBACK_HERO, type HeroContent } from "@/lib/home-content-types";
+import { FALLBACK_HERO, FALLBACK_SITE_INFO, type HeroContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
 import { TopicChip } from "@/ui/components/TopicChip";
 import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
-  Hero — question heading + reassurance + portrait + CTA + modality strip.
+  Hero — slogan-subhead heading + reassurance + portrait + single CTA + modality strip.
   The question owns the page; the portrait sits alongside as a human anchor
   (Lucas-confirmed: visitor should meet a face, not just a wall of type).
 
-  CTA hierarchy (single-primary): WhatsApp is the dominant action. The form
-  anchor and "conheça meu trabalho" sit as secondary/tertiary text links so
-  they don't compete for the primary slot.
+  CTA hierarchy: WhatsApp is the only inline action — text-link siblings were
+  competing for the primary slot, so they're gone.
 */
 
 type HeroProps = {
   content?: HeroContent;
+  slogan?: string;
   whatsappHref?: string;
 };
 
-export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: HeroProps = {}) {
+export function Hero({
+  content = FALLBACK_HERO,
+  slogan = FALLBACK_SITE_INFO.slogan,
+  whatsappHref = WHATSAPP_HREF,
+}: HeroProps = {}) {
   const quickPickTopics = content.quickPickTopics.slice(0, 6);
   return (
     <section
@@ -30,17 +34,16 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
       <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
         <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <div className="lg:col-span-7 lg:pt-[var(--space-sm)]">
-            <p className="mb-[var(--space-md)] flex items-center gap-3 text-[0.78rem] uppercase tracking-[0.24em] text-ink-quiet">
-              <span aria-hidden className="inline-block h-px w-8 bg-ink-faint" />
-              Psicoterapia &amp; orientação profissional
-            </p>
-
             <h1
               id="hero-heading"
               className="max-w-[18ch] font-display text-[length:var(--text-3xl)] font-normal leading-[1.05] tracking-[-0.018em] text-ink sm:max-w-[20ch] sm:text-[length:var(--text-4xl)] lg:max-w-[18ch]"
             >
               {content.heading}
             </h1>
+
+            <p className="mt-[var(--space-sm)] font-display text-[1.25rem] italic leading-[1.3] text-ink-soft">
+              {slogan}
+            </p>
 
             <p className="mt-[var(--space-lg)] max-w-[42ch] font-display text-[length:var(--text-lg)] leading-relaxed text-ink-soft md:text-xl">
               {content.sub}
@@ -64,8 +67,7 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
               </div>
             ) : null}
 
-            <div className="mt-[var(--space-xl)] flex flex-wrap items-center gap-x-5 gap-y-3">
-              {/* Primary — WhatsApp (the only solid CTA on the page) */}
+            <div className="mt-[var(--space-xl)]">
               <a
                 href={whatsappHref}
                 target="_blank"
@@ -81,26 +83,6 @@ export function Hero({ content = FALLBACK_HERO, whatsappHref = WHATSAPP_HREF }: 
                 >
                   →
                 </span>
-              </a>
-              {/* Secondary — form anchor, demoted to a strong text link */}
-              <a
-                href="#contato"
-                className="group inline-flex items-baseline gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
-              >
-                {content.cta}
-                <span
-                  aria-hidden
-                  className="font-display transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </a>
-              {/* Tertiary — alternative path for hesitant visitors */}
-              <a
-                href="#como-ajuda"
-                className="text-sm text-ink-soft underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
-              >
-                Antes, conheça meu trabalho
               </a>
             </div>
 
