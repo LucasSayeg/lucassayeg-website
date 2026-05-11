@@ -113,11 +113,6 @@ function mergeHero(g: HomeHero | null | undefined, fb: HeroContent): HeroContent
     modalityOnline: g.modalityOnline || fb.modalityOnline,
     modalityPresencial: g.modalityPresencial || fb.modalityPresencial,
     ctaWhatsapp: g.ctaWhatsapp || fb.ctaWhatsapp,
-    cta: g.cta || fb.cta,
-    quickPickIntro:
-      typeof g.quickPickIntro === "string" && g.quickPickIntro.length > 0
-        ? g.quickPickIntro
-        : fb.quickPickIntro,
     quickPickTopics: topics.length > 0 ? topics : fb.quickPickTopics,
   };
 }
@@ -137,7 +132,6 @@ function mergeComoAjuda(
         .filter((row) => row.title.length > 0 && row.body.length > 0)
     : [];
   return {
-    intro: g.intro || fb.intro,
     items,
   };
 }

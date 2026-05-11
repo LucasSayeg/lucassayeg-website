@@ -29,14 +29,11 @@ export type HeroContent = {
   modalityOnline: string;
   modalityPresencial: string;
   ctaWhatsapp: string;
-  cta: string;
-  quickPickIntro: string;
   quickPickTopics: string[];
 };
 
 export type ComoAjudaItem = { title: string; body: string };
 export type ComoAjudaContent = {
-  intro: string;
   items: ComoAjudaItem[];
 };
 
@@ -139,13 +136,10 @@ export const FALLBACK_HERO: HeroContent = {
   modalityOnline: HERO.modality.online,
   modalityPresencial: HERO.modality.presencial,
   ctaWhatsapp: HERO.ctaWhatsapp,
-  cta: HERO.cta,
-  quickPickIntro: HERO.quickPickIntro,
   quickPickTopics: [...HERO.quickPickTopics],
 };
 
 export const FALLBACK_COMO_AJUDA: ComoAjudaContent = {
-  intro: COMO_AJUDA.intro,
   items: COMO_AJUDA.items.map((it) => ({ title: it.title, body: it.body })),
 };
 

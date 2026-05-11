@@ -14,20 +14,12 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
       className="relative bg-paper-soft/60 py-[var(--space-3xl)]"
     >
       <div className="relative mx-auto max-w-[1240px] px-6 sm:px-8">
-        <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-md)] gap-y-[var(--space-lg)] md:grid-cols-12">
-          <h2
-            id="como-ajuda-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
-          >
-            Como a terapia pode ajudar.
-          </h2>
-
-          <div className="md:col-span-5 md:pt-2">
-            <p className="font-display text-[length:var(--text-lg)] italic leading-[1.45] text-ink-quiet md:max-w-[34ch]">
-              {content.intro}
-            </p>
-          </div>
-        </div>
+        <h2
+          id="como-ajuda-heading"
+          className="mb-[var(--space-2xl)] font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink"
+        >
+          Como a terapia pode ajudar.
+        </h2>
 
         <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-xl)] md:grid-cols-2">
           {content.items.map((item, i) => (

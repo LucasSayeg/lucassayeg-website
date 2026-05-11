@@ -21,7 +21,6 @@ export const HomeComoAjuda: GlobalConfig = {
     ],
   },
   fields: [
-    { name: "intro", type: "textarea", required: true, label: "Introdução" },
     {
       name: "items",
       type: "array",

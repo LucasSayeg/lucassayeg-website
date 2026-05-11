@@ -33,25 +33,6 @@ export const HomeHero: GlobalConfig = {
       admin: { description: "Botão primário do hero (default: 'Conversar pelo WhatsApp')." },
     },
     {
-      name: "cta",
-      type: "text",
-      required: true,
-      label: "Botão de agendamento (secundário)",
-      admin: {
-        description:
-          "Botão secundário do hero (default: 'Agendar uma conversa'). Aponta para o formulário.",
-      },
-    },
-    {
-      name: "quickPickIntro",
-      type: "text",
-      label: "Introdução dos chips",
-      admin: {
-        description:
-          "Linha em itálico acima dos chips de tópicos no hero (ex: 'O que está pesando hoje?'). Vazio = não exibe.",
-      },
-    },
-    {
       name: "quickPickTopics",
       type: "array",
       maxRows: 6,

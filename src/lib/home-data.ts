@@ -39,12 +39,10 @@ export const HERO = {
   heading: "Sentindo-se com um vazio, perdido ou sobrecarregado?",
   sub: "A psicoterapia pode te ajudar a entender o que você está vivendo com mais clareza e profundidade.",
   ctaWhatsapp: "Conversar pelo WhatsApp",
-  cta: "Agendar uma conversa",
   modality: {
     online: "Online",
     presencial: "Presencial em Vila Leopoldina, São Paulo",
   },
-  quickPickIntro: "O que está pesando hoje?",
   quickPickTopics: [
     "Ansiedade",
     "Luto",
@@ -56,7 +54,6 @@ export const HERO = {
 } as const;
 
 export const COMO_AJUDA = {
-  intro: "Algumas das questões e movimentos para os quais este trabalho pode contribuir.",
   items: [
     {
       title: "Compreender o que você está sentindo",

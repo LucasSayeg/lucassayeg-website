@@ -83,8 +83,6 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
       modalityOnline: HERO.modality.online,
       modalityPresencial: HERO.modality.presencial,
       ctaWhatsapp: HERO.ctaWhatsapp,
-      cta: HERO.cta,
-      quickPickIntro: HERO.quickPickIntro,
       quickPickTopics: HERO.quickPickTopics.map((value) => ({ value })),
     },
   });
@@ -92,7 +90,6 @@ export async function seedHomePage(payload: Payload, _opts: { force?: boolean })
   await payload.updateGlobal({
     slug: "home-como-ajuda",
     data: {
-      intro: COMO_AJUDA.intro,
       items: COMO_AJUDA.items.map((it) => ({ title: it.title, body: it.body })),
     },
   });

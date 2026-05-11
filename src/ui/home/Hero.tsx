@@ -51,9 +51,6 @@ export function Hero({
 
             {quickPickTopics.length > 0 ? (
               <div className="mt-[var(--space-xl)]">
-                <p className="mb-[var(--space-sm)] font-display text-[length:var(--text-base)] italic leading-[1.5] text-ink-quiet">
-                  {content.quickPickIntro}
-                </p>
                 <ul
                   aria-label="Temas para começar uma conversa"
                   className="flex list-none flex-wrap gap-x-[var(--space-lg)] gap-y-[var(--space-md)] p-0"
