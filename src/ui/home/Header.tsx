@@ -125,19 +125,24 @@ export function Header({
           className="flex items-start justify-between pt-5 transition-[padding] duration-300 ease-[var(--ease-out-quart)]"
           style={{ paddingBottom: scrolled ? "0.5rem" : "0.875rem" }}
         >
-          <a
-            href={resolveAnchor("#top")}
-            onClick={(e) => handleAnchor(e, "#top")}
-            className="group block"
-          >
-            <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
-              {siteInfo.name}
-            </span>
-            <span className="mt-1 block text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
-              {siteInfo.shortMark}
-            </span>
-          </a>
-          <p className="hidden max-w-[26ch] text-right font-display text-sm leading-snug text-ink-soft md:block">
+          <div>
+            <a
+              href={resolveAnchor("#top")}
+              onClick={(e) => handleAnchor(e, "#top")}
+              className="group block"
+            >
+              <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
+                {siteInfo.name}
+              </span>
+              <span className="mt-1 block text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
+                {siteInfo.shortMark}
+              </span>
+            </a>
+            <p className="mt-2 max-w-[28ch] font-display text-[0.95rem] leading-snug text-ink-soft md:hidden">
+              {siteInfo.slogan}
+            </p>
+          </div>
+          <p className="hidden max-w-[26ch] text-right font-display text-base leading-snug text-ink-soft md:block">
             {siteInfo.slogan}
           </p>
         </div>

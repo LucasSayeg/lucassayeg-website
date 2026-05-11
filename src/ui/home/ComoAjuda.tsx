@@ -6,6 +6,7 @@ type ComoAjudaProps = {
 };
 
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
+  if (content.items.length === 0) return null;
   return (
     <section
       id="como-ajuda"

@@ -138,7 +138,7 @@ function mergeComoAjuda(
     : [];
   return {
     intro: g.intro || fb.intro,
-    items: items.length > 0 ? items : fb.items,
+    items,
   };
 }
 

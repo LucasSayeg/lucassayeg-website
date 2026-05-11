@@ -22,7 +22,9 @@ const SECTION_RENDERERS: Record<
   SectionKey,
   (content: HomeContent, shared: SharedProps) => React.ReactNode
 > = {
-  hero: (c, s) => <Hero content={c.hero} whatsappHref={s.whatsappHref} />,
+  hero: (c, s) => (
+    <Hero content={c.hero} slogan={s.siteInfo.slogan} whatsappHref={s.whatsappHref} />
+  ),
   comoAjuda: (c) => <ComoAjuda content={c.comoAjuda} />,
   sobre: (c, s) => <Sobre content={c.sobre} siteName={s.siteInfo.name} />,
   servicos: (c) => <Servicos content={c.servicos} />,
