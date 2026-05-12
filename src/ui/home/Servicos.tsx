@@ -1,5 +1,4 @@
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
-import { TopicChip } from "@/ui/components/TopicChip";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -19,9 +18,10 @@ import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
   marginal rather than central. The body/slot swap is what does the
   page-stepping; the type does the rest.
 
-  Topic items are laid out as a vertical em-dash list so each area of
-  practice is legible at a glance. The earlier inline-punctuated single
-  line obscured them.
+  Áreas de escuta render as a stacked serif list with hairlines and a
+  quiet disc marker — words first, scannable at a glance. The earlier
+  chip cloud felt decorative next to the editorial heading; the list
+  matches the page's typographic register.
 */
 const NUMERALS = ["i.", "ii."] as const;
 
@@ -96,10 +96,15 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     Áreas de escuta
                   </p>
 
-                  <ul className="mt-[var(--space-sm)] flex max-w-[58ch] list-none flex-wrap gap-x-[var(--space-md)] gap-y-[var(--space-sm)] p-0">
-                    {s.areas.map((it) => (
-                      <li key={it}>
-                        <TopicChip topic={it} size="base" />
+                  <ul className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
+                    {s.areas.map((it, idx) => (
+                      <li
+                        key={it}
+                        className={`py-[var(--space-sm)] font-display text-[length:var(--text-xl)] font-normal leading-[1.2] text-ink ${
+                          idx < s.areas.length - 1 ? "border-b border-paper-deep" : ""
+                        }`}
+                      >
+                        {it}
                       </li>
                     ))}
                   </ul>
