@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import { type SiteInfoContent } from "@/lib/home-content-types";
 import { FALLBACK_SITE_INFO } from "@/lib/home-content-types";
 import { NAV_LINKS, WHATSAPP_HREF } from "@/lib/home-data";
-import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { WhatsappCta } from "@/ui/components/WhatsappCta";
 
 /*
   Sticky header with a single scroll-threshold transition. The visual
@@ -119,7 +121,7 @@ export function Header({
       data-scrolled={scrolled}
       className="sticky top-0 z-40 bg-paper transition-[box-shadow,padding] duration-300 ease-[var(--ease-out-quart)] data-[scrolled=true]:shadow-[0_1px_0_var(--paper-deep),0_8px_24px_-22px_oklch(0.20_0.02_45/0.45)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         {/* Top row — logo + slogan */}
         <div
           className="flex items-start justify-between pt-5 transition-[padding] duration-300 ease-[var(--ease-out-quart)]"
@@ -134,9 +136,9 @@ export function Header({
               <span className="block font-display text-[1.4rem] leading-[0.95] tracking-[-0.012em] text-ink sm:text-[1.65rem]">
                 {siteInfo.name}
               </span>
-              <span className="mt-1 block text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
+              <Eyebrow as="span" size="sm" className="mt-1 block">
                 {siteInfo.shortMark}
-              </span>
+              </Eyebrow>
             </a>
             <p className="mt-2 max-w-[28ch] font-display text-[0.95rem] leading-snug text-ink-soft md:hidden">
               {siteInfo.slogan}
@@ -183,22 +185,9 @@ export function Header({
           </nav>
 
           <div className="flex items-center gap-2 md:ml-auto">
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Iniciar conversa no WhatsApp"
-              className="btn-primary btn-primary--sm group"
-            >
-              <WhatsappIcon size={14} className="text-[#25D366]" />
+            <WhatsappCta href={whatsappHref} size="sm" ariaLabel="Iniciar conversa no WhatsApp">
               WhatsApp
-              <span
-                aria-hidden
-                className="font-display text-paper-deep transition-transform group-hover:translate-x-0.5"
-              >
-                →
-              </span>
-            </a>
+            </WhatsappCta>
 
             <button
               type="button"
@@ -231,7 +220,7 @@ export function Header({
             </ul>
           </div>
         </div>
-      </div>
+      </PageContainer>
     </header>
   );
 }

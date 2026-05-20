@@ -1,4 +1,6 @@
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -42,7 +44,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
       aria-labelledby="servicos-heading"
       className="border-t border-paper-deep bg-paper-soft/40 py-[var(--space-3xl)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="servicos-heading"
@@ -92,9 +94,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     {s.framing}
                   </p>
 
-                  <p className="mt-[var(--space-lg)] text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
-                    Áreas de escuta
-                  </p>
+                  <Eyebrow className="mt-[var(--space-lg)]">Áreas de escuta</Eyebrow>
 
                   <ul className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
                     {s.areas.map((it, idx) => (
@@ -135,7 +135,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
             );
           })}
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

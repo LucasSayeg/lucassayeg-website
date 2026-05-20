@@ -5,7 +5,8 @@ import {
   type SiteImage,
 } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
-import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { WhatsappCta } from "@/ui/components/WhatsappCta";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -36,7 +37,7 @@ export function Hero({
       aria-labelledby="hero-heading"
       className="relative pb-[var(--space-2xl)] pt-[var(--space-md)] sm:pt-[var(--space-xl)] lg:pt-[var(--space-2xl)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <div className="lg:col-span-7 lg:pt-[var(--space-sm)]">
             <h1
@@ -55,22 +56,9 @@ export function Hero({
             </p>
 
             <div className="mt-[var(--space-xl)]">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Iniciar conversa no WhatsApp"
-                className="btn-primary group font-display"
-              >
-                <WhatsappIcon size={16} className="text-[#25D366]" />
-                <span className="font-display text-base">{content.ctaWhatsapp}</span>
-                <span
-                  aria-hidden
-                  className="font-display text-base text-paper-deep transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </a>
+              <WhatsappCta href={whatsappHref} ariaLabel="Iniciar conversa no WhatsApp">
+                {content.ctaWhatsapp}
+              </WhatsappCta>
             </div>
 
             {/* Modality strip — equal weight on both modalities */}
@@ -93,7 +81,7 @@ export function Hero({
             />
           </div>
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import {
   getHomeLayout,
@@ -8,12 +7,15 @@ import {
 } from "@/lib/home-content";
 import { ANCHOR_BY_KEY } from "@/lib/section-anchors";
 import { buildWhatsappHref } from "@/lib/whatsapp";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { UnderlineLink } from "@/ui/components/UnderlineLink";
+import { WhatsappCta } from "@/ui/components/WhatsappCta";
 import { Footer } from "@/ui/home/Footer";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
 import { Header } from "@/ui/home/Header";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
-import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [siteInfo, content] = await Promise.all([getSiteInfo(), getSobrePageContent()]);
@@ -69,7 +71,7 @@ export default async function SobrePage() {
           aria-labelledby="sobre-page-heading"
           className="pb-[var(--space-2xl)] pt-[var(--space-2xl)] sm:pt-[var(--space-3xl)]"
         >
-          <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+          <PageContainer>
             <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
               <div className="lg:col-span-7">
                 <h1
@@ -87,13 +89,14 @@ export default async function SobrePage() {
                   {content.lede}
                 </p>
 
-                <h2
+                <Eyebrow
+                  as="h2"
                   id="formacao-heading"
-                  className="mb-[var(--space-md)] mt-[var(--space-xl)] flex items-center gap-3 text-[0.78rem] font-normal uppercase tracking-[0.24em] text-ink-quiet"
+                  className="mb-[var(--space-md)] mt-[var(--space-xl)] flex items-center gap-3 tracking-[0.24em]"
                 >
                   <span aria-hidden className="inline-block h-px w-8 bg-ink-faint" />
                   <span>Formação</span>
-                </h2>
+                </Eyebrow>
 
                 <div className="max-w-[60ch] space-y-[var(--space-md)] text-[length:var(--text-base)] leading-[1.75] text-ink-soft">
                   <FormacaoBody content={content} />
@@ -114,7 +117,7 @@ export default async function SobrePage() {
                 />
               </div>
             </div>
-          </div>
+          </PageContainer>
         </section>
 
         {/* Band 2 — Bottom CTA */}
@@ -122,7 +125,7 @@ export default async function SobrePage() {
           aria-labelledby="sobre-cta-heading"
           className="pb-[var(--space-3xl)] pt-[var(--space-xl)]"
         >
-          <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+          <PageContainer>
             <h2
               id="sobre-cta-heading"
               className="font-display text-[length:var(--text-2xl)] font-normal leading-[1.15] tracking-[-0.012em] text-ink"
@@ -134,25 +137,13 @@ export default async function SobrePage() {
             </p>
 
             <div className="mt-[var(--space-lg)] flex flex-wrap items-center gap-x-5 gap-y-3">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Iniciar conversa no WhatsApp"
-                className="btn-primary group font-display"
-              >
-                <WhatsappIcon size={16} className="text-[#25D366]" />
-                <span className="font-display text-base">{content.bottomCtaWhatsappLabel}</span>
-                <span
-                  aria-hidden
-                  className="font-display text-base text-paper-deep transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </a>
-              <Link
+              <WhatsappCta href={whatsappHref} ariaLabel="Iniciar conversa no WhatsApp">
+                {content.bottomCtaWhatsappLabel}
+              </WhatsappCta>
+              <UnderlineLink
                 href="/#contato"
-                className="group inline-flex items-baseline gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
+                internal
+                className="group inline-flex items-baseline gap-2 text-sm text-ink transition-colors hover:text-accent"
               >
                 {content.bottomCtaFormLabel}
                 <span
@@ -161,9 +152,9 @@ export default async function SobrePage() {
                 >
                   ↗
                 </span>
-              </Link>
+              </UnderlineLink>
             </div>
-          </div>
+          </PageContainer>
         </section>
       </main>
       <Footer siteInfo={siteInfo} whatsappHref={whatsappHref} />

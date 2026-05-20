@@ -1,4 +1,5 @@
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
+import { PageContainer } from "@/ui/components/PageContainer";
 import { Reveal } from "@/ui/home/Reveal";
 
 type ComoAjudaProps = {
@@ -13,7 +14,7 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
       aria-labelledby="como-ajuda-heading"
       className="relative bg-paper-soft/60 py-[var(--space-3xl)]"
     >
-      <div className="relative mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer className="relative">
         <h2
           id="como-ajuda-heading"
           className="mb-[var(--space-2xl)] font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink"
@@ -60,7 +61,7 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
             <span className="absolute right-0 top-1/2 block h-[9px] w-px -translate-y-1/2 bg-current" />
           </span>
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }
