@@ -125,13 +125,17 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     sits far-right (cols 10–12); Service II drawing sits
                     far-left (cols 1–3) and is pinned to row 1 so it sits
                     beside the heading instead of wrapping below. Decorative,
-                    aria-hidden by the component itself. */}
+                    aria-hidden by the component itself.
+                    `items-start` is load-bearing: without it the grid row's
+                    flex `align-items: stretch` default overrides the slot's
+                    `aspect-ratio: 1/1`, making the drawing float in a tall
+                    narrow strip and also tripping Next/Image `sizes`. */}
                 {illustrationConcept ? (
                   <div
                     className={
                       isFirst
-                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:justify-end md:pt-[var(--space-md)]"
-                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-md)]"
+                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:items-start md:justify-end md:pt-[var(--space-md)]"
+                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:items-start md:justify-start md:pt-[var(--space-md)]"
                     }
                   >
                     <IllustrationSlot
