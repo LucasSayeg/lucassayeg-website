@@ -1,4 +1,8 @@
+import type { CSSProperties } from "react";
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { AreasReveal } from "@/ui/home/AreasReveal";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -22,6 +26,14 @@ import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
   quiet disc marker — words first, scannable at a glance. The earlier
   chip cloud felt decorative next to the editorial heading; the list
   matches the page's typographic register.
+
+  Motion: the áreas list is the only animated element in the section.
+  AreasReveal observes the <ul> itself (not the parent article) with a
+  generous bottom inset, so the cascade fires when the list is
+  meaningfully in view rather than when the section first peeks in.
+  Each item then fades + slides in horizontally with a per-item delay
+  (--list-i × 80ms), 760ms ease-out-expo. SSR / no-JS / above-the-fold
+  / reduced-motion paths render the list visible without animation.
 */
 const NUMERALS = ["i.", "ii."] as const;
 
@@ -42,7 +54,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
       aria-labelledby="servicos-heading"
       className="border-t border-paper-deep bg-paper-soft/40 py-[var(--space-3xl)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="servicos-heading"
@@ -92,14 +104,13 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     {s.framing}
                   </p>
 
-                  <p className="mt-[var(--space-lg)] text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
-                    Áreas de escuta
-                  </p>
+                  <Eyebrow className="mt-[var(--space-lg)]">Áreas de escuta</Eyebrow>
 
-                  <ul className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
+                  <AreasReveal className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
                     {s.areas.map((it, idx) => (
                       <li
                         key={it}
+                        style={{ ["--list-i" as string]: idx } as CSSProperties}
                         className={`py-[var(--space-sm)] font-display text-[length:var(--text-xl)] font-normal leading-[1.2] text-ink ${
                           idx < s.areas.length - 1 ? "border-b border-paper-deep" : ""
                         }`}
@@ -107,7 +118,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                         {it}
                       </li>
                     ))}
-                  </ul>
+                  </AreasReveal>
                 </div>
 
                 {/* Illustration — opposite the body block. Service I drawing
@@ -123,14 +134,19 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                         : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-md)]"
                     }
                   >
-                    <IllustrationSlot concept={illustrationConcept} shape="service" />
+                    <IllustrationSlot
+                      concept={illustrationConcept}
+                      shape="service"
+                      src={s.illustration?.url}
+                      alt={s.illustration?.alt}
+                    />
                   </div>
                 ) : null}
               </article>
             );
           })}
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

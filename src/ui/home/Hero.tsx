@@ -1,6 +1,12 @@
-import { FALLBACK_HERO, FALLBACK_SITE_INFO, type HeroContent } from "@/lib/home-content-types";
+import {
+  FALLBACK_HERO,
+  FALLBACK_SITE_INFO,
+  type HeroContent,
+  type SiteImage,
+} from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
-import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { WhatsappCta } from "@/ui/components/WhatsappCta";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
@@ -16,12 +22,14 @@ type HeroProps = {
   content?: HeroContent;
   slogan?: string;
   whatsappHref?: string;
+  portrait?: SiteImage | null;
 };
 
 export function Hero({
   content = FALLBACK_HERO,
   slogan = FALLBACK_SITE_INFO.slogan,
   whatsappHref = WHATSAPP_HREF,
+  portrait = null,
 }: HeroProps = {}) {
   return (
     <section
@@ -29,7 +37,7 @@ export function Hero({
       aria-labelledby="hero-heading"
       className="relative pb-[var(--space-2xl)] pt-[var(--space-md)] sm:pt-[var(--space-xl)] lg:pt-[var(--space-2xl)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <div className="lg:col-span-7 lg:pt-[var(--space-sm)]">
             <h1
@@ -39,7 +47,7 @@ export function Hero({
               {content.heading}
             </h1>
 
-            <p className="mt-[var(--space-sm)] font-display text-[1.25rem] italic leading-[1.3] text-ink-soft">
+            <p className="mt-[var(--space-sm)] font-display text-[1.5rem] italic leading-[1.25] text-ink-soft sm:text-[1.75rem]">
               {slogan}
             </p>
 
@@ -48,22 +56,9 @@ export function Hero({
             </p>
 
             <div className="mt-[var(--space-xl)]">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Iniciar conversa no WhatsApp"
-                className="btn-primary group font-display"
-              >
-                <WhatsappIcon size={16} className="text-[#25D366]" />
-                <span className="font-display text-base">{content.ctaWhatsapp}</span>
-                <span
-                  aria-hidden
-                  className="font-display text-base text-paper-deep transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </a>
+              <WhatsappCta href={whatsappHref} ariaLabel="Iniciar conversa no WhatsApp">
+                {content.ctaWhatsapp}
+              </WhatsappCta>
             </div>
 
             {/* Modality strip — equal weight on both modalities */}
@@ -80,11 +75,13 @@ export function Hero({
             <IllustrationSlot
               concept="Retrato editorial — figura sentada, três-quartos, livros ao fundo, luz lateral. Linha solta, hatching contido."
               shape="portrait"
+              src={portrait?.url}
+              alt={portrait?.alt}
               className="w-full"
             />
           </div>
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

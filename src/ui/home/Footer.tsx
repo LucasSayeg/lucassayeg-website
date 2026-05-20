@@ -1,5 +1,8 @@
 import { FALLBACK_SITE_INFO, type SiteInfoContent } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { UnderlineLink } from "@/ui/components/UnderlineLink";
 
 /*
   Footer — quiet, informational. Carries CRP registration (regulatory),
@@ -18,7 +21,7 @@ export function Footer({
   const rights = `© ${new Date().getFullYear()} ${siteInfo.name}. Todos os direitos reservados.`;
   return (
     <footer className="border-t border-paper-deep bg-paper py-[var(--space-2xl)] text-sm text-ink-quiet">
-      <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-[var(--space-xl)] px-6 sm:px-8 md:grid-cols-12 md:gap-[var(--space-2xl)]">
+      <PageContainer className="grid grid-cols-1 gap-[var(--space-xl)] md:grid-cols-12 md:gap-[var(--space-2xl)]">
         <div className="md:col-span-5">
           <p className="font-display text-[length:var(--text-xl)] leading-tight tracking-[-0.01em] text-ink">
             {siteInfo.name}
@@ -27,9 +30,9 @@ export function Footer({
         </div>
 
         <div className="md:col-span-3">
-          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
+          <Eyebrow size="sm" className="mb-[var(--space-2xs)]">
             Atendimento
-          </p>
+          </Eyebrow>
           <ul className="space-y-[var(--space-2xs)]">
             <li>Online · em todo o Brasil</li>
             <li>Presencial · {siteInfo.address}</li>
@@ -37,34 +40,26 @@ export function Footer({
         </div>
 
         <div className="md:col-span-4">
-          <p className="mb-[var(--space-2xs)] text-[0.72rem] uppercase tracking-[0.22em] text-ink-quiet">
+          <Eyebrow size="sm" className="mb-[var(--space-2xs)]">
             Contato
-          </p>
+          </Eyebrow>
           <ul className="space-y-[var(--space-2xs)]">
             <li>
-              <a
-                href={`mailto:${siteInfo.email}`}
-                className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
-              >
+              <UnderlineLink href={`mailto:${siteInfo.email}`} className="hover:text-ink">
                 {siteInfo.email}
-              </a>
+              </UnderlineLink>
             </li>
             <li>
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="underline decoration-ink-faint decoration-[1px] underline-offset-[6px] hover:text-ink hover:decoration-accent-soft"
-              >
+              <UnderlineLink href={whatsappHref} external className="hover:text-ink">
                 WhatsApp
-              </a>
+              </UnderlineLink>
             </li>
             {/* Social slot — collapses cleanly when none exist */}
           </ul>
         </div>
-      </div>
+      </PageContainer>
 
-      <div className="mx-auto mt-[var(--space-2xl)] max-w-[1240px] px-6 sm:px-8">
+      <PageContainer className="mt-[var(--space-2xl)]">
         <p className="border-t border-paper-deep pt-[var(--space-md)] text-xs leading-relaxed text-ink-quiet">
           {siteInfo.crisis}
         </p>
@@ -72,7 +67,7 @@ export function Footer({
           <p>{rights}</p>
           <p className="font-display">{siteInfo.crp}</p>
         </div>
-      </div>
+      </PageContainer>
     </footer>
   );
 }

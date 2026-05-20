@@ -24,8 +24,8 @@ import {
   type SectionLayout,
   type ServicoItem,
   type ServicosContent,
+  type SiteImage,
   type SiteInfoContent,
-  type SitePortrait,
   type SobreContent,
   type SobrePageContent,
 } from "@/lib/home-content-types";
@@ -57,6 +57,7 @@ export type {
   SectionLayout,
   ServicoItem,
   ServicosContent,
+  SiteImage,
   SiteInfoContent,
   SitePortrait,
   SobreContent,
@@ -144,6 +145,7 @@ function mergeSobre(g: HomeSobre | null | undefined, fb: SobreContent): SobreCon
     body,
     paragraphs: fb.paragraphs,
     ctaLabel: g.ctaLabel || fb.ctaLabel,
+    illustration: resolveImage(g.illustration, g.illustrationAlt, ""),
   };
 }
 
@@ -162,6 +164,7 @@ function mergeServicos(g: HomeServico | null | undefined, fb: ServicosContent): 
             .map((a) => a?.value)
             .filter((v): v is string => typeof v === "string" && v.length > 0)
         : [],
+      illustration: resolveImage(it.illustration, it.illustrationAlt, ""),
     }))
     .filter((it) => it.areas.length > 0);
   if (items.length === 0) return fb;
@@ -220,17 +223,24 @@ function mergeContactForm(
   };
 }
 
-function resolvePortrait(
+/*
+  Resolve an upload relation + sibling alt field into a {url, alt} pair.
+  - Returns null if the relation is unpopulated (number, missing) or has no URL.
+  - alt priority: explicit alt field → Media.alt → fallbackAlt.
+  - Pass fallbackAlt: "" to honor decorative-image intent (empty string =
+    aria-hidden in IllustrationSlot).
+*/
+function resolveImage(
   raw: number | Media | null | undefined,
   rawAlt: string | null | undefined,
-  fallbackName: string,
-): SitePortrait | null {
+  fallbackAlt: string,
+): SiteImage | null {
   if (!raw || typeof raw === "number") return null;
   const url = typeof raw.url === "string" ? raw.url : null;
   if (!url) return null;
   const explicitAlt = typeof rawAlt === "string" ? rawAlt.trim() : "";
   const mediaAlt = typeof raw.alt === "string" ? raw.alt.trim() : "";
-  const alt = explicitAlt || mediaAlt || `Retrato de ${fallbackName}`;
+  const alt = explicitAlt || mediaAlt || fallbackAlt;
   return { url, alt };
 }
 
@@ -248,7 +258,7 @@ function mergeSiteInfo(g: SiteInfo | null | undefined, fb: SiteInfoContent): Sit
     email: g.email || fb.email,
     whatsappNumber: g.whatsappNumber || fb.whatsappNumber,
     whatsappPrefill: g.whatsappPrefill || fb.whatsappPrefill,
-    portrait: resolvePortrait(g.portrait, g.portraitAlt, name),
+    portrait: resolveImage(g.portrait, g.portraitAlt, `Retrato de ${name}`),
   };
 }
 
@@ -275,8 +285,8 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
         payload.findGlobal({ slug: "home-layout" }) as Promise<HomeLayout>,
         payload.findGlobal({ slug: "home-hero" }) as Promise<HomeHero>,
         payload.findGlobal({ slug: "home-como-ajuda" }) as Promise<HomeComoAjuda>,
-        payload.findGlobal({ slug: "home-sobre" }) as Promise<HomeSobre>,
-        payload.findGlobal({ slug: "home-servicos" }) as Promise<HomeServico>,
+        payload.findGlobal({ slug: "home-sobre", depth: 1 }) as Promise<HomeSobre>,
+        payload.findGlobal({ slug: "home-servicos", depth: 1 }) as Promise<HomeServico>,
         payload.findGlobal({ slug: "home-faq" }) as Promise<HomeFaq>,
         payload.findGlobal({ slug: "home-contato" }) as Promise<HomeContato>,
         payload.findGlobal({ slug: "home-contact-form" }) as Promise<HomeContactForm>,

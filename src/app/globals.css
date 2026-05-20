@@ -300,6 +300,35 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   Áreas de escuta — horizontal cascading reveal
+   Used by AreasReveal.tsx on the Serviços list. The component sets
+   data-armed="true" on the <ul> only when JS confirms the list is
+   below the fold AND motion isn't reduced; data-in="true" fires when
+   the IntersectionObserver intersects (rootMargin -18% bottom, so the
+   list is meaningfully in view, not just peeking).
+
+   Items default to a small leftward offset + opacity 0 once armed,
+   then settle to rest one-by-one with --list-i × 80ms delay. Slow
+   exponential ease for the "very smoothly" feel.
+
+   SSR / no-JS / above-the-fold / reduced-motion: no data attributes
+   are set, so this rule never matches and items render visible.
+   ───────────────────────────────────────────────────────────────── */
+.areas-reveal[data-armed="true"] > li {
+  opacity: 0;
+  transform: translateX(-14px);
+  will-change: opacity, transform;
+}
+.areas-reveal[data-armed="true"][data-in="true"] > li {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 760ms var(--ease-out-expo),
+    transform 760ms var(--ease-out-expo);
+  transition-delay: calc(var(--list-i, 0) * 80ms);
+}
+
+/* ─────────────────────────────────────────────────────────────────
    FAQ accordion — grid-template-rows technique (no height anim)
    ───────────────────────────────────────────────────────────────── */
 .accordion-panel {
@@ -770,3 +799,4 @@
     display: none;
   }
 }
+

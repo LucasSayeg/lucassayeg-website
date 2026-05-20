@@ -49,6 +49,22 @@ export const HomeServicos: GlobalConfig = {
           labels: { singular: "área", plural: "áreas" },
           fields: [{ name: "value", type: "text", required: true, label: "Área" }],
         },
+        {
+          name: "illustration",
+          type: "upload",
+          relationTo: "media",
+          label: "Ilustração",
+          admin: {
+            description:
+              "Ilustração marginal ao lado do bloco do serviço. Quando vazio, renderiza o placeholder de esboço.",
+          },
+        },
+        {
+          name: "illustrationAlt",
+          type: "text",
+          label: "Ilustração — texto alternativo",
+          admin: { description: "Deixe em branco se a ilustração for puramente decorativa." },
+        },
       ],
     },
   ],

@@ -7,6 +7,7 @@ import * as migration_20260501_163119_cleanup_cms_unused_fields from "./20260501
 import * as migration_20260502_012941_sobre_page from "./20260502_012941_sobre_page";
 import * as migration_20260506_194234_reshape_como_ajuda from "./20260506_194234_reshape_como_ajuda";
 import * as migration_20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro from "./20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro";
+import * as migration_20260519_195653_add_illustration_uploads from "./20260519_195653_add_illustration_uploads";
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro.up,
     down: migration_20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro.down,
     name: "20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro",
+  },
+  {
+    up: migration_20260519_195653_add_illustration_uploads.up,
+    down: migration_20260519_195653_add_illustration_uploads.down,
+    name: "20260519_195653_add_illustration_uploads",
   },
 ];

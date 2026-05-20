@@ -9,7 +9,9 @@ import {
   type ContatoContent,
 } from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
-import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { WhatsappCta } from "@/ui/components/WhatsappCta";
 
 /*
   Contato — left-anchored editorial rhythm. Heading + invite stack
@@ -44,7 +46,7 @@ export function Contato({
       data-contact-state={isSuccess ? "success" : "form"}
       className="border-t border-paper-deep bg-paper-clay/40 py-[var(--space-4xl)]"
     >
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         {/* Header — heading and invite stacked together, left-anchored. */}
         <div className="max-w-[640px]">
           <h2
@@ -74,42 +76,24 @@ export function Contato({
           >
             <div className="space-y-[var(--space-lg)]">
               <div>
-                <p className="text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
-                  {content.responseTimeLabel}
-                </p>
+                <Eyebrow>{content.responseTimeLabel}</Eyebrow>
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.responseTimeBody}
                 </p>
               </div>
 
               <div>
-                <p className="text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
-                  {content.whatsappBlockLabel}
-                </p>
+                <Eyebrow>{content.whatsappBlockLabel}</Eyebrow>
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.whatsappPrompt}
                 </p>
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="btn-primary group mt-[var(--space-sm)]"
-                >
-                  <WhatsappIcon size={16} className="text-[#25D366]" />
+                <WhatsappCta href={whatsappHref} className="mt-[var(--space-sm)]">
                   {content.whatsappLabel}
-                  <span
-                    aria-hidden
-                    className="font-display text-paper-deep transition-transform group-hover:translate-x-0.5"
-                  >
-                    →
-                  </span>
-                </a>
+                </WhatsappCta>
               </div>
 
               <div>
-                <p className="text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet">
-                  {content.sigiloLabel}
-                </p>
+                <Eyebrow>{content.sigiloLabel}</Eyebrow>
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.sigiloBody}
                 </p>
@@ -117,7 +101,7 @@ export function Contato({
             </div>
           </aside>
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

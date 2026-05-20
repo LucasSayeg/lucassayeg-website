@@ -41,5 +41,21 @@ export const HomeSobre: GlobalConfig = {
           "Texto do link que leva para /sobre (default: 'Saiba mais sobre meu percurso').",
       },
     },
+    {
+      name: "illustration",
+      type: "upload",
+      relationTo: "media",
+      label: "Ilustração",
+      admin: {
+        description:
+          "Ilustração editorial da seção Sobre (mesa do consultório / cena de detalhe). Quando vazio, renderiza o placeholder de esboço.",
+      },
+    },
+    {
+      name: "illustrationAlt",
+      type: "text",
+      label: "Ilustração — texto alternativo",
+      admin: { description: "Deixe em branco se a ilustração for puramente decorativa." },
+    },
   ],
 };

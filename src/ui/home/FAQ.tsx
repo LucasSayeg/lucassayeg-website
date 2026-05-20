@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Plus } from "lucide-react";
 import { FALLBACK_FAQ, type FaqContent } from "@/lib/home-content-types";
+import { PageContainer } from "@/ui/components/PageContainer";
 
 /*
   Accordion — single-open. Opening one closes the previous.
@@ -16,7 +17,7 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
 
   return (
     <section id="faq" aria-labelledby="faq-heading" className="py-[var(--space-3xl)]">
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <h2
             id="faq-heading"
@@ -87,7 +88,7 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
             );
           })}
         </ul>
-      </div>
+      </PageContainer>
     </section>
   );
 }

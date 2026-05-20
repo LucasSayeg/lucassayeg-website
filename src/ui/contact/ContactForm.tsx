@@ -6,6 +6,8 @@ import { FALLBACK_CONTACT_FORM, type ContactFormContent } from "@/lib/home-conte
 import { CONTACT_FORM, SITE_META, WHATSAPP_HREF } from "@/lib/home-data";
 import { Loader2 } from "lucide-react";
 import type { MouseEvent, ReactNode } from "react";
+import { Eyebrow } from "@/ui/components/Eyebrow";
+import { UnderlineLink, underlineLinkClass } from "@/ui/components/UnderlineLink";
 
 const fieldClass = cn(
   "block w-full bg-transparent border-0 border-b border-paper-deep px-0 py-2",
@@ -20,8 +22,6 @@ const fieldClass = cn(
   "disabled:opacity-60",
 );
 
-const labelClass =
-  "block text-[0.78rem] font-normal uppercase leading-none tracking-[0.22em] text-ink-quiet";
 const requiredMark = (
   <span aria-hidden className="ml-1 text-ink-quiet">
     *
@@ -125,10 +125,10 @@ export function ContactForm({
           noValidate
         >
           <div className="space-y-2">
-            <label htmlFor="contact-name" className={labelClass}>
+            <Eyebrow as="label" htmlFor="contact-name" className="block">
               {CONTACT_FORM.nameLabel}
               {requiredMark}
-            </label>
+            </Eyebrow>
             <input
               id="contact-name"
               type="text"
@@ -149,10 +149,10 @@ export function ContactForm({
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="contact-email" className={labelClass}>
+            <Eyebrow as="label" htmlFor="contact-email" className="block">
               {CONTACT_FORM.emailLabel}
               {requiredMark}
-            </label>
+            </Eyebrow>
             <input
               id="contact-email"
               type="email"
@@ -173,10 +173,10 @@ export function ContactForm({
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="contact-message" className={labelClass}>
+            <Eyebrow as="label" htmlFor="contact-message" className="block">
               {CONTACT_FORM.messageLabel}
               {requiredMark}
-            </label>
+            </Eyebrow>
             <textarea
               id="contact-message"
               rows={5}
@@ -206,22 +206,18 @@ export function ContactForm({
                 ·
               </span>
               Não consegui enviar sua mensagem agora. Você pode tentar de novo em um instante,{" "}
-              <a
+              <UnderlineLink
                 href={`mailto:${SITE_META.email}`}
                 onClick={handleMailtoFallback}
-                className="text-ink underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:decoration-accent-soft"
+                variant="tight"
+                className="text-ink"
               >
                 enviar pelo seu app de e-mail
-              </a>{" "}
+              </UnderlineLink>{" "}
               (com o que você escreveu já preenchido), ou falar com Lucas pelo{" "}
-              <a
-                href={WHATSAPP_HREF}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-ink underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:decoration-accent-soft"
-              >
+              <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
                 WhatsApp
-              </a>
+              </UnderlineLink>
               .
             </p>
           </div>
@@ -266,20 +262,18 @@ export function ContactForm({
           </p>
           <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
             {copy.successWhatsappPrompt}{" "}
-            <a
-              href={WHATSAPP_HREF}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="text-ink underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:decoration-accent-soft"
-            >
+            <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
               {CONTACT_FORM.successWhatsappLabel}
-            </a>
+            </UnderlineLink>
             .
           </p>
           <button
             type="button"
             onClick={reset}
-            className="text-sm text-ink-quiet underline decoration-ink-faint decoration-1 underline-offset-[5px] hover:text-ink hover:decoration-accent-soft"
+            className={underlineLinkClass({
+              variant: "tight",
+              className: "text-sm text-ink-quiet hover:text-ink",
+            })}
           >
             {CONTACT_FORM.successResetLabel}
           </button>

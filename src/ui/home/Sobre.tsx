@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { FALLBACK_SOBRE, type SobreContent } from "@/lib/home-content-types";
 import { SITE_META } from "@/lib/home-data";
+import { PageContainer } from "@/ui/components/PageContainer";
+import { UnderlineLink } from "@/ui/components/UnderlineLink";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
@@ -32,7 +33,7 @@ type SobreProps = {
 export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: SobreProps = {}) {
   return (
     <section id="sobre" aria-labelledby="sobre-heading" className="py-[var(--space-3xl)]">
-      <div className="mx-auto max-w-[1240px] px-6 sm:px-8">
+      <PageContainer>
         {/* Off-grid asymmetric divider — the brief calls for one carefully placed handmade gesture. */}
         <div className="mb-[var(--space-2xl)] deck-divider" aria-hidden>
           <span>sobre</span>
@@ -54,6 +55,8 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
               <IllustrationSlot
                 concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."
                 shape="portrait"
+                src={content.illustration?.url}
+                alt={content.illustration?.alt}
                 className="w-full"
               />
             </div>
@@ -73,20 +76,21 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
             </div>
 
             <p className="mt-[var(--space-lg)]">
-              <Link
+              <UnderlineLink
                 href="/sobre"
+                internal
                 prefetch
-                className="inline-flex items-center gap-2 text-sm text-ink underline decoration-ink-faint decoration-[1px] underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent-soft"
+                className="inline-flex items-center gap-2 text-sm text-ink transition-colors hover:text-accent"
               >
                 {content.ctaLabel}
                 <span aria-hidden className="font-display">
                   →
                 </span>
-              </Link>
+              </UnderlineLink>
             </p>
           </div>
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }
