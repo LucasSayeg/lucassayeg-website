@@ -63,19 +63,21 @@ export function IllustrationSlot({ concept, shape = "square", src, alt, classNam
     // string is honored — that's the "decorative image" signal.
     const resolvedAlt = alt !== undefined ? alt : concept;
     const isDecorative = resolvedAlt === "";
+    // Portrait photos uploaded by the client are typically taller than the
+    // 4:5 slot (e.g. 9:16 phone portraits). `cover` fills the frame and
+    // `object-position: 50% 20%` anchors near the top so the face stays in
+    // view while the lower body / chair crops gracefully.
+    // The service / square / wide slots host editorial drawings — keep
+    // `contain` there so the artwork breathes inside the frame.
+    const isPortrait = shape === "portrait";
+    const fit = isPortrait ? "object-cover object-[50%_20%]" : "object-contain";
     return (
       <div
         className={`relative block select-none ${className ?? ""}`}
         style={style}
         {...(isDecorative ? { "aria-hidden": true } : {})}
       >
-        <Image
-          src={src}
-          alt={resolvedAlt}
-          fill
-          sizes={sizesByShape[shape]}
-          className="object-contain"
-        />
+        <Image src={src} alt={resolvedAlt} fill sizes={sizesByShape[shape]} className={fit} />
       </div>
     );
   }
