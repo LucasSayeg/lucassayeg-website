@@ -36,18 +36,17 @@
                                          trimmed: blues at L=0.7 are more vivid
                                          than reds at L=0.7, so the old 0.06
                                          would land in sky-blue territory */
-  --accent-mark: oklch(0.42 0.07 250); /* handmade ink — name underline, signature
-                                          gestures. Hue 250 sits a touch cooler than
-                                          the accent, mirroring how the original
-                                          mark sat slightly warmer than the accent. */
+  --accent-mark: oklch(0.42 0.085 245); /* handmade ink — name underline, signature
+                                           gestures. Chroma bumped above --accent and
+                                           hue pushed further off so the mark reads as
+                                           a different ink than the CTA, not as a
+                                           thinner sibling of it. */
 
   /* CTA button surface — navy ink, distinct from --ink (which is too neutral
      for solid CTAs against bone paper). Chroma is higher than the surrounding
-     ink scale because navy at low chroma reads gray. Variable name kept as
-     --ink-brown for now to keep this commit's diff minimal; rename to
-     --ink-deep / --cta-surface in a follow-up. */
-  --ink-brown: oklch(0.32 0.07 255);
-  --ink-brown-hover: oklch(0.25 0.08 255);
+     ink scale because navy at low chroma reads gray. */
+  --cta-surface: oklch(0.32 0.07 255);
+  --cta-surface-hover: oklch(0.25 0.08 255);
 
   /* Semantic — warm, not loud */
   --warning-ink: oklch(0.385 0.075 60);
@@ -408,7 +407,7 @@
   gap: 0.625rem;
   padding: 0.75rem 1.25rem;
   border-radius: 0.25rem;
-  background-color: var(--ink-brown);
+  background-color: var(--cta-surface);
   color: var(--paper);
   font-size: var(--text-base);
   line-height: 1.2;
@@ -416,7 +415,7 @@
   transition: background-color 200ms var(--ease-out-quart);
 }
 .btn-primary:hover {
-  background-color: var(--ink-brown-hover);
+  background-color: var(--cta-surface-hover);
 }
 .btn-primary:disabled,
 .btn-primary[aria-disabled="true"] {
@@ -555,7 +554,11 @@
   display: inline-block;
   margin-right: 0.4em;
   font-weight: 600;
-  color: var(--accent);
+  /* Warm warning ink — not --accent. The validation dot fires at the moment a
+     visitor's submit was rejected; with the navy accent, --accent reads as
+     bank-form-blue validation here. --warning-ink (hue 60, warm) keeps the
+     literate-warm register at the most fragile moment in the form flow. */
+  color: var(--warning-ink);
 }
 .field-hint__valid {
   font-family: var(--font-display);
@@ -594,7 +597,9 @@
 .form-banner__mark {
   display: inline-block;
   margin-right: 0.4em;
-  color: var(--accent);
+  /* Warm warning ink — see .field-hint__mark. Same rationale: the submit-fail
+     banner is a fragile moment, --accent (navy) reads as bank-form blue here. */
+  color: var(--warning-ink);
   font-weight: 600;
 }
 

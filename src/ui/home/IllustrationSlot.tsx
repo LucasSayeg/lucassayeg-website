@@ -65,12 +65,13 @@ export function IllustrationSlot({ concept, shape = "square", src, alt, classNam
     const isDecorative = resolvedAlt === "";
     // Portrait photos uploaded by the client are typically taller than the
     // 4:5 slot (e.g. 9:16 phone portraits). `cover` fills the frame and
-    // `object-position: 50% 20%` anchors near the top so the face stays in
-    // view while the lower body / chair crops gracefully.
+    // `object-position: 50% 60%` anchors a touch below center — favors
+    // torso / setting context over headroom while keeping the face in view.
+    // Past ~70% the head starts cropping into the top edge.
     // The service / square / wide slots host editorial drawings — keep
     // `contain` there so the artwork breathes inside the frame.
     const isPortrait = shape === "portrait";
-    const fit = isPortrait ? "object-cover object-[50%_20%]" : "object-contain";
+    const fit = isPortrait ? "object-cover object-[50%_60%]" : "object-contain";
     return (
       <div
         className={`relative block select-none ${className ?? ""}`}
