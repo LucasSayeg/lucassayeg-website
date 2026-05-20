@@ -16,6 +16,12 @@
   contrast — the previous batch made everything monochromatic-warm and the
   4 papers / 4 inks / 4 accents inside each palette read as one smear.
   Each palette below is an answer to a different design question.
+
+  ⚠ Accent drift: the canonical accent moved from oxblood (hue ~28) to ink
+  navy (hue 255). Only the active `bone` palette below has been migrated.
+  The other four (cold-press, ink-slate, foundry, pressed-navy) still
+  carry oxblood and will read inconsistently if selected — sweep them or
+  retire them before re-enabling the picker.
 */
 
 /* ─────────────────────────────────────────────────────────────────
