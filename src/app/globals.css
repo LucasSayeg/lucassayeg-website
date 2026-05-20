@@ -28,16 +28,26 @@
   --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
   --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
 
-  /* Accent — single deep, considered color (oxblood-leaning ink) */
-  --accent: oklch(0.355 0.085 28); /* link, focus, primary CTA */
-  --accent-deep: oklch(0.29 0.09 26); /* hover/pressed */
-  --accent-soft: oklch(0.7 0.06 30); /* underline tint, decorative only */
-  --accent-mark: oklch(0.42 0.07 40); /* handmade ink — name underline, signature gestures */
+  /* Accent — single deep, considered color (ink navy, hue rotated from the
+     earlier oxblood). Same L/C as before so weight on the page is unchanged. */
+  --accent: oklch(0.355 0.085 255); /* link, focus, primary CTA */
+  --accent-deep: oklch(0.29 0.09 255); /* hover/pressed */
+  --accent-soft: oklch(0.7 0.04 255); /* underline tint, decorative only — chroma
+                                         trimmed: blues at L=0.7 are more vivid
+                                         than reds at L=0.7, so the old 0.06
+                                         would land in sky-blue territory */
+  --accent-mark: oklch(0.42 0.07 250); /* handmade ink — name underline, signature
+                                          gestures. Hue 250 sits a touch cooler than
+                                          the accent, mirroring how the original
+                                          mark sat slightly warmer than the accent. */
 
-  /* Button surface — warm brown, distinct from --ink (which is too neutral
-     for solid CTAs against bone paper). Hover deepens lightness + chroma. */
-  --ink-brown: oklch(0.32 0.045 50);
-  --ink-brown-hover: oklch(0.25 0.055 44);
+  /* CTA button surface — navy ink, distinct from --ink (which is too neutral
+     for solid CTAs against bone paper). Chroma is higher than the surrounding
+     ink scale because navy at low chroma reads gray. Variable name kept as
+     --ink-brown for now to keep this commit's diff minimal; rename to
+     --ink-deep / --cta-surface in a follow-up. */
+  --ink-brown: oklch(0.32 0.07 255);
+  --ink-brown-hover: oklch(0.25 0.08 255);
 
   /* Semantic — warm, not loud */
   --warning-ink: oklch(0.385 0.075 60);
@@ -384,11 +394,11 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Primary button — warm brown surface with paper text. Used for the
+   Primary button — ink-navy surface with paper text. Used for the
    single-primary CTA pattern (Hero, Sobre, Header, Contato, form
    submit). Dark enough that the WhatsApp brand-green icon reads
-   cleanly against it; warmer than --ink so the button doesn't drop
-   to neutral black on the bone paper.
+   cleanly against it; navy with moderate chroma so the button doesn't
+   drop to neutral black on the bone paper.
    Modifiers: --sm for the header (denser row), --lg for the long
    uppercase form-submit register.
    ───────────────────────────────────────────────────────────────── */
