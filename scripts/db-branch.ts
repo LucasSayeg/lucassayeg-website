@@ -1,35 +1,45 @@
 import { spawnSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
+import {
+  formatBranchSummary,
+  getConnectionString,
+  listBranches,
+  requireNeonctl,
+  resolveParentName,
+  writePostgresUrl,
+} from "./_lib/neon.js";
 
 const user = process.env.USER ?? "dev";
 const branch = `dev-${user}`;
+const EXPIRY_DAYS = 14;
 
-const list = spawnSync("neonctl", ["branches", "list", "--output", "json"], { encoding: "utf8" });
-if (list.status !== 0) {
-  console.error("neonctl not available; install from https://neon.tech/docs/reference/cli");
-  process.exit(1);
-}
+requireNeonctl();
 
-const exists = JSON.parse(list.stdout).some((b: { name: string }) => b.name === branch);
-if (!exists) {
+let branches = await listBranches();
+const existing = branches.find((b) => b.name === branch);
+if (!existing) {
   const r = spawnSync("neonctl", ["branches", "create", "--name", branch, "--parent", "main"], {
     stdio: "inherit",
   });
   if (r.status !== 0) process.exit(r.status ?? 1);
+  branches = await listBranches();
 }
 
-const cs = spawnSync("neonctl", ["connection-string", branch], { encoding: "utf8" });
-const url = cs.stdout.trim();
-if (!url) {
-  console.error("no connection string");
-  process.exit(1);
+const expiresAt = new Date(Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString();
+const setExpiry = spawnSync(
+  "neonctl",
+  ["branches", "set-expiration", branch, "--expires-at", expiresAt],
+  { encoding: "utf8" },
+);
+if (setExpiry.status !== 0) {
+  console.warn(`[db] could not set expiration on '${branch}': ${setExpiry.stderr.trim()}`);
 }
 
-const envPath = path.join(process.cwd(), ".env.local");
-const env = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
-const next = /^POSTGRES_URL=/m.test(env)
-  ? env.replace(/^POSTGRES_URL=.*/m, `POSTGRES_URL=${url}`)
-  : env + `\nPOSTGRES_URL=${url}\n`;
-fs.writeFileSync(envPath, next);
-console.log(`POSTGRES_URL updated for branch ${branch}`);
+writePostgresUrl(getConnectionString(branch));
+
+const refreshed = (await listBranches()).find((b) => b.name === branch);
+if (refreshed) {
+  const parentName = await resolveParentName(refreshed);
+  console.log(formatBranchSummary(refreshed, parentName));
+} else {
+  console.log(`[db] on '${branch}'`);
+}
