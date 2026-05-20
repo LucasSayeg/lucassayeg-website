@@ -54,6 +54,8 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
               <IllustrationSlot
                 concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."
                 shape="portrait"
+                src={content.illustration?.url}
+                alt={content.illustration?.alt}
                 className="w-full"
               />
             </div>

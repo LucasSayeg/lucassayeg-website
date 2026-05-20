@@ -1,4 +1,9 @@
-import { FALLBACK_HERO, FALLBACK_SITE_INFO, type HeroContent } from "@/lib/home-content-types";
+import {
+  FALLBACK_HERO,
+  FALLBACK_SITE_INFO,
+  type HeroContent,
+  type SiteImage,
+} from "@/lib/home-content-types";
 import { WHATSAPP_HREF } from "@/lib/home-data";
 import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
@@ -16,12 +21,14 @@ type HeroProps = {
   content?: HeroContent;
   slogan?: string;
   whatsappHref?: string;
+  portrait?: SiteImage | null;
 };
 
 export function Hero({
   content = FALLBACK_HERO,
   slogan = FALLBACK_SITE_INFO.slogan,
   whatsappHref = WHATSAPP_HREF,
+  portrait = null,
 }: HeroProps = {}) {
   return (
     <section
@@ -39,7 +46,7 @@ export function Hero({
               {content.heading}
             </h1>
 
-            <p className="mt-[var(--space-sm)] font-display text-[1.25rem] italic leading-[1.3] text-ink-soft">
+            <p className="mt-[var(--space-sm)] font-display text-[1.5rem] italic leading-[1.25] text-ink-soft sm:text-[1.75rem]">
               {slogan}
             </p>
 
@@ -80,6 +87,8 @@ export function Hero({
             <IllustrationSlot
               concept="Retrato editorial — figura sentada, três-quartos, livros ao fundo, luz lateral. Linha solta, hatching contido."
               shape="portrait"
+              src={portrait?.url}
+              alt={portrait?.alt}
               className="w-full"
             />
           </div>

@@ -83,7 +83,7 @@ export const SiteInfo: GlobalConfig = {
       relationTo: "media",
       label: "Retrato",
       admin: {
-        description: "Foto editorial usada no /sobre e (quando disponível) na home — Hero e Sobre.",
+        description: "Foto editorial usada no Hero da home e no /sobre.",
       },
     },
     {

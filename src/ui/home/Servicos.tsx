@@ -123,7 +123,12 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                         : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:justify-start md:pt-[var(--space-md)]"
                     }
                   >
-                    <IllustrationSlot concept={illustrationConcept} shape="service" />
+                    <IllustrationSlot
+                      concept={illustrationConcept}
+                      shape="service"
+                      src={s.illustration?.url}
+                      alt={s.illustration?.alt}
+                    />
                   </div>
                 ) : null}
               </article>

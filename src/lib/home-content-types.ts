@@ -42,6 +42,7 @@ export type SobreContent = {
   body: SerializedEditorState | null;
   paragraphs: string[];
   ctaLabel: string;
+  illustration: SiteImage | null;
 };
 
 export type ServicoItem = {
@@ -50,6 +51,7 @@ export type ServicoItem = {
   sublabel: string;
   framing: string;
   areas: string[];
+  illustration: SiteImage | null;
 };
 export type ServicosContent = { subtitle: string; items: ServicoItem[] };
 
@@ -81,10 +83,13 @@ export type ContactFormContent = {
   successWhatsappPrompt: string;
 };
 
-export type SitePortrait = {
+export type SiteImage = {
   url: string;
   alt: string;
 };
+
+/** @deprecated Use SiteImage. Kept as an alias for back-compat with existing imports. */
+export type SitePortrait = SiteImage;
 
 export type SiteInfoContent = {
   name: string;
@@ -97,7 +102,7 @@ export type SiteInfoContent = {
   email: string;
   whatsappNumber: string;
   whatsappPrefill: string;
-  portrait: SitePortrait | null;
+  portrait: SiteImage | null;
 };
 
 export type SobrePageContent = {
@@ -148,6 +153,7 @@ export const FALLBACK_SOBRE: SobreContent = {
   body: null,
   paragraphs: [...SOBRE.paragraphs],
   ctaLabel: SOBRE.cta,
+  illustration: null,
 };
 
 export const FALLBACK_SERVICOS: ServicosContent = {
@@ -158,6 +164,7 @@ export const FALLBACK_SERVICOS: ServicosContent = {
     sublabel: s.sublabel,
     framing: s.framing,
     areas: [...s.items],
+    illustration: null,
   })),
 };
 
