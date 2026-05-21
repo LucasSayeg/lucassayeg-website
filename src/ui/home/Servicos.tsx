@@ -111,7 +111,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                       <li
                         key={it}
                         style={{ ["--list-i" as string]: idx } as CSSProperties}
-                        className={`py-[var(--space-sm)] font-display text-[length:var(--text-xl)] font-normal leading-[1.2] text-ink ${
+                        className={`py-[var(--space-xs)] font-display text-[length:var(--text-lg)] font-normal leading-[1.2] text-ink ${
                           idx < s.areas.length - 1 ? "border-b border-paper-deep" : ""
                         }`}
                       >

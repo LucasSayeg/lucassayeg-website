@@ -140,9 +140,16 @@ export function Header({
                 {siteInfo.shortMark}
               </Eyebrow>
             </a>
-            <p className="mt-2 max-w-[28ch] font-display text-[0.95rem] leading-snug text-ink-soft md:hidden">
-              {siteInfo.slogan}
-            </p>
+            {/* Slogan collapses when scrolled so the WhatsApp pill leads the dense state. */}
+            <div
+              aria-hidden={scrolled}
+              className="grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out-quart)] md:hidden"
+              style={{ gridTemplateRows: scrolled ? "0fr" : "1fr" }}
+            >
+              <p className="mt-2 max-w-[28ch] overflow-hidden font-display text-[0.95rem] leading-snug text-ink-soft">
+                {siteInfo.slogan}
+              </p>
+            </div>
           </div>
           <p className="hidden max-w-[26ch] text-right font-display text-base leading-snug text-ink-soft md:block">
             {siteInfo.slogan}

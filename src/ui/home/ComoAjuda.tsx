@@ -22,7 +22,7 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
           Como a terapia pode ajudar.
         </h2>
 
-        <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-xl)] md:grid-cols-2">
+        <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2">
           {content.items.map((item, i) => (
             <Reveal key={item.title} as="li" index={i % 3}>
               <article className="grid grid-cols-[auto_1fr] items-baseline gap-x-[var(--space-md)]">
