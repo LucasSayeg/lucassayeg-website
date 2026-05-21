@@ -4,6 +4,8 @@ import * as React from "react";
 import { Plus } from "lucide-react";
 import { FALLBACK_FAQ, type FaqContent } from "@/lib/home-content-types";
 import { PageContainer } from "@/ui/components/PageContainer";
+import { Section } from "@/ui/components/Section";
+import { SectionHeading } from "@/ui/components/SectionHeading";
 
 /*
   Accordion — single-open. Opening one closes the previous.
@@ -16,15 +18,12 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
   const [openIdx, setOpenIdx] = React.useState<number | null>(null);
 
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="py-[var(--space-3xl)]">
+    <Section id="faq">
       <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
-          <h2
-            id="faq-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
-          >
+          <SectionHeading id="faq-heading" className="md:col-span-7">
             Perguntas frequentes.
-          </h2>
+          </SectionHeading>
           <p className="text-[length:var(--text-base)] leading-relaxed text-ink-quiet md:col-span-5 md:pt-3">
             {content.subtitle}
           </p>
@@ -89,6 +88,6 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
           })}
         </ul>
       </PageContainer>
-    </section>
+    </Section>
   );
 }

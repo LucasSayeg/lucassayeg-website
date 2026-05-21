@@ -14,7 +14,7 @@ import { WhatsappCta } from "@/ui/components/WhatsappCta";
 import { Footer } from "@/ui/home/Footer";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
 import { Header } from "@/ui/home/Header";
-import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
+import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
 
 export async function generateMetadata(): Promise<Metadata> {

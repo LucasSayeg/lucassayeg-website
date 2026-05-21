@@ -1,9 +1,11 @@
 import { FALLBACK_SOBRE, type SobreContent } from "@/lib/home-content-types";
 import { SITE_META } from "@/lib/home-data";
+import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 import { PageContainer } from "@/ui/components/PageContainer";
+import { Section } from "@/ui/components/Section";
+import { SectionHeading } from "@/ui/components/SectionHeading";
 import { UnderlineLink } from "@/ui/components/UnderlineLink";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
-import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
 
 /*
@@ -32,7 +34,7 @@ type SobreProps = {
 
 export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: SobreProps = {}) {
   return (
-    <section id="sobre" aria-labelledby="sobre-heading" className="py-[var(--space-3xl)]">
+    <Section id="sobre">
       <PageContainer>
         {/* Off-grid asymmetric divider — the brief calls for one carefully placed handmade gesture. */}
         <div className="mb-[var(--space-2xl)] deck-divider" aria-hidden>
@@ -41,12 +43,9 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
 
         <div className="grid grid-cols-1 gap-[var(--space-lg)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <div className="space-y-[var(--space-lg)] lg:col-span-4">
-            <h2
-              id="sobre-heading"
-              className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.1] tracking-[-0.02em] text-ink"
-            >
+            <SectionHeading id="sobre-heading">
               <HandmadeUnderline>{siteName}</HandmadeUnderline>
-            </h2>
+            </SectionHeading>
 
             {/* Atmospheric illustration — environment / books / hands per brief.
                 Tighter aspect than the hero portrait, so it reads as a
@@ -91,6 +90,6 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
           </div>
         </div>
       </PageContainer>
-    </section>
+    </Section>
   );
 }

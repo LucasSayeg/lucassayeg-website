@@ -7,7 +7,7 @@ import {
 import { WHATSAPP_HREF } from "@/lib/home-data";
 import { PageContainer } from "@/ui/components/PageContainer";
 import { WhatsappCta } from "@/ui/components/WhatsappCta";
-import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
+import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 
 /*
   Hero — slogan-subhead heading + reassurance + portrait + single CTA + modality strip.

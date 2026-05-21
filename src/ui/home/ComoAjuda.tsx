@@ -1,6 +1,8 @@
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
 import { PageContainer } from "@/ui/components/PageContainer";
-import { Reveal } from "@/ui/home/Reveal";
+import { Reveal } from "@/ui/components/Reveal";
+import { Section } from "@/ui/components/Section";
+import { SectionHeading } from "@/ui/components/SectionHeading";
 
 type ComoAjudaProps = {
   content?: ComoAjudaContent;
@@ -9,18 +11,11 @@ type ComoAjudaProps = {
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   if (content.items.length === 0) return null;
   return (
-    <section
-      id="como-ajuda"
-      aria-labelledby="como-ajuda-heading"
-      className="relative bg-paper-soft/60 py-[var(--space-3xl)]"
-    >
+    <Section id="como-ajuda" className="relative bg-paper-soft/60">
       <PageContainer className="relative">
-        <h2
-          id="como-ajuda-heading"
-          className="mb-[var(--space-2xl)] font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink"
-        >
+        <SectionHeading id="como-ajuda-heading" className="mb-[var(--space-2xl)]">
           Como a terapia pode ajudar.
-        </h2>
+        </SectionHeading>
 
         <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2">
           {content.items.map((item, i) => (
@@ -62,6 +57,6 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
           </span>
         </div>
       </PageContainer>
-    </section>
+    </Section>
   );
 }

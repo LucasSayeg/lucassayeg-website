@@ -1,9 +1,11 @@
 import type { CSSProperties } from "react";
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
 import { Eyebrow } from "@/ui/components/Eyebrow";
+import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 import { PageContainer } from "@/ui/components/PageContainer";
+import { Section } from "@/ui/components/Section";
+import { SectionHeading } from "@/ui/components/SectionHeading";
 import { AreasReveal } from "@/ui/home/AreasReveal";
-import { IllustrationSlot } from "@/ui/home/IllustrationSlot";
 
 /*
   Two services — Psicoterapia (Clínica) + Orientação Profissional —
@@ -49,19 +51,12 @@ type ServicosProps = {
 
 export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
   return (
-    <section
-      id="servicos"
-      aria-labelledby="servicos-heading"
-      className="border-t border-paper-deep bg-paper-soft/40 py-[var(--space-3xl)]"
-    >
+    <Section id="servicos" className="border-t border-paper-deep bg-paper-soft/40">
       <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
-          <h2
-            id="servicos-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink md:col-span-7"
-          >
+          <SectionHeading id="servicos-heading" className="md:col-span-7">
             Serviços.
-          </h2>
+          </SectionHeading>
           <p className="max-w-[34ch] text-[length:var(--text-base)] leading-[1.55] text-ink-quiet md:col-span-5 md:pt-3">
             {content.subtitle}
           </p>
@@ -151,6 +146,6 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
           })}
         </div>
       </PageContainer>
-    </section>
+    </Section>
   );
 }

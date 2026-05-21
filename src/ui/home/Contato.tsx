@@ -11,6 +11,8 @@ import {
 import { WHATSAPP_HREF } from "@/lib/home-data";
 import { Eyebrow } from "@/ui/components/Eyebrow";
 import { PageContainer } from "@/ui/components/PageContainer";
+import { Section } from "@/ui/components/Section";
+import { SectionHeading } from "@/ui/components/SectionHeading";
 import { WhatsappCta } from "@/ui/components/WhatsappCta";
 
 /*
@@ -40,21 +42,15 @@ export function Contato({
   const isSuccess = !!formState.submitResult?.success;
 
   return (
-    <section
+    <Section
       id="contato"
-      aria-labelledby="contato-heading"
       data-contact-state={isSuccess ? "success" : "form"}
       className="border-t border-paper-deep bg-paper-clay/40 py-[var(--space-4xl)]"
     >
       <PageContainer>
         {/* Header — heading and invite stacked together, left-anchored. */}
         <div className="max-w-[640px]">
-          <h2
-            id="contato-heading"
-            className="font-display text-[length:var(--text-3xl)] font-normal leading-[1.04] tracking-[-0.02em] text-ink"
-          >
-            {content.heading}
-          </h2>
+          <SectionHeading id="contato-heading">{content.heading}</SectionHeading>
           <div className="contact-collapse mt-[var(--space-md)]">
             <p className="max-w-[52ch] text-[length:var(--text-base)] leading-[1.7] text-ink-soft">
               {content.invite}
@@ -102,6 +98,6 @@ export function Contato({
           </aside>
         </div>
       </PageContainer>
-    </section>
+    </Section>
   );
 }
