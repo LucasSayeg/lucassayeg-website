@@ -553,7 +553,7 @@
 .field-hint__mark {
   display: inline-block;
   margin-right: 0.4em;
-  font-weight: 600;
+  font-weight: 700;
   /* Warm warning ink — not --accent. The validation dot fires at the moment a
      visitor's submit was rejected; with the navy accent, --accent reads as
      bank-form-blue validation here. --warning-ink (hue 60, warm) keeps the
@@ -600,7 +600,7 @@
   /* Warm warning ink — see .field-hint__mark. Same rationale: the submit-fail
      banner is a fragile moment, --accent (navy) reads as bank-form blue here. */
   color: var(--warning-ink);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Off-grid divider (used once between sections) */

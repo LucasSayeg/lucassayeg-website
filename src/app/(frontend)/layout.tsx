@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Petrona, IBM_Plex_Sans } from "next/font/google";
+import { Petrona, Atkinson_Hyperlegible } from "next/font/google";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, DEFAULT_PALETTE_ID, PICKER_COOKIE_NAME, isPaletteId } from "@/core/palettes";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
@@ -17,9 +17,16 @@ import "@/app/globals.css";
   serifs the brief explicitly excludes (Fraunces, Newsreader, Lora, Crimson,
   Cormorant, Playfair, DM Serif).
 
-  Body/UI: IBM Plex Sans (IBM, libre) — a humanist-mechanical sans with a
-  slight literary warmth. Stands in for ABC Diatype / Söhne. Avoids the
-  excluded defaults (Inter, DM Sans, Geist).
+  Body/UI: Atkinson Hyperlegible (Braille Institute, libre) — a humanist
+  sans engineered for legibility (clearly differentiated l/1, O/0; rounded
+  terminals; generous counters). Sits warm against Petrona without arguing
+  for attention, and reads well at small sizes in low-contrast / late-night
+  conditions — which matches this audience's actual viewing context. Avoids
+  the excluded defaults (Inter, DM Sans, Geist, IBM Plex Sans).
+
+  Weight axis: Atkinson ships Regular (400) and Bold (700) only. Anywhere
+  the project previously asked for sans 500/600, it now uses 700 (true Bold
+  rather than browser-faked intermediate weight).
 
   When the licensed faces arrive, drop them as local files in
   `public/fonts/` and swap these `next/font/google` calls for
@@ -41,11 +48,12 @@ const displaySerif = Petrona({
   fallback: ["Iowan Old Style", "Charter", "Georgia", "Cambria", "serif"],
 });
 
-const bodySans = IBM_Plex_Sans({
+const bodySans = Atkinson_Hyperlegible({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-sans",
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   fallback: [
     "-apple-system",
     "BlinkMacSystemFont",
