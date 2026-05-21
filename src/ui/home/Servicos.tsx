@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { FALLBACK_SERVICOS, type ServicosContent } from "@/lib/home-content-types";
 import { Eyebrow } from "@/ui/components/Eyebrow";
-import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 import { PageContainer } from "@/ui/components/PageContainer";
 import { Section } from "@/ui/components/Section";
 import { SectionHeading } from "@/ui/components/SectionHeading";
@@ -19,10 +18,12 @@ import { AreasReveal } from "@/ui/home/AreasReveal";
   ornament, per brief — keeping the numeral inside the body column so
   there are no orphan quadrants when the body wraps long.
 
-  An editorial illustration slot sits opposite the body on each
-  article — the service's metaphor as a small considered drawing,
-  marginal rather than central. The body/slot swap is what does the
-  page-stepping; the type does the rest.
+  Imagery deliberately omitted: Sobre is the page's single illustrated
+  anchor (its desk-detail brief is the strongest in the page). Serviços
+  is the typographic anchor — numerals, headings, framing italic, the
+  áreas list with hairlines do the visual work. ComoAjuda follows the
+  same imageless pattern. The opposite-corner whitespace left by the
+  asymmetric offset is intentional breathing room, not missing content.
 
   Áreas de escuta render as a stacked serif list with hairlines and a
   quiet disc marker — words first, scannable at a glance. The earlier
@@ -38,12 +39,6 @@ import { AreasReveal } from "@/ui/home/AreasReveal";
   / reduced-motion paths render the list visible without animation.
 */
 const NUMERALS = ["i.", "ii."] as const;
-
-const ILLUSTRATION_BY_SERVICE: Record<string, string> = {
-  clinica:
-    "A sala — uma cadeira, uma janela, o tempo que passa entre as palavras. Interior lento, hatching contido.",
-  orientacao: "A bússola sobre a mesa, virada na direção certa — instrumento, não jornada.",
-};
 
 type ServicosProps = {
   content?: ServicosContent;
@@ -65,7 +60,6 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
         <div className="space-y-[var(--space-2xl)]">
           {content.items.map((s, i) => {
             const isFirst = i === 0;
-            const illustrationConcept = ILLUSTRATION_BY_SERVICE[s.id];
             return (
               <article
                 key={s.id}
@@ -115,32 +109,6 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                     ))}
                   </AreasReveal>
                 </div>
-
-                {/* Illustration — opposite the body block. Service I drawing
-                    sits far-right (cols 10–12); Service II drawing sits
-                    far-left (cols 1–3) and is pinned to row 1 so it sits
-                    beside the heading instead of wrapping below. Decorative,
-                    aria-hidden by the component itself.
-                    `items-start` is load-bearing: without it the grid row's
-                    flex `align-items: stretch` default overrides the slot's
-                    `aspect-ratio: 1/1`, making the drawing float in a tall
-                    narrow strip and also tripping Next/Image `sizes`. */}
-                {illustrationConcept ? (
-                  <div
-                    className={
-                      isFirst
-                        ? "hidden md:col-span-3 md:col-start-10 md:flex md:items-start md:justify-end md:pt-[var(--space-md)]"
-                        : "hidden md:col-span-3 md:col-start-1 md:row-start-1 md:flex md:items-start md:justify-start md:pt-[var(--space-md)]"
-                    }
-                  >
-                    <IllustrationSlot
-                      concept={illustrationConcept}
-                      shape="service"
-                      src={s.illustration?.url}
-                      alt={s.illustration?.alt}
-                    />
-                  </div>
-                ) : null}
               </article>
             );
           })}
