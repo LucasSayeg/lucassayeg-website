@@ -95,7 +95,7 @@ export const SOBRE = {
 
 export const SOBRE_BOTTOM_CTA = {
   heading: "Vamos conversar.",
-  body: "Me chame pelo WhatsApp ou pelo formulário do início.",
+  body: "Se algo aqui ressoou, me escreva. Não é preciso estar com a questão pronta.",
   whatsappLabel: "Conversar pelo WhatsApp",
   formLabel: "Voltar ao formulário",
 } as const;

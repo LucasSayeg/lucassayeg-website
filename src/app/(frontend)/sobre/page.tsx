@@ -81,7 +81,7 @@ export default async function SobrePage() {
                   <HandmadeUnderline>{siteInfo.name}</HandmadeUnderline>
                 </h1>
 
-                <p className="mt-[var(--space-2xs)] font-display text-[length:var(--text-lg)] text-ink-soft">
+                <p className="mt-[var(--space-2xs)] font-display italic text-[length:var(--text-base)] text-ink-soft">
                   {siteInfo.slogan}
                 </p>
 
@@ -102,7 +102,7 @@ export default async function SobrePage() {
                   <FormacaoBody content={content} />
                 </div>
 
-                <p className="mt-[var(--space-2xl)] font-display text-sm text-ink-quiet">
+                <p className="mt-[var(--space-lg)] font-display text-sm text-ink-quiet">
                   {siteInfo.crp}
                 </p>
               </div>
@@ -132,14 +132,11 @@ export default async function SobrePage() {
             >
               {content.bottomCtaHeading}
             </h2>
-            <p className="mt-[var(--space-2xs)] max-w-[52ch] text-[length:var(--text-base)] leading-relaxed text-ink-soft">
+            <p className="mt-[var(--space-2xs)] max-w-[56ch] text-[length:var(--text-lg)] leading-relaxed text-ink-soft">
               {content.bottomCtaBody}
             </p>
 
             <div className="mt-[var(--space-lg)] flex flex-wrap items-center gap-x-5 gap-y-3">
-              <WhatsappCta href={whatsappHref} ariaLabel="Iniciar conversa no WhatsApp">
-                {content.bottomCtaWhatsappLabel}
-              </WhatsappCta>
               <UnderlineLink
                 href="/#contato"
                 internal
@@ -148,11 +145,14 @@ export default async function SobrePage() {
                 {content.bottomCtaFormLabel}
                 <span
                   aria-hidden
-                  className="font-display transition-transform group-hover:translate-x-0.5"
+                  className="font-display transition-transform group-hover:translate-y-0.5"
                 >
-                  ↗
+                  ↓
                 </span>
               </UnderlineLink>
+              <WhatsappCta href={whatsappHref} ariaLabel="Iniciar conversa no WhatsApp">
+                {content.bottomCtaWhatsappLabel}
+              </WhatsappCta>
             </div>
           </PageContainer>
         </section>
