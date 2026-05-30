@@ -22,8 +22,19 @@ type Props = {
   src?: string;
   /** Alt text for the final art. Empty string is treated as decorative. */
   alt?: string;
+  /**
+   * Above-the-fold images (e.g. the hero portrait) should set this so
+   * next/image preloads them and skips lazy-loading. Below-the-fold slots
+   * leave it off and lazy-load by default.
+   */
+  priority?: boolean;
   className?: string;
 };
+
+// Warm putty tint (--paper-clay) as a tiny SVG, so real photos fade in from
+// an on-brand neutral instead of snapping in from a blank frame.
+const BLUR_PLACEHOLDER =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlZGU5ZTAiLz48L3N2Zz4=";
 
 const aspectByShape: Record<Shape, string> = {
   square: "1 / 1",
@@ -51,7 +62,14 @@ const sizesByShape: Record<Shape, string> = {
   portrait: "(min-width: 1024px) 40vw, 100vw",
 };
 
-export function IllustrationSlot({ concept, shape = "square", src, alt, className }: Props) {
+export function IllustrationSlot({
+  concept,
+  shape = "square",
+  src,
+  alt,
+  priority = false,
+  className,
+}: Props) {
   const style: CSSProperties = {
     aspectRatio: aspectByShape[shape],
     width: widthByShape[shape],
@@ -78,7 +96,16 @@ export function IllustrationSlot({ concept, shape = "square", src, alt, classNam
         style={style}
         {...(isDecorative ? { "aria-hidden": true } : {})}
       >
-        <Image src={src} alt={resolvedAlt} fill sizes={sizesByShape[shape]} className={fit} />
+        <Image
+          src={src}
+          alt={resolvedAlt}
+          fill
+          sizes={sizesByShape[shape]}
+          className={fit}
+          priority={priority}
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
+        />
       </div>
     );
   }

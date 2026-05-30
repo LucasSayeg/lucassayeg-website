@@ -77,6 +77,7 @@ export function Hero({
               shape="portrait"
               src={portrait?.url}
               alt={portrait?.alt}
+              priority
               className="w-full"
             />
           </div>
