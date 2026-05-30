@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-/* Palette exploration — see src/app/palettes.css. Temporary; the winning
-   palette will be promoted into :root below and this import deleted. */
-@import "./palettes.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -16,17 +13,21 @@
   share the same hue at low chroma so text and background feel like one material.
 */
 :root {
-  /* Surfaces — warm neutrals, tinted toward paper */
-  --paper: oklch(0.985 0.006 82); /* bone — page background */
-  --paper-soft: oklch(0.965 0.01 78); /* parchment — section break */
-  --paper-clay: oklch(0.935 0.014 74); /* putty — quiet surface, dividers, form chrome */
-  --paper-deep: oklch(0.89 0.018 70); /* soft clay — strong divider, hairline accent */
+  /* Surfaces — warm neutrals, tinted toward paper. Promoted from the former
+     `bone` palette (the winning exploration); palettes.css has been removed. */
+  --paper: oklch(0.99 0.002 85); /* bone — page background */
+  --paper-soft: oklch(0.97 0.004 85); /* parchment — section break */
+  --paper-clay: oklch(0.94 0.007 82); /* putty — quiet surface, contact pause */
+  --paper-deep: oklch(0.89 0.011 78); /* soft clay — strong divider, hairline accent */
 
   /* Ink — warm dark, never pure black */
   --ink: oklch(0.205 0.018 50); /* primary text + headings */
   --ink-soft: oklch(0.345 0.018 52); /* body emphasis */
   --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
   --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
+  --field-line: oklch(0.6 0.013 60); /* resting input underline — holds ≥3:1 on
+                                        the paper-clay contact surface so a field
+                                        reads as an input before focus */
 
   /* Accent — single deep, considered color (ink navy, hue rotated from the
      earlier oxblood). Same L/C as before so weight on the page is unchanged. */
@@ -400,19 +401,39 @@
    drop to neutral black on the bone paper.
    Modifiers: --sm for the header (denser row), --lg for the long
    uppercase form-submit register.
-   ───────────────────────────────────────────────────────────────── */
-.btn-primary {
+   ─────────────────────────────────────────────────────────────────
+
+   Declared in @layer components so Tailwind utilities (@layer utilities)
+   win the cascade — e.g. `hidden`/`md:inline-flex` on a button must be able
+   to override the base `display`. Unlayered rules beat any layered rule
+   regardless of order, which would silently defeat utility overrides. */
+@layer components {
+.btn-primary,
+.btn-outline {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.625rem;
-  padding: 0.75rem 1.25rem;
+  min-height: 2.75rem; /* 44px — touch-target floor (mobile, late-night audience) */
+  padding: 0.5rem 1.25rem;
+  border: 1px solid transparent;
   border-radius: 0.25rem;
-  background-color: var(--cta-surface);
-  color: var(--paper);
   font-size: var(--text-base);
   line-height: 1.2;
   text-decoration: none;
-  transition: background-color 200ms var(--ease-out-quart);
+  transition:
+    background-color 200ms var(--ease-out-quart),
+    border-color 200ms var(--ease-out-quart),
+    color 200ms var(--ease-out-quart);
+}
+
+/* Solid — the page's weighted CTA. Deliberately rare: used at most twice and
+   never twice in one viewport — the Hero (first contact) and the form submit
+   (the actual conversion click). The repeated WhatsApp affordances use the
+   outline register below so navy fill never reads as a system color. */
+.btn-primary {
+  background-color: var(--cta-surface);
+  color: var(--paper);
 }
 .btn-primary:hover {
   background-color: var(--cta-surface-hover);
@@ -422,19 +443,47 @@
   background-color: var(--ink-quiet);
   cursor: wait;
 }
-.btn-primary--sm {
+
+/* Outline — the quiet, persistent register for the repeated WhatsApp
+   affordances (header, contact rail). Navy ink on paper, hairline border
+   that firms up on hover. Keeps the affordance reachable without stacking
+   another dark block onto a light, type-led page. */
+.btn-outline {
+  background-color: transparent;
+  /* Border holds ≥3:1 (WCAG 1.4.11) against both the bone page and the deeper
+     paper-clay contact surface, so the capsule edge reads as a real boundary
+     on either ground. */
+  border-color: color-mix(in oklch, var(--cta-surface) 62%, var(--paper-deep));
+  color: var(--cta-surface);
+}
+.btn-outline:hover {
+  border-color: var(--cta-surface);
+  background-color: color-mix(in oklch, var(--cta-surface) 6%, transparent);
+  color: var(--cta-surface-hover);
+}
+.btn-outline:disabled,
+.btn-outline[aria-disabled="true"] {
+  border-color: var(--paper-deep);
+  color: var(--ink-quiet);
+  cursor: wait;
+}
+
+.btn-primary--sm,
+.btn-outline--sm {
   gap: 0.5rem;
-  padding: 0.5rem 0.875rem;
+  padding: 0.375rem 0.875rem;
   font-size: var(--text-sm);
 }
-.btn-primary--lg {
+.btn-primary--lg,
+.btn-outline--lg {
   gap: 0.75rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   white-space: nowrap;
 }
+} /* @layer components */
 
 /* ─────────────────────────────────────────────────────────────────
    Topic Chip — recognition tokens framed by a quiet outlined capsule.
@@ -521,6 +570,20 @@
 [data-contact-state="success"] .contact-collapse {
   opacity: 0;
   pointer-events: none;
+}
+
+/* On success the rail fades and the form pane empties — so let the thank-you
+   own the full width and sit centered in the (form-height) cell, rather than
+   clinging to the top-left and leaving a hollow lower-right. */
+[data-contact-state="success"] .contact-form-col {
+  grid-column: 1 / -1;
+}
+[data-contact-state="success"] .contact-form-shell {
+  max-width: 52ch;
+  margin-inline: auto;
+}
+[data-contact-state="success"] .contact-swap__pane--success {
+  align-self: center;
 }
 
 /* ─────────────────────────────────────────────────────────────────

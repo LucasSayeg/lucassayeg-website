@@ -140,16 +140,10 @@ export function Header({
                 {siteInfo.shortMark}
               </Eyebrow>
             </a>
-            {/* Slogan collapses when scrolled so the WhatsApp pill leads the dense state. */}
-            <div
-              aria-hidden={scrolled}
-              className="grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out-quart)] md:hidden"
-              style={{ gridTemplateRows: scrolled ? "0fr" : "1fr" }}
-            >
-              <p className="mt-2 max-w-[28ch] overflow-hidden font-display text-[0.95rem] leading-snug text-ink-soft">
-                {siteInfo.slogan}
-              </p>
-            </div>
+            {/* Mobile drops the slogan from the sticky bar — the Hero carries it
+                immediately below, so repeating it here only lengthened the
+                header and doubled the first-screen message. Desktop keeps the
+                top-right slogan (it has the horizontal room). */}
           </div>
           <p className="hidden max-w-[26ch] text-right font-display text-base leading-snug text-ink-soft md:block">
             {siteInfo.slogan}
@@ -192,7 +186,16 @@ export function Header({
           </nav>
 
           <div className="flex items-center gap-2 md:ml-auto">
-            <WhatsappCta href={whatsappHref} size="sm" ariaLabel="Iniciar conversa no WhatsApp">
+            {/* On mobile the Hero owns the first CTA, so the header WhatsApp
+                stays hidden until the visitor scrolls past it — then it returns
+                as the persistent affordance. Always present from md up. */}
+            <WhatsappCta
+              href={whatsappHref}
+              size="sm"
+              variant="outline"
+              ariaLabel="Iniciar conversa no WhatsApp"
+              className={scrolled ? undefined : "hidden md:inline-flex"}
+            >
               WhatsApp
             </WhatsappCta>
 
@@ -212,18 +215,27 @@ export function Header({
         {/* Mobile nav */}
         <div id="mobile-nav" data-open={mobileOpen} className="accordion-panel md:hidden">
           <div className="accordion-panel-inner">
-            <ul className="flex flex-col gap-1 border-t border-paper-deep pb-4 pt-2 text-base">
-              {navLinks.map((l) => (
-                <li key={l.href}>
-                  <a
-                    href={resolveAnchor(l.href)}
-                    onClick={(e) => handleAnchor(e, l.href)}
-                    className="block rounded-sm px-2 py-3 text-ink-soft hover:bg-paper-soft hover:text-ink"
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
+            <ul className="flex flex-col divide-y divide-paper-deep/50 border-t border-paper-deep pb-2 pt-1 text-base">
+              {navLinks.map((l) => {
+                // Same navy "active" signal the desktop nav uses — so the
+                // current section is marked on mobile too, not just desktop.
+                const isActive = activeHash === l.href;
+                return (
+                  <li key={l.href}>
+                    <a
+                      href={resolveAnchor(l.href)}
+                      onClick={(e) => handleAnchor(e, l.href)}
+                      aria-current={isActive ? "location" : undefined}
+                      data-active={isActive}
+                      className={`block px-2 py-3 transition-colors hover:text-ink ${
+                        isActive ? "text-accent" : "text-ink-soft"
+                      }`}
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

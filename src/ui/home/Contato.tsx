@@ -45,7 +45,7 @@ export function Contato({
     <Section
       id="contato"
       data-contact-state={isSuccess ? "success" : "form"}
-      className="border-t border-paper-deep bg-paper-clay/40 py-[var(--space-4xl)]"
+      className="border-t border-paper-deep bg-paper-clay py-[var(--space-4xl)]"
     >
       <PageContainer>
         {/* Header — heading and invite stacked together, left-anchored. */}
@@ -60,8 +60,8 @@ export function Contato({
 
         {/* Body row — form left (cols 1–7), quiet rail right (cols 9–12). */}
         <div className="mt-[var(--space-xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-2xl)] md:grid-cols-12">
-          <div className="md:col-span-7 md:col-start-1">
-            <div className="max-w-[560px]">
+          <div className="contact-form-col md:col-span-7 md:col-start-1">
+            <div className="contact-form-shell max-w-[560px]">
               <ContactForm {...formState} copy={formCopy} />
             </div>
           </div>
@@ -70,7 +70,12 @@ export function Contato({
             aria-label="Outras informações de contato"
             className="contact-collapse md:col-span-4 md:col-start-9"
           >
-            <div className="space-y-[var(--space-lg)]">
+            {/* Full-height flex column: response-time + WhatsApp group at the
+                top, sigilo pushed to the bottom (mt-auto) so it sits opposite
+                the form's submit — filling the lower-right and landing the
+                reassurance right at the contact moment. On mobile the column
+                has no extra height, so mt-auto is inert and blocks stack. */}
+            <div className="flex h-full flex-col gap-[var(--space-lg)]">
               <div>
                 <Eyebrow>{content.responseTimeLabel}</Eyebrow>
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
@@ -83,12 +88,14 @@ export function Contato({
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.whatsappPrompt}
                 </p>
+                {/* WhatsApp is the primary channel — filled here so it leads the
+                    section; the form submit is the quieter outline alternative. */}
                 <WhatsappCta href={whatsappHref} className="mt-[var(--space-sm)]">
                   {content.whatsappLabel}
                 </WhatsappCta>
               </div>
 
-              <div>
+              <div className="mt-auto">
                 <Eyebrow>{content.sigiloLabel}</Eyebrow>
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.sigiloBody}

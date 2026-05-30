@@ -210,7 +210,7 @@ export const CONTACT_FORM = {
     "Conte um pouco sobre o que está te trazendo aqui — algumas linhas já bastam.",
   messageValidHint: "Grato pela mensagem.",
   disclaimer: "Mensagens chegam apenas para mim. Nenhum cadastro, nenhum disparo.",
-  requiredHint: "campos obrigatórios",
+  requiredHint: "Todos os campos são necessários.",
   submitLabel: "Enviar mensagem",
   submitLoadingLabel: "Enviando…",
   successHeading: "Obrigado pela sua mensagem.",

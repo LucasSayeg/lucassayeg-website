@@ -58,10 +58,12 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
                     </span>
                     <span
                       aria-hidden
-                      className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-paper-deep text-ink-quiet transition-transform duration-300 ease-[var(--ease-out-quart)]"
+                      className={`mt-1 inline-flex h-7 w-6 shrink-0 items-center justify-center transition-[transform,color] duration-300 ease-[var(--ease-out-quart)] ${
+                        open ? "text-accent" : "text-ink-quiet group-hover:text-ink-soft"
+                      }`}
                       style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
                     >
-                      <Plus className="h-3.5 w-3.5" />
+                      <Plus className="h-[1.15rem] w-[1.15rem]" strokeWidth={1.25} />
                     </span>
                   </button>
                 </h3>
