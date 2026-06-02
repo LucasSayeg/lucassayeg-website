@@ -9,24 +9,24 @@ import type { MouseEvent, ReactNode } from "react";
 import { Eyebrow } from "@/ui/components/Eyebrow";
 import { UnderlineLink, underlineLinkClass } from "@/ui/components/UnderlineLink";
 
-// The form sits on the navy plate (.on-navy in Contato), so every field color
-// is the on-navy register: a faint light fill so the field reads as a writable
-// inset, light text + placeholder, and a resting underline (--field-line-on-navy,
-// ≥3:1 on navy) so it reads as an input before focus.
+// The form sits open on the warm paper ground in Contato, so every field color
+// is the on-paper register.
 const fieldClass = cn(
-  "block w-full min-h-11 rounded-t-sm border-0 border-b border-[var(--field-line-on-navy)] px-3 py-2",
-  "bg-[color-mix(in_oklch,var(--on-navy)_12%,transparent)]",
-  "font-sans text-(length:--text-base) leading-[1.5] text-[var(--on-navy)]",
-  "placeholder:text-[var(--on-navy-quiet)]",
+  // A faint, slightly-lighter-than-the-surface tint + a firmer underline
+  // (--field-line, ≥3:1) so the field reads as a writable inset before focus —
+  // the resting paper-deep rule was ~1.17:1 and disappeared into the surface.
+  "block w-full min-h-11 rounded-t-sm border-0 border-b border-[var(--field-line)] px-3 py-2",
+  "bg-[color-mix(in_oklch,var(--paper)_55%,transparent)]",
+  "font-sans text-(length:--text-base) leading-[1.5] text-ink",
+  "placeholder:text-ink-quiet",
   "transition-[color,border-color,box-shadow,background-color] duration-200",
-  // Focus reads as a clear light underline (border + 1px shadow = a 2px rule).
-  // The navy accent would be navy-on-navy here, so focus brightens to --on-navy
-  // — unambiguous "you're here" feedback at the most vulnerable element.
-  "focus:outline-none focus:border-[var(--on-navy)] focus:shadow-[0_1px_0_0_var(--on-navy)]",
-  // Error stays warm, never alarming red — a legible amber (--warning-on-dark)
-  // that reads against navy and is distinct from the light focus underline.
-  "aria-[invalid=true]:border-[var(--warning-on-dark)] aria-[invalid=true]:shadow-[0_1px_0_0_var(--warning-on-dark)]",
-  "aria-[invalid=true]:focus:border-[var(--on-navy)] aria-[invalid=true]:focus:shadow-[0_1px_0_0_var(--on-navy)]",
+  // Focus reads as a clear navy accent underline (border + 1px shadow = a 2px
+  // rule) — unambiguous "you're here" feedback at the most vulnerable element.
+  "focus:outline-none focus:border-accent focus:shadow-[0_1px_0_0_var(--color-accent)]",
+  // Error stays warm, never alarming red — it shares the warning-ink the field
+  // hints already use, and is distinct from the navy focus accent.
+  "aria-[invalid=true]:border-[var(--warning-ink)] aria-[invalid=true]:shadow-[0_1px_0_0_var(--warning-ink)]",
+  "aria-[invalid=true]:focus:border-accent aria-[invalid=true]:focus:shadow-[0_1px_0_0_var(--color-accent)]",
   "disabled:opacity-60",
 );
 
@@ -141,11 +141,7 @@ export function ContactForm({
           noValidate
         >
           <div className="space-y-2">
-            <Eyebrow
-              as="label"
-              htmlFor="contact-name"
-              className="block text-[var(--on-navy-quiet)]"
-            >
+            <Eyebrow as="label" htmlFor="contact-name" className="block">
               {CONTACT_FORM.nameLabel}
             </Eyebrow>
             <input
@@ -170,11 +166,7 @@ export function ContactForm({
           </div>
 
           <div className="space-y-2">
-            <Eyebrow
-              as="label"
-              htmlFor="contact-email"
-              className="block text-[var(--on-navy-quiet)]"
-            >
+            <Eyebrow as="label" htmlFor="contact-email" className="block">
               {CONTACT_FORM.emailLabel}
             </Eyebrow>
             <input
@@ -201,7 +193,7 @@ export function ContactForm({
 
           <div className="space-y-2">
             <div className="flex items-baseline justify-between gap-3">
-              <Eyebrow as="label" htmlFor="contact-message" className="text-[var(--on-navy-quiet)]">
+              <Eyebrow as="label" htmlFor="contact-message">
                 {CONTACT_FORM.messageLabel}
               </Eyebrow>
               {/* Quiet countdown — only surfaces as the field nears the ceiling,
@@ -211,9 +203,7 @@ export function ContactForm({
                   aria-hidden
                   className={cn(
                     "nums-tabular text-xs",
-                    messageLength > 4000
-                      ? "text-[var(--warning-on-dark)]"
-                      : "text-[var(--on-navy-quiet)]",
+                    messageLength > 4000 ? "text-[var(--warning-ink)]" : "text-ink-quiet",
                   )}
                 >
                   {Math.max(0, 4000 - messageLength)} restantes
@@ -253,17 +243,12 @@ export function ContactForm({
                 href={`mailto:${SITE_META.email}`}
                 onClick={handleMailtoFallback}
                 variant="tight"
-                className="text-[var(--on-navy)]"
+                className="text-ink"
               >
                 enviar pelo seu app de e-mail
               </UnderlineLink>{" "}
               (com o que você escreveu já preenchido), ou falar com Lucas pelo{" "}
-              <UnderlineLink
-                href={WHATSAPP_HREF}
-                external
-                variant="tight"
-                className="text-[var(--on-navy)]"
-              >
+              <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
                 WhatsApp
               </UnderlineLink>
               .
@@ -271,9 +256,9 @@ export function ContactForm({
           </div>
 
           <div className="space-y-3 pt-(--space-2xs)">
-            <p className="text-xs leading-relaxed text-[var(--on-navy-quiet)]">{copy.disclaimer}</p>
+            <p className="text-xs leading-relaxed text-ink-quiet">{copy.disclaimer}</p>
             <div className="flex flex-wrap items-center justify-end gap-4">
-              <p className="text-xs text-[var(--on-navy-quiet)]">{CONTACT_FORM.requiredHint}</p>
+              <p className="text-xs text-ink-quiet">{CONTACT_FORM.requiredHint}</p>
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -305,20 +290,13 @@ export function ContactForm({
         inert={!isSuccess}
       >
         <div className="space-y-(--space-md)">
-          <p className="text-(length:--text-lg) leading-snug text-[var(--on-navy)]">
-            {copy.successHeading}
-          </p>
-          <p className="text-(length:--text-base) leading-relaxed text-[var(--on-navy-quiet)]">
+          <p className="text-(length:--text-lg) leading-snug text-ink">{copy.successHeading}</p>
+          <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
             {copy.successBody}
           </p>
-          <p className="text-(length:--text-base) leading-relaxed text-[var(--on-navy-quiet)]">
+          <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
             {copy.successWhatsappPrompt}{" "}
-            <UnderlineLink
-              href={WHATSAPP_HREF}
-              external
-              variant="tight"
-              className="text-[var(--on-navy)]"
-            >
+            <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
               {CONTACT_FORM.successWhatsappLabel}
             </UnderlineLink>
             .
@@ -328,7 +306,7 @@ export function ContactForm({
             onClick={reset}
             className={underlineLinkClass({
               variant: "tight",
-              className: "text-sm text-[var(--on-navy-quiet)] hover:text-[var(--on-navy)]",
+              className: "text-sm text-ink-quiet hover:text-ink",
             })}
           >
             {CONTACT_FORM.successResetLabel}

@@ -11,7 +11,7 @@ type ComoAjudaProps = {
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   if (content.items.length === 0) return null;
   return (
-    <Section id="como-ajuda" className="relative isolate">
+    <Section id="como-ajuda" className="relative isolate bg-paper-clay">
       <PageContainer className="relative">
         <SectionHeading id="como-ajuda-heading" className="mb-[var(--space-2xl)]">
           Como a terapia pode ajudar.

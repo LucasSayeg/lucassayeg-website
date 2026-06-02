@@ -42,21 +42,21 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
         </div>
 
         <div className="grid grid-cols-1 gap-[var(--space-lg)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
-          <div className="relative space-y-[var(--space-lg)] lg:col-span-4">
-            {/* Asymmetric tone field — deeper clay hugging the portrait side.
-                Its right edge lands in the column gutter (never cutting the
-                text); the left bleeds off the viewport edge. Decorative; sits
-                behind content. On mobile this column is full-width, so the field
-                degrades to a clean full-width deeper band. */}
-            <div aria-hidden className="tone-field-left" />
+          <div className="space-y-[var(--space-lg)] lg:col-span-4">
             <SectionHeading id="sobre-heading">
               <HandmadeUnderline>{siteName}</HandmadeUnderline>
             </SectionHeading>
 
             {/* Atmospheric illustration — environment / books / hands per brief.
                 Tighter aspect than the hero portrait, so it reads as a
-                companion piece rather than a duplicate. */}
-            <div className="w-full max-w-[320px] lg:max-w-none">
+                companion piece rather than a duplicate.
+
+                Matted on a deep-ink plate: a contained rectangle offset behind
+                the photo so it peeks out lower-right, like a print tipped onto a
+                dark mat. The plate is decorative (aria-hidden) and sits behind
+                the photo via the wrapper's own isolate. */}
+            <div className="relative isolate w-full max-w-[320px] lg:max-w-none">
+              <div aria-hidden className="portrait-plate" />
               <IllustrationSlot
                 concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."
                 shape="portrait"

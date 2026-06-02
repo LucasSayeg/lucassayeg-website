@@ -26,19 +26,16 @@
   --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
   --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
   --field-line: oklch(0.6 0.013 60); /* resting input underline — holds ≥3:1 on
-                                        the paper-clay contact surface so a field
+                                        the gesso contact surface so a field
                                         reads as an input before focus */
 
-  /* Dark surfaces — grouped so contrast against the deep ground and the navy
-     plate is verified once. The footer rides --surface-deep; the Contato plate
-     rides --accent (navy) and recolors its contents with the --on-navy* set. */
-  --surface-deep: oklch(0.255 0.012 60); /* #2C2821 — footer ground */
+  /* Dark surfaces — grouped so contrast against the deep ink ground is verified
+     once. The footer rides --surface-deep for its full ground; the Sobre
+     portrait plate rides the same warm ink as a small offset backing rectangle
+     (the page's one upward thread of the footer color). */
+  --surface-deep: oklch(0.255 0.012 60); /* #2C2821 — footer ground + Sobre plate */
   --ink-on-dark: oklch(0.965 0.006 80); /* primary text on dark */
   --ink-on-dark-quiet: oklch(0.82 0.008 75); /* body/secondary on dark (footer copy) */
-  --on-navy: oklch(0.97 0.005 80); /* primary text on navy plate */
-  --on-navy-quiet: oklch(0.85 0.01 240); /* secondary on navy */
-  --field-line-on-navy: oklch(0.72 0.02 240); /* resting input underline on navy (≥3:1) */
-  --warning-on-dark: oklch(0.78 0.09 60); /* validation error legible on navy */
 
   /* Accent — single deep, considered color (ink navy, hue rotated from the
      earlier oxblood). Same L/C as before so weight on the page is unchanged. */
@@ -241,11 +238,8 @@
     outline-offset: 3px;
     border-radius: 1px;
   }
-  /* On dark grounds the navy outline disappears — swap to a light ring.
-     Higher specificity than the base rule above, so it wins in-layer. */
-  .on-navy :focus-visible {
-    outline-color: var(--on-navy);
-  }
+  /* On the dark footer ground the navy outline disappears — swap to a light
+     ring. Higher specificity than the base rule above, so it wins in-layer. */
   .on-dark :focus-visible {
     outline-color: var(--ink-on-dark);
   }
@@ -848,68 +842,26 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Dark / navy surface treatments — UNLAYERED so they win over Tailwind
-   utilities (which live in @layer utilities). Scoped under .on-navy (the
-   Contato plate) and .on-dark (the footer): they recolor the *shared*
-   component classes (.btn-outline, .field-hint*, .form-banner*) on a dark
-   ground WITHOUT touching the base rules, which stay shared with the
-   header and the rest of the light page.
+   Dark surface treatment — UNLAYERED so it wins over Tailwind utilities
+   (which live in @layer utilities). The footer recolors shared component
+   classes under .on-dark; here we define the Sobre portrait plate.
    ───────────────────────────────────────────────────────────────── */
 
-/* Asymmetric tone field — Sobre. A child of the portrait column, so its right
-   edge tracks the column gutter at every breakpoint (it lands in the empty gap,
-   never cutting the text) while the left bleeds off the viewport edge. The huge
-   inset-block + left are clipped by the section ([overflow:clip]), so the field
-   fills the section's full height and bleeds cleanly off the left. On mobile the
-   portrait column spans the full width, so this degrades to a clean full-width
-   deeper band. Decorative (aria-hidden), sits behind content via z-index:-10
-   inside the section's isolate. */
-.tone-field-left {
+/* Portrait plate — Sobre. A contained warm-taupe rectangle sitting behind the
+   portrait and offset down-and-right, so it peeks out on two edges like a print
+   tipped onto a warm mat. Decorative (aria-hidden), behind the photo via
+   z-index:-10 inside the wrapper's own isolate. Contained — it does NOT bleed
+   to the viewport edge, so it adds no horizontal scroll. On mobile the portrait
+   column centers a narrower photo and the plate offsets behind it the same way.
+   A warm mid-tone (not the footer ink) so it reads as a soft backing, not a
+   second dark mass on the page. */
+.portrait-plate {
   position: absolute;
-  inset-block: -9999px;
-  left: -9999px;
-  right: calc(var(--space-2xl) / -2);
-  background: var(--paper-clay);
+  inset: 0;
+  background: oklch(0.52 0.028 58); /* warm taupe — clearly a plate against the
+                                       gesso, without the weight of the ink */
+  transform: translate(var(--space-md), var(--space-md));
   z-index: -10;
-}
-
-/* Outline pills on navy (submit + WhatsApp). Base .btn-outline is untouched. */
-.on-navy .btn-outline {
-  border-color: color-mix(in oklch, var(--on-navy) 55%, transparent);
-  color: var(--on-navy);
-}
-.on-navy .btn-outline:hover {
-  border-color: var(--on-navy);
-  background-color: color-mix(in oklch, var(--on-navy) 10%, transparent);
-  color: var(--on-navy);
-}
-.on-navy .btn-outline:disabled,
-.on-navy .btn-outline[aria-disabled="true"] {
-  border-color: color-mix(in oklch, var(--on-navy) 30%, transparent);
-  color: var(--on-navy-quiet);
-}
-/* The forward-arrow glyph is an aria-hidden <span>. On the WhatsApp pill it
-   carries a `text-ink-quiet` utility (invisible on navy) which this unlayered
-   rule overrides; the submit-button arrow has no color utility and already
-   inherits --on-navy from `.on-navy .btn-outline`, so this is harmless there.
-   The WhatsApp brand-green mark is an <svg>, not a span, so its tint is left
-   alone. */
-.on-navy .btn-outline span[aria-hidden] {
-  color: var(--on-navy);
-}
-
-/* Field hints + submit-failure banner on navy — same vocabulary, on-navy
-   palette. The warning mark stays warm (legible amber), never navy-on-navy. */
-.on-navy .field-hint__text,
-.on-navy .field-hint__valid {
-  color: var(--on-navy-quiet);
-}
-.on-navy .form-banner__text {
-  color: var(--on-navy-quiet);
-}
-.on-navy .field-hint__mark,
-.on-navy .form-banner__mark {
-  color: var(--warning-on-dark);
 }
 
 /* Reduced motion — site fully static */
