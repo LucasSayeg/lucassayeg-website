@@ -875,11 +875,15 @@
    portrait and offset down-and-right, so it peeks out on two edges like a print
    tipped onto a warm mat. Decorative (aria-hidden), behind the photo via
    z-index:-10 inside the wrapper's own isolate. Contained — it does NOT bleed
-   to the viewport edge, so it adds no horizontal scroll. On mobile the portrait
-   column centers a narrower photo and the plate offsets behind it the same way.
-   A warm mid-tone (not the footer ink) so it reads as a soft backing, not a
-   second dark mass on the page. */
+   to the viewport edge, so it adds no horizontal scroll. A warm mid-tone (not
+   the footer ink) so it reads as a soft backing, not a second dark mass on the
+   page.
+
+   Desktop-only: the plate is a deliberate gesture for the side-by-side portrait
+   layout (lg+). On the centered single-column mobile layout it reads as clutter
+   rather than backing, so it's hidden below lg (64rem). */
 .portrait-plate {
+  display: none;
   --plate-x: var(--space-md);
   --plate-y: var(--space-md);
   position: absolute;
@@ -889,6 +893,11 @@
   transform: translate(var(--plate-x), var(--plate-y));
   transition: transform var(--dur-base) var(--ease-out-quart);
   z-index: -10;
+}
+@media (min-width: 64rem) {
+  .portrait-plate {
+    display: block;
+  }
 }
 /* Mirror for a right-column portrait (Hero): peeks up-and-left, tucked into
    the top corner toward the page center — the same tipped-in motif, composed
