@@ -8,6 +8,7 @@ import { WHATSAPP_HREF } from "@/lib/home-data";
 import { PageContainer } from "@/ui/components/PageContainer";
 import { WhatsappCta } from "@/ui/components/WhatsappCta";
 import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
+import lucasPortrait from "@/assets/lucas-portrait.jpg";
 
 /*
   Hero — slogan-subhead heading + reassurance + portrait + single CTA + modality strip.
@@ -35,11 +36,11 @@ export function Hero({
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="relative pb-[var(--space-2xl)] pt-[var(--space-md)] sm:pt-[var(--space-xl)] lg:pt-[var(--space-2xl)]"
+      className="relative [overflow:clip] pb-[var(--space-2xl)] pt-[var(--space-md)] sm:pt-[var(--space-xl)] lg:pt-[var(--space-2xl)]"
     >
       <PageContainer>
         <div className="grid grid-cols-1 items-start gap-[var(--space-xl)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
-          <div className="lg:col-span-7 lg:pt-[var(--space-sm)]">
+          <div className="order-2 lg:order-1 lg:col-span-7 lg:pt-[var(--space-sm)]">
             <h1
               id="hero-heading"
               className="max-w-[18ch] font-display text-[length:var(--text-3xl)] font-normal leading-[1.05] tracking-[-0.018em] text-ink sm:max-w-[20ch] sm:text-[length:var(--text-4xl)] lg:max-w-[18ch]"
@@ -71,12 +72,19 @@ export function Hero({
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-[360px] lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none">
+          {/* Portrait on the same tipped-in taupe plate as Sobre — the motif
+              recurs so the warm backing reads as deliberate, not a one-off.
+              Mirrored offset (peeks up-and-left, into the top corner toward
+              page center) since the photo sits in the right column. Plate is
+              decorative, behind the photo; it lifts a touch further on hover
+              (desktop). */}
+          <div className="portrait-frame relative isolate order-1 mx-auto w-full max-w-[360px] lg:order-2 lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none">
+            <div aria-hidden className="portrait-plate portrait-plate--mirror" />
             <IllustrationSlot
               concept="Retrato editorial — figura sentada, três-quartos, livros ao fundo, luz lateral. Linha solta, hatching contido."
               shape="portrait"
-              src={portrait?.url}
-              alt={portrait?.alt}
+              src={portrait?.url ?? lucasPortrait}
+              alt={portrait?.alt ?? "Lucas Sayeg, psicólogo, sentado em seu consultório."}
               priority
               className="w-full"
             />

@@ -23,8 +23,8 @@ import { WhatsappCta } from "@/ui/components/WhatsappCta";
   right rail (cols 9–12) carrying response-time, the WhatsApp prompt,
   and the sigilo note. Rail and invite fade on success so attention
   rests on the thank-you message — the form panel itself swaps via
-  .contact-swap. The warmer paper-clay surface still marks this as the
-  page's quiet pause.
+  .contact-swap. The section sits open on the warm paper ground — a calm
+  light clearing before the dark footer, navy reserved for the accent.
 */
 
 type ContatoProps = {
@@ -45,9 +45,12 @@ export function Contato({
     <Section
       id="contato"
       data-contact-state={isSuccess ? "success" : "form"}
-      className="border-t border-paper-deep bg-paper-clay py-[var(--space-4xl)]"
+      className="py-[var(--space-4xl)]"
     >
       <PageContainer>
+        {/* Open on warm paper — no plate. Contact is the page's calm light
+            clearing before the dark footer; navy survives only as the
+            link/focus/submit accent. */}
         {/* Header — heading and invite stacked together, left-anchored. */}
         <div className="max-w-[640px]">
           <SectionHeading id="contato-heading">{content.heading}</SectionHeading>
@@ -88,9 +91,10 @@ export function Contato({
                 <p className="mt-[var(--space-xs)] text-[length:var(--text-base)] leading-[1.6] text-ink-soft">
                   {content.whatsappPrompt}
                 </p>
-                {/* WhatsApp is the primary channel — filled here so it leads the
-                    section; the form submit is the quieter outline alternative. */}
-                <WhatsappCta href={whatsappHref} className="mt-[var(--space-sm)]">
+                {/* WhatsApp stays the primary channel, but its fill is reserved
+                    for the Hero — here it carries as the quiet outline so the
+                    fill stays rare across the page (60-30-10). */}
+                <WhatsappCta href={whatsappHref} variant="outline" className="mt-[var(--space-sm)]">
                   {content.whatsappLabel}
                 </WhatsappCta>
               </div>

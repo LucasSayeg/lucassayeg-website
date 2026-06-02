@@ -9,8 +9,10 @@ import type { MouseEvent, ReactNode } from "react";
 import { Eyebrow } from "@/ui/components/Eyebrow";
 import { UnderlineLink, underlineLinkClass } from "@/ui/components/UnderlineLink";
 
+// The form sits open on the warm paper ground in Contato, so every field color
+// is the on-paper register.
 const fieldClass = cn(
-  // A faint, slightly-lighter-than-the-clay-surface tint + a firmer underline
+  // A faint, slightly-lighter-than-the-surface tint + a firmer underline
   // (--field-line, ≥3:1) so the field reads as a writable inset before focus —
   // the resting paper-deep rule was ~1.17:1 and disappeared into the surface.
   "block w-full min-h-11 rounded-t-sm border-0 border-b border-[var(--field-line)] px-3 py-2",
@@ -19,8 +21,7 @@ const fieldClass = cn(
   "placeholder:text-ink-quiet",
   "transition-[color,border-color,box-shadow,background-color] duration-200",
   // Focus reads as a clear navy accent underline (border + 1px shadow = a 2px
-  // rule) — unambiguous "you're here" feedback at the most vulnerable element,
-  // and a stronger signal than the previous border-only darkening.
+  // rule) — unambiguous "you're here" feedback at the most vulnerable element.
   "focus:outline-none focus:border-accent focus:shadow-[0_1px_0_0_var(--color-accent)]",
   // Error stays warm, never alarming red — it shares the warning-ink the field
   // hints already use, and is distinct from the navy focus accent.
@@ -258,7 +259,11 @@ export function ContactForm({
             <p className="text-xs leading-relaxed text-ink-quiet">{copy.disclaimer}</p>
             <div className="flex flex-wrap items-center justify-end gap-4">
               <p className="text-xs text-ink-quiet">{CONTACT_FORM.requiredHint}</p>
-              <button type="submit" disabled={isSubmitting} className="btn-outline btn-outline--lg">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-outline btn-outline--lg max-sm:w-full max-sm:whitespace-normal max-sm:text-center"
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />

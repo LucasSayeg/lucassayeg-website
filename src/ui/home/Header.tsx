@@ -192,7 +192,7 @@ export function Header({
             <WhatsappCta
               href={whatsappHref}
               size="sm"
-              variant="outline"
+              variant="solid"
               ariaLabel="Iniciar conversa no WhatsApp"
               className={scrolled ? undefined : "hidden md:inline-flex"}
             >

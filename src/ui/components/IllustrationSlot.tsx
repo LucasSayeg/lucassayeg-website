@@ -10,7 +10,7 @@
   Optional `src` prop short-circuits to a real next/image once art exists.
 */
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import type { CSSProperties } from "react";
 
 type Shape = "square" | "wide" | "service" | "portrait";
@@ -18,8 +18,12 @@ type Shape = "square" | "wide" | "service" | "portrait";
 type Props = {
   concept: string;
   shape?: Shape;
-  /** When set, renders the final art in place of the placeholder. */
-  src?: string;
+  /**
+   * When set, renders the final art in place of the placeholder. A string is a
+   * remote/CMS URL; a StaticImageData is a build-time import (e.g. the bundled
+   * Lucas portrait) — next/image then generates a real blur-up from the bytes.
+   */
+  src?: string | StaticImageData;
   /** Alt text for the final art. Empty string is treated as decorative. */
   alt?: string;
   /**
@@ -90,6 +94,11 @@ export function IllustrationSlot({
     // `contain` there so the artwork breathes inside the frame.
     const isPortrait = shape === "portrait";
     const fit = isPortrait ? "object-cover object-[50%_60%]" : "object-contain";
+    // Static imports carry their own bytes, so next/image auto-generates a real
+    // blur-up (works with `fill`) — passing blurDataURL too would silently keep
+    // the flat color. Remote URLs have no build-time bytes, so they fall back to
+    // the warm-putty flat placeholder.
+    const isStatic = typeof src !== "string";
     return (
       <div
         className={`relative block select-none ${className ?? ""}`}
@@ -104,7 +113,7 @@ export function IllustrationSlot({
           className={fit}
           priority={priority}
           placeholder="blur"
-          blurDataURL={BLUR_PLACEHOLDER}
+          {...(isStatic ? {} : { blurDataURL: BLUR_PLACEHOLDER })}
         />
       </div>
     );

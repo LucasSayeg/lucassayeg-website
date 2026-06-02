@@ -1,8 +1,9 @@
+import type { CSSProperties } from "react";
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
 import { PageContainer } from "@/ui/components/PageContainer";
-import { Reveal } from "@/ui/components/Reveal";
 import { Section } from "@/ui/components/Section";
 import { SectionHeading } from "@/ui/components/SectionHeading";
+import { CascadeReveal } from "@/ui/home/CascadeReveal";
 
 type ComoAjudaProps = {
   content?: ComoAjudaContent;
@@ -11,15 +12,20 @@ type ComoAjudaProps = {
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   if (content.items.length === 0) return null;
   return (
-    <Section id="como-ajuda" className="relative bg-paper-soft/60">
+    <Section id="como-ajuda" className="relative isolate bg-paper-clay">
       <PageContainer className="relative">
         <SectionHeading id="como-ajuda-heading" className="mb-[var(--space-2xl)]">
           Como a terapia pode ajudar.
         </SectionHeading>
 
-        <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2">
+        {/* Items cascade in numbered order (--list-i × 80ms), the same
+            coordinated reveal Serviços uses for its áreas list. */}
+        <CascadeReveal
+          as="ol"
+          className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2"
+        >
           {content.items.map((item, i) => (
-            <Reveal key={item.title} as="li" index={i % 3}>
+            <li key={item.title} style={{ ["--list-i" as string]: i } as CSSProperties}>
               <article className="grid grid-cols-[auto_1fr] items-baseline gap-x-[var(--space-md)]">
                 <span
                   aria-hidden
@@ -37,14 +43,17 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
                   </p>
                 </div>
               </article>
-            </Reveal>
+            </li>
           ))}
-        </ol>
+        </CascadeReveal>
 
-        {/* Editorial colophon — § flanked by hairlines with end-caps. */}
+        {/* Editorial colophon — § flanked by hairlines with end-caps. Dips
+            across the ComoAjuda→Sobre seam (translate ≤ ½ of Sobre's top pad,
+            so it never collides with Sobre's first content); degrades in-flow
+            on mobile. Static transform → reduced-motion-safe. */}
         <div
           aria-hidden
-          className="mt-[var(--space-2xl)] flex items-center justify-center gap-[var(--space-sm)] text-paper-deep"
+          className="relative z-10 mt-[var(--space-2xl)] flex translate-y-[2.5rem] items-center justify-center gap-[var(--space-sm)] text-paper-deep max-md:translate-y-0"
         >
           <span className="relative inline-block h-px w-[72px] bg-current sm:w-[96px] lg:w-[112px]">
             <span className="absolute left-0 top-1/2 block h-[9px] w-px -translate-y-1/2 bg-current" />

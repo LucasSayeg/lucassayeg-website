@@ -15,10 +15,10 @@
 :root {
   /* Surfaces — warm neutrals, tinted toward paper. Promoted from the former
      `bone` palette (the winning exploration); palettes.css has been removed. */
-  --paper: oklch(0.99 0.002 85); /* bone — page background */
-  --paper-soft: oklch(0.97 0.004 85); /* parchment — section break */
-  --paper-clay: oklch(0.94 0.007 82); /* putty — quiet surface, contact pause */
-  --paper-deep: oklch(0.89 0.011 78); /* soft clay — strong divider, hairline accent */
+  --paper: oklch(0.965 0.006 80); /* gesso #F2EFE8 — page base (body bg) */
+  --paper-soft: oklch(0.94 0.009 81); /* intermediate wash — hovers (e.g. FAQ button) */
+  --paper-clay: oklch(0.915 0.012 82); /* deeper alternation #E9E2D4 — Sobre/FAQ */
+  --paper-deep: oklch(0.875 0.014 80); /* subtle hairline/border (--border maps here) */
 
   /* Ink — warm dark, never pure black */
   --ink: oklch(0.205 0.018 50); /* primary text + headings */
@@ -26,8 +26,16 @@
   --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
   --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
   --field-line: oklch(0.6 0.013 60); /* resting input underline — holds ≥3:1 on
-                                        the paper-clay contact surface so a field
+                                        the gesso contact surface so a field
                                         reads as an input before focus */
+
+  /* Dark surfaces — grouped so contrast against the deep ink ground is verified
+     once. The footer rides --surface-deep for its full ground; the Sobre
+     portrait plate rides the same warm ink as a small offset backing rectangle
+     (the page's one upward thread of the footer color). */
+  --surface-deep: oklch(0.255 0.012 60); /* #2C2821 — footer ground + Sobre plate */
+  --ink-on-dark: oklch(0.965 0.006 80); /* primary text on dark */
+  --ink-on-dark-quiet: oklch(0.82 0.008 75); /* body/secondary on dark (footer copy) */
 
   /* Accent — single deep, considered color (ink navy, hue rotated from the
      earlier oxblood). Same L/C as before so weight on the page is unchanged. */
@@ -230,6 +238,11 @@
     outline-offset: 3px;
     border-radius: 1px;
   }
+  /* On the dark footer ground the navy outline disappears — swap to a light
+     ring. Higher specificity than the base rule above, so it wins in-layer. */
+  .on-dark :focus-visible {
+    outline-color: var(--ink-on-dark);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -310,12 +323,13 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Áreas de escuta — horizontal cascading reveal
-   Used by AreasReveal.tsx on the Serviços list. The component sets
-   data-armed="true" on the <ul> only when JS confirms the list is
-   below the fold AND motion isn't reduced; data-in="true" fires when
-   the IntersectionObserver intersects (rootMargin -18% bottom, so the
-   list is meaningfully in view, not just peeking).
+   Cascading list reveal — horizontal stagger
+   Used by CascadeReveal.tsx on the Serviços áreas list (ul) and the
+   Como ajuda numbered list (ol). The component sets data-armed="true"
+   only when JS confirms the list is below the fold AND motion isn't
+   reduced; data-in="true" fires when the IntersectionObserver
+   intersects (rootMargin -18% bottom, so the list is meaningfully in
+   view, not just peeking).
 
    Items default to a small leftward offset + opacity 0 once armed,
    then settle to rest one-by-one with --list-i × 80ms delay. Slow
@@ -324,12 +338,12 @@
    SSR / no-JS / above-the-fold / reduced-motion: no data attributes
    are set, so this rule never matches and items render visible.
    ───────────────────────────────────────────────────────────────── */
-.areas-reveal[data-armed="true"] > li {
+.cascade-reveal[data-armed="true"] > li {
   opacity: 0;
   transform: translateX(-14px);
   will-change: opacity, transform;
 }
-.areas-reveal[data-armed="true"][data-in="true"] > li {
+.cascade-reveal[data-armed="true"][data-in="true"] > li {
   opacity: 1;
   transform: translateX(0);
   transition:
@@ -687,6 +701,29 @@
 .deck-divider::after {
   flex: 4; /* asymmetric — the "off-grid" gesture */
 }
+/* Hairlines draw outward from the label on scroll. Each line scales from
+   the edge nearest the word, so they grow away from it. Gated on data-armed
+   (JS, below-fold, motion OK) — SSR / no-JS / reduced-motion render the
+   lines fully drawn (scaleX 1, the default). See DeckDivider.tsx. */
+.deck-divider::before {
+  transform-origin: right center;
+}
+.deck-divider::after {
+  transform-origin: left center;
+}
+.deck-divider[data-armed="true"]::before,
+.deck-divider[data-armed="true"]::after {
+  transform: scaleX(0);
+  transition: transform var(--dur-page) var(--ease-out-expo);
+}
+.deck-divider[data-armed="true"][data-in="true"]::before,
+.deck-divider[data-armed="true"][data-in="true"]::after {
+  transform: scaleX(1);
+}
+/* Long line trails the short one a touch — reads composed, not mechanical. */
+.deck-divider[data-armed="true"][data-in="true"]::after {
+  transition-delay: 90ms;
+}
 
 /* ─────────────────────────────────────────────────────────────────
    Illustration slot — single placeholder vocabulary used everywhere
@@ -828,6 +865,47 @@
   }
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   Dark surface treatment — UNLAYERED so it wins over Tailwind utilities
+   (which live in @layer utilities). The footer recolors shared component
+   classes under .on-dark; here we define the Sobre portrait plate.
+   ───────────────────────────────────────────────────────────────── */
+
+/* Portrait plate — Sobre. A contained warm-taupe rectangle sitting behind the
+   portrait and offset down-and-right, so it peeks out on two edges like a print
+   tipped onto a warm mat. Decorative (aria-hidden), behind the photo via
+   z-index:-10 inside the wrapper's own isolate. Contained — it does NOT bleed
+   to the viewport edge, so it adds no horizontal scroll. On mobile the portrait
+   column centers a narrower photo and the plate offsets behind it the same way.
+   A warm mid-tone (not the footer ink) so it reads as a soft backing, not a
+   second dark mass on the page. */
+.portrait-plate {
+  --plate-x: var(--space-md);
+  --plate-y: var(--space-md);
+  position: absolute;
+  inset: 0;
+  background: oklch(0.52 0.028 58); /* warm taupe — clearly a plate against the
+                                       gesso, without the weight of the ink */
+  transform: translate(var(--plate-x), var(--plate-y));
+  transition: transform var(--dur-base) var(--ease-out-quart);
+  z-index: -10;
+}
+/* Mirror for a right-column portrait (Hero): peeks up-and-left, tucked into
+   the top corner toward the page center — the same tipped-in motif, composed
+   for the opposite side. */
+.portrait-plate--mirror {
+  --plate-x: calc(var(--space-md) * -1);
+  --plate-y: calc(var(--space-md) * -1);
+}
+/* Hover (desktop, motion OK): the plate peeks a touch further out, like the
+   print settling deeper into its mat. Direction-agnostic — it just amplifies
+   each plate's own offset. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .portrait-frame:hover .portrait-plate {
+    transform: translate(calc(var(--plate-x) * 1.35), calc(var(--plate-y) * 1.35));
+  }
+}
+
 /* Reduced motion — site fully static */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -877,4 +955,3 @@
     display: none;
   }
 }
-

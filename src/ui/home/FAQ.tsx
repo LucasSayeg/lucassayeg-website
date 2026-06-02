@@ -18,7 +18,7 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
   const [openIdx, setOpenIdx] = React.useState<number | null>(null);
 
   return (
-    <Section id="faq">
+    <Section id="faq" className="bg-paper-clay">
       <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <SectionHeading id="faq-heading" className="md:col-span-7">
@@ -43,7 +43,7 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setOpenIdx(open ? null : i)}
-                    className="group flex w-full cursor-pointer items-baseline justify-between gap-[var(--space-lg)] py-[var(--space-md)] text-left transition-colors hover:bg-paper-soft/60"
+                    className="group flex w-full cursor-pointer items-baseline justify-between gap-[var(--space-lg)] py-[var(--space-md)] text-left transition-colors hover:bg-paper-deep/40"
                   >
                     <span className="grid grid-cols-[auto_1fr] items-baseline gap-[var(--space-md)]">
                       <span
