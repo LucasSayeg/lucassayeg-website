@@ -6,9 +6,11 @@ import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
   The WhatsApp affordance — the only place a visitor opens a chat. Navy ink
   pill, brand-green glyph, label, and a small arrow that nudges forward on
   hover. Two registers:
-    - "solid"   — the weighted CTA. Reserved for the Hero (first contact).
-    - "outline" — the quiet, persistent register for the repeated affordances
-                  (header, contact rail), so the navy fill stays rare.
+    - "solid"   — the weighted navy CTA. The Hero (first contact) and the
+                  persistent header affordance, so the channel always reads
+                  as the page's primary action.
+    - "outline" — the quiet register for the contact rail, where a second
+                  filled pill would compete with the form.
   `size="sm"` matches the dense header row.
 */
 
