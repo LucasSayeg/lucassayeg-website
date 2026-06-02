@@ -5,6 +5,7 @@ import { PageContainer } from "@/ui/components/PageContainer";
 import { Section } from "@/ui/components/Section";
 import { SectionHeading } from "@/ui/components/SectionHeading";
 import { UnderlineLink } from "@/ui/components/UnderlineLink";
+import { DeckDivider } from "@/ui/home/DeckDivider";
 import { HandmadeUnderline } from "@/ui/home/HandmadeUnderline";
 import { SobreRichText } from "@/ui/home/SobreRichText";
 
@@ -36,10 +37,9 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
   return (
     <Section id="sobre" className="relative isolate [overflow:clip]">
       <PageContainer>
-        {/* Off-grid asymmetric divider — the brief calls for one carefully placed handmade gesture. */}
-        <div className="mb-[var(--space-2xl)] deck-divider" aria-hidden>
-          <span>sobre</span>
-        </div>
+        {/* Off-grid asymmetric divider — hairlines draw outward from the
+            label on scroll (see DeckDivider / .deck-divider). */}
+        <DeckDivider label="sobre" className="mb-[var(--space-2xl)]" />
 
         <div className="grid grid-cols-1 gap-[var(--space-lg)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
           <div className="space-y-[var(--space-lg)] lg:col-span-4">
@@ -55,7 +55,7 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
                 the photo so it peeks out lower-right, like a print tipped onto a
                 dark mat. The plate is decorative (aria-hidden) and sits behind
                 the photo via the wrapper's own isolate. */}
-            <div className="relative isolate w-full max-w-[320px] lg:max-w-none">
+            <div className="portrait-frame relative isolate w-full max-w-[320px] lg:max-w-none">
               <div aria-hidden className="portrait-plate" />
               <IllustrationSlot
                 concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."

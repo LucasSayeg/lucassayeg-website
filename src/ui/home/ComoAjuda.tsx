@@ -1,8 +1,9 @@
+import type { CSSProperties } from "react";
 import { FALLBACK_COMO_AJUDA, type ComoAjudaContent } from "@/lib/home-content-types";
 import { PageContainer } from "@/ui/components/PageContainer";
-import { Reveal } from "@/ui/components/Reveal";
 import { Section } from "@/ui/components/Section";
 import { SectionHeading } from "@/ui/components/SectionHeading";
+import { CascadeReveal } from "@/ui/home/CascadeReveal";
 
 type ComoAjudaProps = {
   content?: ComoAjudaContent;
@@ -17,9 +18,14 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
           Como a terapia pode ajudar.
         </SectionHeading>
 
-        <ol className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2">
+        {/* Items cascade in numbered order (--list-i × 80ms), the same
+            coordinated reveal Serviços uses for its áreas list. */}
+        <CascadeReveal
+          as="ol"
+          className="grid grid-cols-1 gap-x-[var(--space-2xl)] gap-y-[var(--space-lg)] md:grid-cols-2"
+        >
           {content.items.map((item, i) => (
-            <Reveal key={item.title} as="li" index={i % 3}>
+            <li key={item.title} style={{ ["--list-i" as string]: i } as CSSProperties}>
               <article className="grid grid-cols-[auto_1fr] items-baseline gap-x-[var(--space-md)]">
                 <span
                   aria-hidden
@@ -37,9 +43,9 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
                   </p>
                 </div>
               </article>
-            </Reveal>
+            </li>
           ))}
-        </ol>
+        </CascadeReveal>
 
         {/* Editorial colophon — § flanked by hairlines with end-caps. Dips
             across the ComoAjuda→Sobre seam (translate ≤ ½ of Sobre's top pad,

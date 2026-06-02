@@ -4,7 +4,7 @@ import { Eyebrow } from "@/ui/components/Eyebrow";
 import { PageContainer } from "@/ui/components/PageContainer";
 import { Section } from "@/ui/components/Section";
 import { SectionHeading } from "@/ui/components/SectionHeading";
-import { AreasReveal } from "@/ui/home/AreasReveal";
+import { CascadeReveal } from "@/ui/home/CascadeReveal";
 
 /*
   Two services — Psicoterapia (Clínica) + Orientação Profissional —
@@ -31,7 +31,7 @@ import { AreasReveal } from "@/ui/home/AreasReveal";
   matches the page's typographic register.
 
   Motion: the áreas list is the only animated element in the section.
-  AreasReveal observes the <ul> itself (not the parent article) with a
+  CascadeReveal observes the <ul> itself (not the parent article) with a
   generous bottom inset, so the cascade fires when the list is
   meaningfully in view rather than when the section first peeks in.
   Each item then fades + slides in horizontally with a per-item delay
@@ -95,7 +95,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
 
                   <Eyebrow className="mt-[var(--space-lg)]">Áreas de escuta</Eyebrow>
 
-                  <AreasReveal className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
+                  <CascadeReveal className="mt-[var(--space-md)] max-w-[58ch] list-disc pl-[var(--space-md)] marker:text-ink-faint">
                     {s.areas.map((it, idx) => (
                       <li
                         key={it}
@@ -107,7 +107,7 @@ export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
                         {it}
                       </li>
                     ))}
-                  </AreasReveal>
+                  </CascadeReveal>
                 </div>
               </article>
             );

@@ -323,12 +323,13 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Áreas de escuta — horizontal cascading reveal
-   Used by AreasReveal.tsx on the Serviços list. The component sets
-   data-armed="true" on the <ul> only when JS confirms the list is
-   below the fold AND motion isn't reduced; data-in="true" fires when
-   the IntersectionObserver intersects (rootMargin -18% bottom, so the
-   list is meaningfully in view, not just peeking).
+   Cascading list reveal — horizontal stagger
+   Used by CascadeReveal.tsx on the Serviços áreas list (ul) and the
+   Como ajuda numbered list (ol). The component sets data-armed="true"
+   only when JS confirms the list is below the fold AND motion isn't
+   reduced; data-in="true" fires when the IntersectionObserver
+   intersects (rootMargin -18% bottom, so the list is meaningfully in
+   view, not just peeking).
 
    Items default to a small leftward offset + opacity 0 once armed,
    then settle to rest one-by-one with --list-i × 80ms delay. Slow
@@ -337,12 +338,12 @@
    SSR / no-JS / above-the-fold / reduced-motion: no data attributes
    are set, so this rule never matches and items render visible.
    ───────────────────────────────────────────────────────────────── */
-.areas-reveal[data-armed="true"] > li {
+.cascade-reveal[data-armed="true"] > li {
   opacity: 0;
   transform: translateX(-14px);
   will-change: opacity, transform;
 }
-.areas-reveal[data-armed="true"][data-in="true"] > li {
+.cascade-reveal[data-armed="true"][data-in="true"] > li {
   opacity: 1;
   transform: translateX(0);
   transition:
@@ -700,6 +701,29 @@
 .deck-divider::after {
   flex: 4; /* asymmetric — the "off-grid" gesture */
 }
+/* Hairlines draw outward from the label on scroll. Each line scales from
+   the edge nearest the word, so they grow away from it. Gated on data-armed
+   (JS, below-fold, motion OK) — SSR / no-JS / reduced-motion render the
+   lines fully drawn (scaleX 1, the default). See DeckDivider.tsx. */
+.deck-divider::before {
+  transform-origin: right center;
+}
+.deck-divider::after {
+  transform-origin: left center;
+}
+.deck-divider[data-armed="true"]::before,
+.deck-divider[data-armed="true"]::after {
+  transform: scaleX(0);
+  transition: transform var(--dur-page) var(--ease-out-expo);
+}
+.deck-divider[data-armed="true"][data-in="true"]::before,
+.deck-divider[data-armed="true"][data-in="true"]::after {
+  transform: scaleX(1);
+}
+/* Long line trails the short one a touch — reads composed, not mechanical. */
+.deck-divider[data-armed="true"][data-in="true"]::after {
+  transition-delay: 90ms;
+}
 
 /* ─────────────────────────────────────────────────────────────────
    Illustration slot — single placeholder vocabulary used everywhere
@@ -856,12 +880,30 @@
    A warm mid-tone (not the footer ink) so it reads as a soft backing, not a
    second dark mass on the page. */
 .portrait-plate {
+  --plate-x: var(--space-md);
+  --plate-y: var(--space-md);
   position: absolute;
   inset: 0;
   background: oklch(0.52 0.028 58); /* warm taupe — clearly a plate against the
                                        gesso, without the weight of the ink */
-  transform: translate(var(--space-md), var(--space-md));
+  transform: translate(var(--plate-x), var(--plate-y));
+  transition: transform var(--dur-base) var(--ease-out-quart);
   z-index: -10;
+}
+/* Mirror for a right-column portrait (Hero): peeks up-and-left, tucked into
+   the top corner toward the page center — the same tipped-in motif, composed
+   for the opposite side. */
+.portrait-plate--mirror {
+  --plate-x: calc(var(--space-md) * -1);
+  --plate-y: calc(var(--space-md) * -1);
+}
+/* Hover (desktop, motion OK): the plate peeks a touch further out, like the
+   print settling deeper into its mat. Direction-agnostic — it just amplifies
+   each plate's own offset. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .portrait-frame:hover .portrait-plate {
+    transform: translate(calc(var(--plate-x) * 1.35), calc(var(--plate-y) * 1.35));
+  }
 }
 
 /* Reduced motion — site fully static */
