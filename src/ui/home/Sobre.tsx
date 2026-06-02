@@ -34,7 +34,7 @@ type SobreProps = {
 
 export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: SobreProps = {}) {
   return (
-    <Section id="sobre">
+    <Section id="sobre" className="relative isolate [overflow:clip]">
       <PageContainer>
         {/* Off-grid asymmetric divider — the brief calls for one carefully placed handmade gesture. */}
         <div className="mb-[var(--space-2xl)] deck-divider" aria-hidden>
@@ -42,7 +42,13 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
         </div>
 
         <div className="grid grid-cols-1 gap-[var(--space-lg)] lg:grid-cols-12 lg:gap-[var(--space-2xl)]">
-          <div className="space-y-[var(--space-lg)] lg:col-span-4">
+          <div className="relative space-y-[var(--space-lg)] lg:col-span-4">
+            {/* Asymmetric tone field — deeper clay hugging the portrait side.
+                Its right edge lands in the column gutter (never cutting the
+                text); the left bleeds off the viewport edge. Decorative; sits
+                behind content. On mobile this column is full-width, so the field
+                degrades to a clean full-width deeper band. */}
+            <div aria-hidden className="tone-field-left" />
             <SectionHeading id="sobre-heading">
               <HandmadeUnderline>{siteName}</HandmadeUnderline>
             </SectionHeading>

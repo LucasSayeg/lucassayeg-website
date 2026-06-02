@@ -13,7 +13,7 @@ import { AreasReveal } from "@/ui/home/AreasReveal";
   The earlier 50/50 grid read as "blocky": same-shape twin cards. Here,
   each service body is offset on the 12-col grid (one anchored left,
   one anchored right) so the eye steps down the page instead of
-  ping-pong between mirrored columns. The Roman numeral (i. / ii.)
+  ping-pong between mirrored columns. The Roman numeral (I. / II.)
   stacks above the heading as a chapter mark — typography over
   ornament, per brief — keeping the numeral inside the body column so
   there are no orphan quadrants when the body wraps long.
@@ -38,7 +38,7 @@ import { AreasReveal } from "@/ui/home/AreasReveal";
   (--list-i × 80ms), 760ms ease-out-expo. SSR / no-JS / above-the-fold
   / reduced-motion paths render the list visible without animation.
 */
-const NUMERALS = ["i.", "ii."] as const;
+const NUMERALS = ["I.", "II."] as const;
 
 type ServicosProps = {
   content?: ServicosContent;
@@ -46,7 +46,7 @@ type ServicosProps = {
 
 export function Servicos({ content = FALLBACK_SERVICOS }: ServicosProps = {}) {
   return (
-    <Section id="servicos" className="border-t border-paper-deep bg-paper-soft/40">
+    <Section id="servicos" className="border-t border-paper-deep">
       <PageContainer>
         <div className="mb-[var(--space-2xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-md)] md:grid-cols-12">
           <SectionHeading id="servicos-heading" className="md:col-span-7">

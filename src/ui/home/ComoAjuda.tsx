@@ -11,7 +11,7 @@ type ComoAjudaProps = {
 export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}) {
   if (content.items.length === 0) return null;
   return (
-    <Section id="como-ajuda" className="relative bg-paper-soft/60">
+    <Section id="como-ajuda" className="relative isolate">
       <PageContainer className="relative">
         <SectionHeading id="como-ajuda-heading" className="mb-[var(--space-2xl)]">
           Como a terapia pode ajudar.
@@ -41,10 +41,13 @@ export function ComoAjuda({ content = FALLBACK_COMO_AJUDA }: ComoAjudaProps = {}
           ))}
         </ol>
 
-        {/* Editorial colophon — § flanked by hairlines with end-caps. */}
+        {/* Editorial colophon — § flanked by hairlines with end-caps. Dips
+            across the ComoAjuda→Sobre seam (translate ≤ ½ of Sobre's top pad,
+            so it never collides with Sobre's first content); degrades in-flow
+            on mobile. Static transform → reduced-motion-safe. */}
         <div
           aria-hidden
-          className="mt-[var(--space-2xl)] flex items-center justify-center gap-[var(--space-sm)] text-paper-deep"
+          className="relative z-10 mt-[var(--space-2xl)] flex translate-y-[2.5rem] items-center justify-center gap-[var(--space-sm)] text-paper-deep max-md:translate-y-0"
         >
           <span className="relative inline-block h-px w-[72px] bg-current sm:w-[96px] lg:w-[112px]">
             <span className="absolute left-0 top-1/2 block h-[9px] w-px -translate-y-1/2 bg-current" />
