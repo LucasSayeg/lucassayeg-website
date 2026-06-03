@@ -30,6 +30,27 @@ export const SiteInfo: GlobalConfig = {
       label: "Marca curta",
       admin: { description: "Marca curta exibida abaixo do nome no header (ex: 'Lucas S.')." },
     },
+    {
+      name: "logo",
+      type: "upload",
+      relationTo: "media",
+      label: "Marca (logo)",
+      admin: {
+        description:
+          "Monograma exibido ao lado do nome no header. Envie em cor sólida sobre fundo " +
+          "transparente (PNG ou SVG) — o site o imprime na tinta da identidade; a cor do " +
+          "arquivo não é usada. Sem marca, o header mantém o tratamento tipográfico.",
+      },
+    },
+    {
+      name: "logoAlt",
+      type: "text",
+      label: "Marca — texto alternativo",
+      admin: {
+        description:
+          "Usado quando a marca aparece sem o nome ao lado. Cai de volta para 'Marca de [nome]'.",
+      },
+    },
     { name: "slogan", type: "text", required: true, label: "Slogan" },
     {
       name: "region",

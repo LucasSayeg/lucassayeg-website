@@ -88,12 +88,23 @@ export type SiteImage = {
   alt: string;
 };
 
+/*
+  The header monogram. Carries intrinsic dimensions because the mark is
+  rendered as a CSS mask (not an <img>), so the box needs an explicit
+  aspect-ratio to size itself from height alone.
+*/
+export type SiteLogo = SiteImage & {
+  width: number | null;
+  height: number | null;
+};
+
 /** @deprecated Use SiteImage. Kept as an alias for back-compat with existing imports. */
 export type SitePortrait = SiteImage;
 
 export type SiteInfoContent = {
   name: string;
   shortMark: string;
+  logo: SiteLogo | null;
   slogan: string;
   region: string;
   address: string;
@@ -212,6 +223,7 @@ export const FALLBACK_HOME: HomeContent = {
 export const FALLBACK_SITE_INFO: SiteInfoContent = {
   name: SITE_META.name,
   shortMark: SITE_META.shortMark,
+  logo: null,
   slogan: SITE_META.slogan,
   region: SITE_META.region,
   address: SITE_META.address,

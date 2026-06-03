@@ -69,6 +69,9 @@ const SITE_DESCRIPTION =
   "Atendimento online e presencial em Vila Leopoldina, São Paulo. Psicoterapia clínica e orientação profissional para adultos.";
 
 export const metadata: Metadata = {
+  // Absolute base for og:image / canonical resolution — same convention as
+  // sitemap.ts / robots.ts.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://example.com"),
   title: {
     default: SITE_TITLE,
     template: "%s — Lucas Sayeg",
