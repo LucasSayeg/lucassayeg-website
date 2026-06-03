@@ -72,6 +72,7 @@ export function FAQ({ content = FALLBACK_FAQ }: FAQProps = {}) {
                   role="region"
                   aria-labelledby={buttonId}
                   data-open={open}
+                  inert={!open || undefined}
                   className="accordion-panel"
                 >
                   <div className="accordion-panel-inner">
