@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Petrona, Atkinson_Hyperlegible } from "next/font/google";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, DEFAULT_PALETTE_ID, PICKER_COOKIE_NAME, isPaletteId } from "@/core/palettes";
+import { getBaseUrl } from "@/lib/base-url";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
@@ -78,7 +79,7 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   // Absolute base for og:image / canonical resolution — same convention as
   // sitemap.ts / robots.ts.
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://example.com"),
+  metadataBase: new URL(getBaseUrl()),
   title: {
     default: SITE_TITLE,
     template: "%s — Lucas Sayeg",

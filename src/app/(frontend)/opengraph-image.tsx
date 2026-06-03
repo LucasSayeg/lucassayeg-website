@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
+import { getBaseUrl } from "@/lib/base-url";
 import { getSiteInfo } from "@/lib/home-content";
 
 /*
@@ -37,7 +38,7 @@ const C = {
 async function loadPortraitDataUri(url: string | null | undefined): Promise<string | null> {
   if (!url) return null;
   try {
-    const base = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+    const base = getBaseUrl();
     const abs = url.startsWith("http") ? url : `${base}${url}`;
     const res = await fetch(abs);
     if (!res.ok) return null;
