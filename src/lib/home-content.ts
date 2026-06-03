@@ -26,6 +26,7 @@ import {
   type ServicosContent,
   type SiteImage,
   type SiteInfoContent,
+  type SiteLogo,
   type SobreContent,
   type SobrePageContent,
 } from "@/lib/home-content-types";
@@ -59,6 +60,7 @@ export type {
   ServicosContent,
   SiteImage,
   SiteInfoContent,
+  SiteLogo,
   SitePortrait,
   SobreContent,
   SobrePageContent,
@@ -244,12 +246,29 @@ function resolveImage(
   return { url, alt };
 }
 
+/* As resolveImage, plus intrinsic dimensions — the mask-rendered mark sizes
+   its box from height + aspect-ratio instead of <img> intrinsics. */
+function resolveLogo(
+  raw: number | Media | null | undefined,
+  rawAlt: string | null | undefined,
+  fallbackAlt: string,
+): SiteLogo | null {
+  const image = resolveImage(raw, rawAlt, fallbackAlt);
+  if (!image || !raw || typeof raw === "number") return null;
+  return {
+    ...image,
+    width: typeof raw.width === "number" ? raw.width : null,
+    height: typeof raw.height === "number" ? raw.height : null,
+  };
+}
+
 function mergeSiteInfo(g: SiteInfo | null | undefined, fb: SiteInfoContent): SiteInfoContent {
   if (!g) return fb;
   const name = g.name || fb.name;
   return {
     name,
     shortMark: g.shortMark || fb.shortMark,
+    logo: resolveLogo(g.logo, g.logoAlt, `Marca de ${name}`),
     slogan: g.slogan || fb.slogan,
     region: g.region || fb.region,
     address: g.address || fb.address,

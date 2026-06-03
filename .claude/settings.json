@@ -17,6 +17,7 @@
     "context7@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "impeccable@impeccable": true,
-    "elements-of-style@superpowers-marketplace": true
+    "elements-of-style@superpowers-marketplace": true,
+    "modern-web-guidance@googlechrome": true
   }
 }

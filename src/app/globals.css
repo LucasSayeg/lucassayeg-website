@@ -19,13 +19,23 @@
   --paper-soft: oklch(0.94 0.009 81); /* intermediate wash — hovers (e.g. FAQ button) */
   --paper-clay: oklch(0.915 0.012 82); /* deeper alternation #E9E2D4 — Sobre/FAQ */
   --paper-deep: oklch(0.875 0.014 80); /* subtle hairline/border (--border maps here) */
+  --masthead: oklch(
+    0.3 0.065 255
+  ); /* header nameplate plate — deep navy ink, a touch
+                                        deeper and quieter than --cta-surface so the
+                                        identity plate doesn't read as a button. Bone
+                                        text (--ink-on-dark) rides it. Chosen over the
+                                        earlier warm-clay band exploration (read as
+                                        khaki). */
 
   /* Ink — warm dark, never pure black */
   --ink: oklch(0.205 0.018 50); /* primary text + headings */
   --ink-soft: oklch(0.345 0.018 52); /* body emphasis */
   --ink-quiet: oklch(0.49 0.014 56); /* secondary copy, captions */
   --ink-faint: oklch(0.64 0.012 60); /* metadata, footer */
-  --field-line: oklch(0.6 0.013 60); /* resting input underline — holds ≥3:1 on
+  --field-line: oklch(
+    0.6 0.013 60
+  ); /* resting input underline — holds ≥3:1 on
                                         the gesso contact surface so a field
                                         reads as an input before focus */
 
@@ -41,11 +51,15 @@
      earlier oxblood). Same L/C as before so weight on the page is unchanged. */
   --accent: oklch(0.355 0.085 255); /* link, focus, primary CTA */
   --accent-deep: oklch(0.29 0.09 255); /* hover/pressed */
-  --accent-soft: oklch(0.7 0.04 255); /* underline tint, decorative only — chroma
+  --accent-soft: oklch(
+    0.7 0.04 255
+  ); /* underline tint, decorative only — chroma
                                          trimmed: blues at L=0.7 are more vivid
                                          than reds at L=0.7, so the old 0.06
                                          would land in sky-blue territory */
-  --accent-mark: oklch(0.42 0.085 245); /* handmade ink — name underline, signature
+  --accent-mark: oklch(
+    0.42 0.085 245
+  ); /* handmade ink — name underline, signature
                                            gestures. Chroma bumped above --accent and
                                            hue pushed further off so the mark reads as
                                            a different ink than the CTA, not as a
@@ -150,6 +164,7 @@
   --color-paper-soft: var(--paper-soft);
   --color-paper-clay: var(--paper-clay);
   --color-paper-deep: var(--paper-deep);
+  --color-masthead: var(--masthead);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-quiet: var(--ink-quiet);
@@ -449,85 +464,113 @@
    to override the base `display`. Unlayered rules beat any layered rule
    regardless of order, which would silently defeat utility overrides. */
 @layer components {
-.btn-primary,
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.625rem;
-  min-height: 2.75rem; /* 44px — touch-target floor (mobile, late-night audience) */
-  padding: 0.5rem 1.25rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-  font-size: var(--text-base);
-  line-height: 1.2;
-  text-decoration: none;
-  /* <button> uses (form submit) don't get the UA's link cursor like the <a>
+  /* ─────────────────────────────────────────────────────────────────
+   Site mark — the CMS-uploaded monogram, printed in the site's ink.
+   The upload's alpha channel becomes a CSS mask and the box is painted
+   with the handmade-ink accent, so any solid-color file (including the
+   white-on-transparent placeholder) renders in the identity's navy —
+   a printer's mark stamped in ink rather than a pasted image.
+   ───────────────────────────────────────────────────────────────── */
+  .site-mark {
+    display: inline-block;
+    flex: none;
+    background-color: var(--accent-mark);
+    -webkit-mask-image: var(--mark-url);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: var(--mark-url);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+  /* Without mask support the element would paint as a solid navy rectangle —
+   hide it instead; the typographic name carries the brand with no loss. */
+  @supports (not (mask-image: url(""))) and (not (-webkit-mask-image: url(""))) {
+    .site-mark {
+      display: none;
+    }
+  }
+
+  .btn-primary,
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 2.75rem; /* 44px — touch-target floor (mobile, late-night audience) */
+    padding: 0.5rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-size: var(--text-base);
+    line-height: 1.2;
+    text-decoration: none;
+    /* <button> uses (form submit) don't get the UA's link cursor like the <a>
      CTAs do — make the affordance consistent. Disabled states override to
      `wait` below. */
-  cursor: pointer;
-  transition:
-    background-color 200ms var(--ease-out-quart),
-    border-color 200ms var(--ease-out-quart),
-    color 200ms var(--ease-out-quart);
-}
+    cursor: pointer;
+    transition:
+      background-color 200ms var(--ease-out-quart),
+      border-color 200ms var(--ease-out-quart),
+      color 200ms var(--ease-out-quart);
+  }
 
-/* Solid — the page's weighted CTA. Deliberately rare: used at most twice and
+  /* Solid — the page's weighted CTA. Deliberately rare: used at most twice and
    never twice in one viewport — the Hero (first contact) and the form submit
    (the actual conversion click). The repeated WhatsApp affordances use the
    outline register below so navy fill never reads as a system color. */
-.btn-primary {
-  background-color: var(--cta-surface);
-  color: var(--paper);
-}
-.btn-primary:hover {
-  background-color: var(--cta-surface-hover);
-}
-.btn-primary:disabled,
-.btn-primary[aria-disabled="true"] {
-  background-color: var(--ink-quiet);
-  cursor: wait;
-}
+  .btn-primary {
+    background-color: var(--cta-surface);
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    background-color: var(--cta-surface-hover);
+  }
+  .btn-primary:disabled,
+  .btn-primary[aria-disabled="true"] {
+    background-color: var(--ink-quiet);
+    cursor: wait;
+  }
 
-/* Outline — the quiet, persistent register for the repeated WhatsApp
+  /* Outline — the quiet, persistent register for the repeated WhatsApp
    affordances (header, contact rail). Navy ink on paper, hairline border
    that firms up on hover. Keeps the affordance reachable without stacking
    another dark block onto a light, type-led page. */
-.btn-outline {
-  background-color: transparent;
-  /* Border holds ≥3:1 (WCAG 1.4.11) against both the bone page and the deeper
+  .btn-outline {
+    background-color: transparent;
+    /* Border holds ≥3:1 (WCAG 1.4.11) against both the bone page and the deeper
      paper-clay contact surface, so the capsule edge reads as a real boundary
      on either ground. */
-  border-color: color-mix(in oklch, var(--cta-surface) 62%, var(--paper-deep));
-  color: var(--cta-surface);
-}
-.btn-outline:hover {
-  border-color: var(--cta-surface);
-  background-color: color-mix(in oklch, var(--cta-surface) 6%, transparent);
-  color: var(--cta-surface-hover);
-}
-.btn-outline:disabled,
-.btn-outline[aria-disabled="true"] {
-  border-color: var(--paper-deep);
-  color: var(--ink-quiet);
-  cursor: wait;
-}
+    border-color: color-mix(in oklch, var(--cta-surface) 62%, var(--paper-deep));
+    color: var(--cta-surface);
+  }
+  .btn-outline:hover {
+    border-color: var(--cta-surface);
+    background-color: color-mix(in oklch, var(--cta-surface) 6%, transparent);
+    color: var(--cta-surface-hover);
+  }
+  .btn-outline:disabled,
+  .btn-outline[aria-disabled="true"] {
+    border-color: var(--paper-deep);
+    color: var(--ink-quiet);
+    cursor: wait;
+  }
 
-.btn-primary--sm,
-.btn-outline--sm {
-  gap: 0.5rem;
-  padding: 0.375rem 0.875rem;
-  font-size: var(--text-sm);
-}
-.btn-primary--lg,
-.btn-outline--lg {
-  gap: 0.75rem;
-  padding: 0.5rem 1.5rem;
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  white-space: nowrap;
-}
+  .btn-primary--sm,
+  .btn-outline--sm {
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    font-size: var(--text-sm);
+  }
+  .btn-primary--lg,
+  .btn-outline--lg {
+    gap: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+  }
 } /* @layer components */
 
 /* ─────────────────────────────────────────────────────────────────
@@ -931,7 +974,9 @@
   --plate-y: var(--space-md);
   position: absolute;
   inset: 0;
-  background: oklch(0.52 0.028 58); /* warm taupe — clearly a plate against the
+  background: oklch(
+    0.52 0.028 58
+  ); /* warm taupe — clearly a plate against the
                                        gesso, without the weight of the ink */
   transform: translate(var(--plate-x), var(--plate-y));
   transition: transform var(--dur-base) var(--ease-out-quart);
