@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Contact } from "@/core/contact";
 import type { useContactForm } from "@/ui/contact/hooks/useContactForm";
 import { FALLBACK_CONTACT_FORM, type ContactFormContent } from "@/lib/home-content-types";
 import { CONTACT_FORM, SITE_META, WHATSAPP_HREF } from "@/lib/home-data";
@@ -37,31 +38,25 @@ type FieldHintProps = {
   status: FieldStatus;
   message?: string;
   validMessage?: string;
-  /** Show the valid-state affirmation. Reserved for the name field — the
-   * human-recognition moment — so email/message stay quiet and the
-   * affirmation reads as intentional warmth rather than per-field applause. */
-  affirm?: boolean;
   children?: ReactNode;
 };
 
 /**
  * Reserved-height slot below an input. Warnings carry the warning dot + soft
- * message; the name field's affirmation carries an editorial display-italic
- * margin note. Without `affirm`, the valid state is silent (treated as idle).
+ * message; valid fields carry an editorial display-italic margin note
+ * ("Bom te conhecer.", "Anotado.", …). Without a `validMessage`, the valid
+ * state is silent (treated as idle).
  */
-function FieldHint({
-  id,
-  status,
-  message,
-  validMessage,
-  affirm = false,
-  children,
-}: FieldHintProps) {
-  const effectiveStatus = status === "valid" && !(affirm && validMessage) ? "idle" : status;
+function FieldHint({ id, status, message, validMessage, children }: FieldHintProps) {
+  const effectiveStatus = status === "valid" && !validMessage ? "idle" : status;
   const visible = effectiveStatus !== "idle";
   return (
     <div className="field-hint" data-status={effectiveStatus}>
+      {/* key={message} remounts a fresh node per new error so assistive tech
+          reliably announces it — an always-mounted alert that merely changes
+          text is not consistently re-announced. */}
       <p
+        key={message}
         id={id}
         role={effectiveStatus === "invalid" ? "alert" : undefined}
         className="field-hint__text"
@@ -140,6 +135,25 @@ export function ContactForm({
           aria-label={CONTACT_FORM.ariaLabel}
           noValidate
         >
+          {/* Honeypot — off-screen, AT-hidden, non-tabbable. Deliberately NOT
+              display:none (bots skip those). A filled `company` field flags a bot
+              server-side. */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "-9999px",
+              width: 1,
+              height: 1,
+              overflow: "hidden",
+            }}
+          >
+            <label>
+              Empresa
+              <input type="text" tabIndex={-1} autoComplete="off" {...register("company")} />
+            </label>
+          </div>
+
           <div className="space-y-2">
             <Eyebrow as="label" htmlFor="contact-name" className="block">
               {CONTACT_FORM.nameLabel}
@@ -148,6 +162,7 @@ export function ContactForm({
               id="contact-name"
               type="text"
               autoComplete="name"
+              enterKeyHint="next"
               required
               {...register("name")}
               aria-invalid={!!errors.name}
@@ -161,7 +176,6 @@ export function ContactForm({
               status={fieldStatus("name", !!errors.name)}
               message={errors.name?.message}
               validMessage={copy.nameValidHint}
-              affirm
             />
           </div>
 
@@ -172,6 +186,8 @@ export function ContactForm({
             <input
               id="contact-email"
               type="email"
+              inputMode="email"
+              enterKeyHint="next"
               autoComplete="email"
               required
               spellCheck={false}
@@ -188,6 +204,7 @@ export function ContactForm({
               id="contact-email-hint"
               status={fieldStatus("email", !!errors.email)}
               message={errors.email?.message}
+              validMessage={copy.emailValidHint}
             />
           </div>
 
@@ -198,33 +215,37 @@ export function ContactForm({
               </Eyebrow>
               {/* Quiet countdown — only surfaces as the field nears the ceiling,
                   so a long message isn't rejected only after submit. */}
-              {messageLength > 3500 ? (
+              {messageLength > Contact.MESSAGE_MAX - 500 ? (
                 <span
                   aria-hidden
                   className={cn(
                     "nums-tabular text-xs",
-                    messageLength > 4000 ? "text-[var(--warning-ink)]" : "text-ink-quiet",
+                    messageLength > Contact.MESSAGE_MAX
+                      ? "text-[var(--warning-ink)]"
+                      : "text-ink-quiet",
                   )}
                 >
-                  {Math.max(0, 4000 - messageLength)} restantes
+                  {Math.max(0, Contact.MESSAGE_MAX - messageLength)} restantes
                 </span>
               ) : null}
             </div>
             <textarea
               id="contact-message"
               rows={5}
+              maxLength={Contact.MESSAGE_MAX}
               required
               {...register("message")}
               aria-invalid={!!errors.message}
               aria-describedby="contact-message-hint"
               placeholder={copy.messagePlaceholder}
               disabled={isSubmitting}
-              className={cn(fieldClass, "resize-y min-h-32 max-h-80")}
+              className={cn(fieldClass, "contact-message resize-y min-h-32 max-h-80")}
             />
             <FieldHint
               id="contact-message-hint"
               status={fieldStatus("message", !!errors.message)}
               message={errors.message?.message}
+              validMessage={copy.messageValidHint}
             />
           </div>
 
@@ -306,7 +327,7 @@ export function ContactForm({
             onClick={reset}
             className={underlineLinkClass({
               variant: "tight",
-              className: "text-sm text-ink-quiet hover:text-ink",
+              className: "cursor-pointer text-sm text-ink-quiet hover:text-ink",
             })}
           >
             {CONTACT_FORM.successResetLabel}

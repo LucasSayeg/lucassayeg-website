@@ -176,6 +176,9 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    /* Light-only site — pin UA-rendered chrome (autofill, scrollbars, form
+       controls) to light so OS-dark visitors don't get inverted contact fields. */
+    color-scheme: light;
     /* Clears the scrolled-state header (~7.5rem on mobile, ~8rem on desktop
        once the slogan row reveals). Anchor jumps that land flush against the
        header read as crowded; this gives the destination a breath of space. */
@@ -194,6 +197,8 @@
     font-family: var(--font-sans);
     font-size: var(--text-base);
     line-height: 1.6;
+    /* Cheap insurance against long-token overflow on narrow pt-BR measures. */
+    overflow-wrap: break-word;
     font-feature-settings:
       "kern" 1,
       "liga" 1,
@@ -210,6 +215,19 @@
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.01em;
+    /* Balance multi-line display headings — directly serves the type-led brief.
+       Browsers only balance short runs (≤~6 lines) and ignore it otherwise, so
+       it degrades to normal wrap pre-support with no fallback needed. */
+    text-wrap: balance;
+  }
+
+  /* Body copy — avoid orphans/short last lines. Scoped (not `*`) for perf;
+     covers Lexical rich text too (SobreRichText emits bare <p>). Firefox
+     ignores it harmlessly until supported. */
+  p,
+  li,
+  blockquote {
+    text-wrap: pretty;
   }
 
   /* Tabular numerals where helpful */
@@ -284,6 +302,11 @@
     opacity var(--dur-slow) var(--ease-out-quart),
     transform var(--dur-slow) var(--ease-out-quart);
   transition-delay: calc(var(--reveal-i, 0) * 80ms);
+}
+/* Reveal.tsx never strips .reveal, so the hint would persist for the page
+   lifetime if it lived in the base rule. Scope it to the not-yet-revealed
+   state so the compositor layer is released once the element settles. */
+.reveal:not(.reveal--in) {
   will-change: opacity, transform;
 }
 .reveal--in {
@@ -341,6 +364,10 @@
 .cascade-reveal[data-armed="true"] > li {
   opacity: 0;
   transform: translateX(-14px);
+}
+/* data-armed stays set after data-in fires, so scope the hint to the
+   pre-settle window only — released once the cascade has played in. */
+.cascade-reveal[data-armed="true"]:not([data-in="true"]) > li {
   will-change: opacity, transform;
 }
 .cascade-reveal[data-armed="true"][data-in="true"] > li {
@@ -435,6 +462,10 @@
   font-size: var(--text-base);
   line-height: 1.2;
   text-decoration: none;
+  /* <button> uses (form submit) don't get the UA's link cursor like the <a>
+     CTAs do — make the affordance consistent. Disabled states override to
+     `wait` below. */
+  cursor: pointer;
   transition:
     background-color 200ms var(--ease-out-quart),
     border-color 200ms var(--ease-out-quart),
@@ -598,6 +629,18 @@
 }
 [data-contact-state="success"] .contact-swap__pane--success {
   align-self: center;
+}
+
+/* Message textarea auto-grows to its content where supported. Un-layered so it
+   wins over the Tailwind `resize-y min-h-32 max-h-80` utilities, which stay as
+   the pre-support fallback. Clamped 5–18 line-heights so it never collapses
+   below the resting height nor runs away on a very long paste. */
+@supports (field-sizing: content) {
+  .contact-message {
+    field-sizing: content;
+    min-block-size: 5lh;
+    max-block-size: 18lh;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────

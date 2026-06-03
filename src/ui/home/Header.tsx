@@ -213,7 +213,12 @@ export function Header({
         </div>
 
         {/* Mobile nav */}
-        <div id="mobile-nav" data-open={mobileOpen} className="accordion-panel md:hidden">
+        <div
+          id="mobile-nav"
+          data-open={mobileOpen}
+          inert={!mobileOpen || undefined}
+          className="accordion-panel md:hidden"
+        >
           <div className="accordion-panel-inner">
             <ul className="flex flex-col divide-y divide-paper-deep/50 border-t border-paper-deep pb-2 pt-1 text-base">
               {navLinks.map((l) => {

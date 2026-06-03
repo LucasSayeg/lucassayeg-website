@@ -1,6 +1,8 @@
 "use server";
 
 import { Contact } from "@/core/contact";
+import { rateLimit } from "@/lib/rate-limit";
+import { headers } from "next/headers";
 import { Resend } from "resend";
 
 export type ContactActionResult =
@@ -12,7 +14,24 @@ const trim = (value: string | undefined) => {
   return v && v.length > 0 ? v : undefined;
 };
 
-export async function sendContactEmail(values: Contact.FormValues): Promise<ContactActionResult> {
+export async function sendContactEmail(
+  values: Contact.SubmissionValues,
+): Promise<ContactActionResult> {
+  // Honeypot — a real visitor never sees the `company` field, so any value
+  // means a bot. Drop silently and report success so it can't probe for the
+  // real failure path. (safeParse below also strips `company` regardless.)
+  if (values.company && values.company.trim() !== "") {
+    return { success: true };
+  }
+
+  // Best-effort rate limit (per serverless instance — see lib/rate-limit.ts).
+  // The failure banner already offers the WhatsApp/e-mail fallback, so this
+  // state needs no dedicated UI.
+  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (!rateLimit(`contact:${ip}`)) {
+    return { success: false, error: "rate_limited" };
+  }
+
   const result = Contact.formSchema.safeParse(values);
 
   if (!result.success) {

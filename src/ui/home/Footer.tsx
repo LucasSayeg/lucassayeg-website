@@ -18,7 +18,7 @@ export function Footer({
   siteInfo = FALLBACK_SITE_INFO,
   whatsappHref = WHATSAPP_HREF,
 }: FooterProps = {}) {
-  const rights = `© ${new Date().getFullYear()} ${siteInfo.name}. Todos os direitos reservados.`;
+  const year = new Date().getFullYear();
   return (
     <footer className="on-dark bg-[var(--surface-deep)] py-[var(--space-2xl)] text-sm text-[var(--ink-on-dark-quiet)]">
       <PageContainer className="grid grid-cols-1 gap-[var(--space-xl)] md:grid-cols-12 md:gap-[var(--space-2xl)]">
@@ -45,26 +45,30 @@ export function Footer({
           <Eyebrow size="sm" className="mb-[var(--space-2xs)] text-[var(--ink-on-dark-quiet)]">
             Contato
           </Eyebrow>
-          <ul className="space-y-[var(--space-2xs)]">
-            <li>
-              <UnderlineLink
-                href={`mailto:${siteInfo.email}`}
-                className="hover:text-[var(--ink-on-dark)]"
-              >
-                {siteInfo.email}
-              </UnderlineLink>
-            </li>
-            <li>
-              <UnderlineLink
-                href={whatsappHref}
-                external
-                className="hover:text-[var(--ink-on-dark)]"
-              >
-                WhatsApp
-              </UnderlineLink>
-            </li>
-            {/* Social slot — collapses cleanly when none exist */}
-          </ul>
+          {/* Real contact details → <address>. not-italic cancels the UA italic
+              so the visual is unchanged. */}
+          <address className="not-italic">
+            <ul className="space-y-[var(--space-2xs)]">
+              <li>
+                <UnderlineLink
+                  href={`mailto:${siteInfo.email}`}
+                  className="hover:text-[var(--ink-on-dark)]"
+                >
+                  {siteInfo.email}
+                </UnderlineLink>
+              </li>
+              <li>
+                <UnderlineLink
+                  href={whatsappHref}
+                  external
+                  className="hover:text-[var(--ink-on-dark)]"
+                >
+                  WhatsApp
+                </UnderlineLink>
+              </li>
+              {/* Social slot — collapses cleanly when none exist */}
+            </ul>
+          </address>
         </div>
       </PageContainer>
 
@@ -73,7 +77,10 @@ export function Footer({
           {siteInfo.crisis}
         </p>
         <div className="mt-[var(--space-md)] flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--ink-on-dark-quiet)]">
-          <p>{rights}</p>
+          <p>
+            © <time dateTime={String(year)}>{year}</time> {siteInfo.name}. Todos os direitos
+            reservados.
+          </p>
           <p className="font-display">{siteInfo.crp}</p>
         </div>
       </PageContainer>
