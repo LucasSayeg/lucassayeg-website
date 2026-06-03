@@ -21,16 +21,16 @@ type Props = {
   Shared by the Serviços "áreas de escuta" list (ul) and the Como ajuda
   numbered list (ol). Each child <li> sets its own --list-i.
 
-  Progressive enhancement: SSR / no-JS / reduced-motion / above-the-fold paths
-  all render the list visible. The component only arms (hides) items when JS
-  confirms we're below the fold AND motion isn't reduced.
+  Progressive enhancement: SSR / no-JS / reduced-motion paths all render the
+  list visible. When JS runs and motion isn't reduced, the list arms (hides)
+  and the cascade plays — on intersection for below-the-fold lists, or
+  immediately on load for a list already past the trigger line (ComoAjuda
+  peeks out under the hero; it should perform its entrance like Serviços
+  does, not appear pre-shown).
 */
-// Bottom inset for the trigger line — the observer fires when the list crosses
-// this far up the viewport, and the mount-time "already visible?" guard uses
-// the SAME line. They must match: if the guard bailed at the full viewport
-// height (100%) while the observer triggered at 82%, a list peeking into the
-// bottom 18% at load would bail (render static) yet never reach the observer's
-// line — a dead zone. ComoAjuda sits right under the hero and lands there.
+// Bottom inset for the trigger line — the observer fires when the list
+// crosses this far up the viewport. A list already past this line at mount
+// skips the observer and plays at once (there's nothing left to wait for).
 const TRIGGER_BOTTOM_INSET = 0.18;
 
 export function CascadeReveal({ className, as: Tag = "ul", children }: Props) {
@@ -42,12 +42,24 @@ export function CascadeReveal({ className, as: Tag = "ul", children }: Props) {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    el.setAttribute("data-armed", "true");
+
     const triggerLine = window.innerHeight * (1 - TRIGGER_BOTTOM_INSET);
     const rect = el.getBoundingClientRect();
     const inView = rect.top < triggerLine && rect.bottom > 0;
-    if (inView) return;
-
-    el.setAttribute("data-armed", "true");
+    if (inView) {
+      // Double rAF: the armed (hidden) state must commit a paint before
+      // data-in flips, or the browser coalesces both states into one style
+      // update and the transition never runs.
+      let rafInner = 0;
+      const rafOuter = requestAnimationFrame(() => {
+        rafInner = requestAnimationFrame(() => el.setAttribute("data-in", "true"));
+      });
+      return () => {
+        cancelAnimationFrame(rafOuter);
+        cancelAnimationFrame(rafInner);
+      };
+    }
 
     const obs = new IntersectionObserver(
       (entries) => {

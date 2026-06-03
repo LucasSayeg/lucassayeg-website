@@ -39,9 +39,16 @@ import "@/app/globals.css";
   shift. The explicit `fallback` chain below is the second line of defence,
   for browsers that skip the override or fail the fetch.
 */
+/*
+  display: "fallback" (not "swap") — both faces are self-hosted and preloaded
+  by next/font, so they almost always arrive within the ~100ms block window
+  and render directly, with no fallback→webfont flash. On a genuinely slow
+  connection the metric-matched fallback simply stays (no late swap jolt),
+  which suits this audience better than text that reflows mid-read.
+*/
 const displaySerif = Petrona({
   subsets: ["latin", "latin-ext"],
-  display: "swap",
+  display: "fallback",
   variable: "--font-display",
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
@@ -50,7 +57,7 @@ const displaySerif = Petrona({
 
 const bodySans = Atkinson_Hyperlegible({
   subsets: ["latin", "latin-ext"],
-  display: "swap",
+  display: "fallback",
   variable: "--font-sans",
   weight: ["400", "700"],
   style: ["normal", "italic"],

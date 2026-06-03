@@ -4,6 +4,7 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { pt } from "@payloadcms/translations/languages/pt";
 import path from "path";
+import sharp from "sharp";
 import { fileURLToPath } from "url";
 
 import { Users } from "./collections/Users";
@@ -48,6 +49,10 @@ export default buildConfig({
   }),
   secret: process.env.PAYLOAD_SECRET ?? "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
+  // Payload needs sharp passed explicitly to generate Media imageSizes and
+  // admin thumbnails — it was installed but never wired, so every upload
+  // skipped resizing (and logged a warning).
+  sharp,
   db: vercelPostgresAdapter({ pool: { connectionString: process.env.POSTGRES_URL } }),
   plugins: [
     vercelBlobStorage({
