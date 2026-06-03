@@ -21,11 +21,11 @@ const fieldClass = cn(
   "font-sans text-(length:--text-base) leading-[1.5] text-ink",
   "placeholder:text-ink-quiet",
   "transition-[color,border-color,box-shadow,background-color] duration-200",
-  // Focus reads as a clear navy accent underline (border + 1px shadow = a 2px
+  // Focus reads as a clear accent-ink underline (border + 1px shadow = a 2px
   // rule) — unambiguous "you're here" feedback at the most vulnerable element.
   "focus:outline-none focus:border-accent focus:shadow-[0_1px_0_0_var(--color-accent)]",
   // Error stays warm, never alarming red — it shares the warning-ink the field
-  // hints already use, and is distinct from the navy focus accent.
+  // hints already use, and is distinct from the rose focus accent.
   "aria-[invalid=true]:border-[var(--warning-ink)] aria-[invalid=true]:shadow-[0_1px_0_0_var(--warning-ink)]",
   "aria-[invalid=true]:focus:border-accent aria-[invalid=true]:focus:shadow-[0_1px_0_0_var(--color-accent)]",
   "disabled:opacity-60",

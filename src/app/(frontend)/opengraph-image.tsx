@@ -8,7 +8,7 @@ import { getSiteInfo } from "@/lib/home-content";
   Link-preview card — the first impression when the site is shared on
   WhatsApp (the practice's primary channel). Portrait-led by design: a
   stranger deciding whether to tap needs Lucas's face and name, not a
-  monogram. The clay band + navy double-rule echo the site masthead so the
+  monogram. The wine band + double-rule echo the site masthead so the
   card and the page read as one piece.
 
   The CMS mark is deliberately absent here: it ships in arbitrary solid
@@ -27,9 +27,9 @@ export const alt = "Lucas Sayeg — Psicólogo clínico e orientador profissiona
 /* Site tokens resolved to sRGB — satori has no oklch() support. */
 const C = {
   paper: "#f5f3ef", // --paper
-  band: "#152e4e", // --masthead (navy ink plate)
+  band: "#572729", // --masthead (rose ink plate)
   bandText: "#c7c3be", // --ink-on-dark-quiet
-  rule: "#193c67", // --accent
+  rule: "#612629", // --accent
   ink: "#1e1510", // --ink
   inkSoft: "#413731", // --ink-soft
   plate: "#2c2821", // --surface-deep (the Sobre portrait-plate gesture)

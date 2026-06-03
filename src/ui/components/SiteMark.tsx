@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
   The CMS monogram, printed in the site's ink. The upload's alpha channel
   becomes a CSS mask (`.site-mark` in globals.css) and the box is painted with
   the handmade-ink accent — so any solid-color file (including the
-  white-on-transparent placeholder) renders in the identity's navy, a
+  white-on-transparent placeholder) renders in the identity's ink, a
   printer's mark stamped on the page rather than a pasted image.
 
   Loading: CSS mask URLs are invisible to the browser's preload scanner and

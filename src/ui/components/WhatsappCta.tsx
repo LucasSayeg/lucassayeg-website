@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils";
 import { WhatsappIcon } from "@/ui/components/WhatsappIcon";
 
 /*
-  The WhatsApp affordance — the only place a visitor opens a chat. Navy ink
-  pill, brand-green glyph, label, and a small arrow that nudges forward on
+  The WhatsApp affordance — the only place a visitor opens a chat. Ink pill
+  (--cta-surface), glyph, label, and a small arrow that nudges forward on
   hover. Two registers:
-    - "solid"   — the weighted navy CTA. The Hero (first contact) and the
+    - "solid"   — the weighted ink CTA. The Hero (first contact) and the
                   persistent header affordance, so the channel always reads
                   as the page's primary action.
     - "outline" — the quiet register for the contact rail, where a second
@@ -41,6 +41,9 @@ export function WhatsappCta({
   // On the solid pill the arrow reads as a light tick; on the outline pill it
   // shares the ink-quiet register so it stays visible against paper.
   const arrowColor = variant === "outline" ? "text-ink-quiet" : "text-paper-deep";
+  // Brand-green holds its own against paper, but on the filled pill it argues
+  // with the ink ground — there the glyph rides the same paper as the label.
+  const iconColor = variant === "outline" ? "text-[#25D366]" : "text-paper";
   return (
     <a
       href={href}
@@ -49,7 +52,7 @@ export function WhatsappCta({
       aria-label={ariaLabel}
       className={cn(base, "group font-display", sizeClass, className)}
     >
-      <WhatsappIcon size={iconSize} className="text-[#25D366]" />
+      <WhatsappIcon size={iconSize} className={iconColor} />
       <span className={cn("font-display", size === "sm" ? "text-sm" : "text-base")}>
         {children}
       </span>

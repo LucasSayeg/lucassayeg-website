@@ -20,13 +20,14 @@
   --paper-clay: oklch(0.915 0.012 82); /* deeper alternation #E9E2D4 — Sobre/FAQ */
   --paper-deep: oklch(0.875 0.014 80); /* subtle hairline/border (--border maps here) */
   --masthead: oklch(
-    0.3 0.065 255
-  ); /* header nameplate plate — deep navy ink, a touch
-                                        deeper and quieter than --cta-surface so the
-                                        identity plate doesn't read as a button. Bone
-                                        text (--ink-on-dark) rides it. Chosen over the
-                                        earlier warm-clay band exploration (read as
-                                        khaki). */
+    0.34 0.07 20
+  ); /* header nameplate plate — deep rose ink ("rosa
+                                        tinta", the portrait shirt's hue family) at
+                                        the weight the navy held; a step apart from
+                                        --cta-surface so the identity plate doesn't
+                                        read as a button. Bone text (--ink-on-dark)
+                                        rides it. Chosen with Lucas over the navy
+                                        exploration: oklch(0.3 0.065 255). */
 
   /* Ink — warm dark, never pure black */
   --ink: oklch(0.205 0.018 50); /* primary text + headings */
@@ -47,29 +48,32 @@
   --ink-on-dark: oklch(0.965 0.006 80); /* primary text on dark */
   --ink-on-dark-quiet: oklch(0.82 0.008 75); /* body/secondary on dark (footer copy) */
 
-  /* Accent — single deep, considered color (ink navy, hue rotated from the
-     earlier oxblood). Same L/C as before so weight on the page is unchanged. */
-  --accent: oklch(0.355 0.085 255); /* link, focus, primary CTA */
-  --accent-deep: oklch(0.29 0.09 255); /* hover/pressed */
+  /* Accent — single deep, considered color: rose ink (hue 20, the portrait
+     shirt's family), rotated from the earlier navy. Same L/C as before so
+     weight on the page is unchanged. Navy references if ever needed:
+     accent 0.355 0.085 255 · deep 0.29 0.09 255 · soft 0.7 0.04 255 ·
+     mark 0.42 0.085 245. */
+  --accent: oklch(0.355 0.085 20); /* link, focus, primary CTA */
+  --accent-deep: oklch(0.29 0.09 20); /* hover/pressed */
   --accent-soft: oklch(
-    0.7 0.04 255
+    0.7 0.06 20
   ); /* underline tint, decorative only — chroma
-                                         trimmed: blues at L=0.7 are more vivid
-                                         than reds at L=0.7, so the old 0.06
-                                         would land in sky-blue territory */
+                                         restored to 0.06: reds at L=0.7 are less
+                                         vivid than blues, so the blue-era trim
+                                         to 0.04 would read gray here */
   --accent-mark: oklch(
-    0.42 0.085 245
+    0.42 0.085 30
   ); /* handmade ink — name underline, signature
                                            gestures. Chroma bumped above --accent and
-                                           hue pushed further off so the mark reads as
-                                           a different ink than the CTA, not as a
-                                           thinner sibling of it. */
+                                           hue pushed further off (toward rust) so the
+                                           mark reads as a different ink than the CTA,
+                                           not as a thinner sibling of it. */
 
-  /* CTA button surface — navy ink, distinct from --ink (which is too neutral
+  /* CTA button surface — rose ink, distinct from --ink (which is too neutral
      for solid CTAs against bone paper). Chroma is higher than the surrounding
-     ink scale because navy at low chroma reads gray. */
-  --cta-surface: oklch(0.32 0.07 255);
-  --cta-surface-hover: oklch(0.25 0.08 255);
+     ink scale because deep hues at low chroma read gray. */
+  --cta-surface: oklch(0.32 0.07 20);
+  --cta-surface-hover: oklch(0.25 0.08 20);
 
   /* Semantic — warm, not loud */
   --warning-ink: oklch(0.385 0.075 60);
@@ -271,7 +275,7 @@
     outline-offset: 3px;
     border-radius: 1px;
   }
-  /* On the dark footer ground the navy outline disappears — swap to a light
+  /* On the dark footer ground the accent outline disappears — swap to a light
      ring. Higher specificity than the base rule above, so it wins in-layer. */
   .on-dark :focus-visible {
     outline-color: var(--ink-on-dark);
@@ -450,11 +454,11 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Primary button — ink-navy surface with paper text. Used for the
+   Primary button — rose-ink surface with paper text. Used for the
    single-primary CTA pattern (Hero, Sobre, Header, Contato, form
-   submit). Dark enough that the WhatsApp brand-green icon reads
-   cleanly against it; navy with moderate chroma so the button doesn't
-   drop to neutral black on the bone paper.
+   submit). The glyph and arrow ride the same paper as the label;
+   rose with moderate chroma so the button doesn't drop to neutral
+   black on the bone paper.
    Modifiers: --sm for the header (denser row), --lg for the long
    uppercase form-submit register.
    ─────────────────────────────────────────────────────────────────
@@ -468,7 +472,7 @@
    Site mark — the CMS-uploaded monogram, printed in the site's ink.
    The upload's alpha channel becomes a CSS mask and the box is painted
    with the handmade-ink accent, so any solid-color file (including the
-   white-on-transparent placeholder) renders in the identity's navy —
+   white-on-transparent placeholder) renders in the identity's ink —
    a printer's mark stamped in ink rather than a pasted image.
    ───────────────────────────────────────────────────────────────── */
   .site-mark {
@@ -484,7 +488,7 @@
     mask-repeat: no-repeat;
     mask-position: center;
   }
-  /* Without mask support the element would paint as a solid navy rectangle —
+  /* Without mask support the element would paint as a solid ink rectangle —
    hide it instead; the typographic name carries the brand with no loss. */
   @supports (not (mask-image: url(""))) and (not (-webkit-mask-image: url(""))) {
     .site-mark {
@@ -518,7 +522,7 @@
   /* Solid — the page's weighted CTA. Deliberately rare: used at most twice and
    never twice in one viewport — the Hero (first contact) and the form submit
    (the actual conversion click). The repeated WhatsApp affordances use the
-   outline register below so navy fill never reads as a system color. */
+   outline register below so the ink fill never reads as a system color. */
   .btn-primary {
     background-color: var(--cta-surface);
     color: var(--paper);
@@ -533,7 +537,7 @@
   }
 
   /* Outline — the quiet, persistent register for the repeated WhatsApp
-   affordances (header, contact rail). Navy ink on paper, hairline border
+   affordances (header, contact rail). Rose ink on paper, hairline border
    that firms up on hover. Keeps the affordance reachable without stacking
    another dark block onto a light, type-led page. */
   .btn-outline {
@@ -718,9 +722,9 @@
   margin-right: 0.4em;
   font-weight: 700;
   /* Warm warning ink — not --accent. The validation dot fires at the moment a
-     visitor's submit was rejected; with the navy accent, --accent reads as
-     bank-form-blue validation here. --warning-ink (hue 60, warm) keeps the
-     literate-warm register at the most fragile moment in the form flow. */
+     visitor's submit was rejected; --accent (a wine red) would shout alarm
+     here. --warning-ink (hue 60, warm) keeps the literate-warm register at
+     the most fragile moment in the form flow. */
   color: var(--warning-ink);
 }
 .field-hint__valid {
@@ -761,7 +765,7 @@
   display: inline-block;
   margin-right: 0.4em;
   /* Warm warning ink — see .field-hint__mark. Same rationale: the submit-fail
-     banner is a fragile moment, --accent (navy) reads as bank-form blue here. */
+     banner is a fragile moment, --accent (a wine red) would shout alarm here. */
   color: var(--warning-ink);
   font-weight: 700;
 }

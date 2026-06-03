@@ -24,7 +24,7 @@ import { WhatsappCta } from "@/ui/components/WhatsappCta";
   and the sigilo note. Rail and invite fade on success so attention
   rests on the thank-you message — the form panel itself swaps via
   .contact-swap. The section sits open on the warm paper ground — a calm
-  light clearing before the dark footer, navy reserved for the accent.
+  light clearing before the dark footer, the rose ink reserved for the accent.
 */
 
 type ContatoProps = {
@@ -49,7 +49,7 @@ export function Contato({
     >
       <PageContainer>
         {/* Open on warm paper — no plate. Contact is the page's calm light
-            clearing before the dark footer; navy survives only as the
+            clearing before the dark footer; the rose ink survives only as the
             link/focus/submit accent. */}
         {/* Header — heading and invite stacked together, left-anchored. */}
         <div className="max-w-[640px]">
