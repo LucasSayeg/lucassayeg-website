@@ -65,7 +65,7 @@ export function Contato({
         <div className="mt-[var(--space-xl)] grid grid-cols-1 gap-x-[var(--space-lg)] gap-y-[var(--space-2xl)] md:grid-cols-12">
           <div className="contact-form-col md:col-span-7 md:col-start-1">
             <div className="contact-form-shell max-w-[560px]">
-              <ContactForm {...formState} copy={formCopy} />
+              <ContactForm {...formState} copy={formCopy} whatsappHref={whatsappHref} />
             </div>
           </div>
 
