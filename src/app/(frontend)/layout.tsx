@@ -80,7 +80,7 @@ const bodySans = Atkinson_Hyperlegible({
 
 const SITE_TITLE = "Lucas Sayeg — Psicólogo clínico e orientador profissional";
 const SITE_DESCRIPTION =
-  "Atendimento online e presencial em Vila Leopoldina, São Paulo. Psicoterapia clínica e orientação profissional para adultos.";
+  "Atendimento online e presencial em Vila Leopoldina, São Paulo. Psicoterapia clínica e orientação profissional.";
 
 export const metadata: Metadata = {
   // Absolute base for og:image / canonical resolution — same convention as
@@ -91,11 +91,17 @@ export const metadata: Metadata = {
     template: "%s — Lucas Sayeg",
   },
   description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     type: "website",
     locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 };
 
