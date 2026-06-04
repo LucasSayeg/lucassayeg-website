@@ -10,8 +10,9 @@
   Optional `src` prop short-circuits to a real next/image once art exists.
 */
 
-import Image, { type StaticImageData } from "next/image";
+import { type StaticImageData } from "next/image";
 import type { CSSProperties } from "react";
+import { BlurUpImage } from "@/ui/components/BlurUpImage";
 
 type Shape = "square" | "wide" | "service" | "portrait";
 
@@ -32,13 +33,10 @@ type Props = {
    * leave it off and lazy-load by default.
    */
   priority?: boolean;
+  /** Blur-data-URL for remote CMS images (real blur-up). */
+  blurDataURL?: string | null;
   className?: string;
 };
-
-// Warm putty tint (--paper-clay) as a tiny SVG, so real photos fade in from
-// an on-brand neutral instead of snapping in from a blank frame.
-const BLUR_PLACEHOLDER =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlZGU5ZTAiLz48L3N2Zz4=";
 
 const aspectByShape: Record<Shape, string> = {
   square: "1 / 1",
@@ -72,6 +70,7 @@ export function IllustrationSlot({
   src,
   alt,
   priority = false,
+  blurDataURL,
   className,
 }: Props) {
   const style: CSSProperties = {
@@ -80,6 +79,9 @@ export function IllustrationSlot({
   };
 
   if (src) {
+    // `alt` falls back to the concept brief so screen readers get *something*
+    // descriptive when the CMS doesn't provide explicit alt text. Empty
+    // string is honored — that's the "decorative image" signal.
     // `alt` falls back to the concept brief so screen readers get *something*
     // descriptive when the CMS doesn't provide explicit alt text. Empty
     // string is honored — that's the "decorative image" signal.
@@ -94,26 +96,20 @@ export function IllustrationSlot({
     // `contain` there so the artwork breathes inside the frame.
     const isPortrait = shape === "portrait";
     const fit = isPortrait ? "object-cover object-[50%_60%]" : "object-contain";
-    // Static imports carry their own bytes, so next/image auto-generates a real
-    // blur-up (works with `fill`) — passing blurDataURL too would silently keep
-    // the flat color. Remote URLs have no build-time bytes, so they fall back to
-    // the warm-putty flat placeholder.
-    const isStatic = typeof src !== "string";
     return (
       <div
         className={`relative block select-none ${className ?? ""}`}
         style={style}
         {...(isDecorative ? { "aria-hidden": true } : {})}
       >
-        <Image
+        <BlurUpImage
           src={src}
           alt={resolvedAlt}
-          fill
           sizes={sizesByShape[shape]}
-          className={fit}
+          fitClassName={fit}
           priority={priority}
-          placeholder="blur"
-          {...(isStatic ? {} : { blurDataURL: BLUR_PLACEHOLDER })}
+          blurDataURL={blurDataURL}
+          decorative={isDecorative}
         />
       </div>
     );

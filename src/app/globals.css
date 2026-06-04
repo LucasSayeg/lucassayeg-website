@@ -1056,3 +1056,29 @@
     display: none;
   }
 }
+
+/* Blur-up: own blurred backdrop, sharp image cross-fades in over it.
+   Reduced-motion users get no transition (image simply replaces blur). */
+.blur-up-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+  transform: scale(1.05);
+}
+
+.blur-up-fade {
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out-quart);
+}
+
+.blur-up-fade.is-loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-up-fade {
+    transition: none;
+  }
+}
