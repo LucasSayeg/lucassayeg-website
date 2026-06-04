@@ -16,5 +16,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1.0,
   });
 
+  entries.push({
+    url: `${BASE_URL}/sobre`,
+    lastModified: new Date(),
+    changeFrequency: "yearly",
+    priority: 0.8,
+  });
+
   return entries;
 }
