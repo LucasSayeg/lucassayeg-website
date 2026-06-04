@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Petrona, Atkinson_Hyperlegible } from "next/font/google";
 import { cookies } from "next/headers";
-import { COOKIE_NAME, DEFAULT_PALETTE_ID, PICKER_COOKIE_NAME, isPaletteId } from "@/core/palettes";
+import {
+  COOKIE_NAME,
+  DEFAULT_PALETTE_ID,
+  PICKER_COOKIE_NAME,
+  isPaletteId,
+  type PaletteId,
+} from "@/core/palettes";
 import { getBaseUrl } from "@/lib/base-url";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
 import { Analytics } from "@vercel/analytics/next";
@@ -94,11 +100,19 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Palette exploration — see src/core/palettes.ts. Temporary; remove during cleanup.
-  const store = await cookies();
-  const cookiePalette = store.get(COOKIE_NAME)?.value;
-  const palette = isPaletteId(cookiePalette) ? cookiePalette : DEFAULT_PALETTE_ID;
-  const showPalettePanel = store.get(PICKER_COOKIE_NAME)?.value === "1";
+  // Production renders statically — no request APIs in the layout. The palette
+  // panel is a dev-only exploration tool (see src/core/palettes.ts); reading
+  // cookies only in dev keeps the route eligible for static/ISR generation in
+  // production.
+  const isDev = process.env.NODE_ENV !== "production";
+  let palette: PaletteId = DEFAULT_PALETTE_ID;
+  let showPalettePanel = false;
+  if (isDev) {
+    const store = await cookies();
+    const cookiePalette = store.get(COOKIE_NAME)?.value;
+    palette = isPaletteId(cookiePalette) ? cookiePalette : DEFAULT_PALETTE_ID;
+    showPalettePanel = store.get(PICKER_COOKIE_NAME)?.value === "1";
+  }
 
   return (
     <html

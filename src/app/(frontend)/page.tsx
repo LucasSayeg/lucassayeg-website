@@ -16,6 +16,8 @@ import { Hero } from "@/ui/home/Hero";
 import { Servicos } from "@/ui/home/Servicos";
 import { Sobre } from "@/ui/home/Sobre";
 
+export const revalidate = 3600;
+
 type SharedProps = { siteInfo: SiteInfoContent; whatsappHref: string };
 
 const SECTION_RENDERERS: Record<

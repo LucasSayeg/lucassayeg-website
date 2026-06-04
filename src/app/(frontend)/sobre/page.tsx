@@ -17,6 +17,8 @@ import { Header } from "@/ui/home/Header";
 import { IllustrationSlot } from "@/ui/components/IllustrationSlot";
 import { SobreRichText } from "@/ui/home/SobreRichText";
 
+export const revalidate = 3600;
+
 export async function generateMetadata(): Promise<Metadata> {
   const [siteInfo, content] = await Promise.all([getSiteInfo(), getSobrePageContent()]);
   return {
