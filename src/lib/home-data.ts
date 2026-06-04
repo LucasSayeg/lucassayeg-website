@@ -97,7 +97,9 @@ export const SOBRE_BOTTOM_CTA = {
   heading: "Vamos conversar.",
   body: "Se algo aqui ressoou, me escreva. Não é preciso estar com a questão pronta.",
   whatsappLabel: "Conversar pelo WhatsApp",
-  formLabel: "Voltar ao formulário",
+  // Forward-neutral: /sobre is often deep-linked (referrals, search), so a
+  // visitor who landed here never "left" a form — "voltar" would confuse them.
+  formLabel: "Ir ao formulário de contato",
 } as const;
 
 export const SERVICOS_SUBTITLE =
