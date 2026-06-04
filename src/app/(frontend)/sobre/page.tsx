@@ -5,7 +5,9 @@ import {
   getSobrePageContent,
   type SobrePageContent,
 } from "@/lib/home-content";
+import { getBaseUrl } from "@/lib/base-url";
 import { ANCHOR_BY_KEY } from "@/lib/section-anchors";
+import { buildStructuredData } from "@/lib/structured-data";
 import { buildWhatsappHref } from "@/lib/whatsapp";
 import { Eyebrow } from "@/ui/components/Eyebrow";
 import { PageContainer } from "@/ui/components/PageContainer";
@@ -24,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: `Sobre — ${siteInfo.name}` },
     description: content.lede,
+    alternates: { canonical: "/sobre" },
   };
 }
 
@@ -63,9 +66,14 @@ export default async function SobrePage() {
     .filter((s) => s.enabled && s.navLabel)
     .map((s) => ({ href: `#${ANCHOR_BY_KEY[s.key]}`, label: s.navLabel }));
   const portrait = siteInfo.portrait;
+  const jsonLd = buildStructuredData({ siteInfo, baseUrl: getBaseUrl() });
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header navLinks={navLinks} siteInfo={siteInfo} whatsappHref={whatsappHref} />
       <main id="main">
         {/* Band 1 — Identity + Formação merged */}
