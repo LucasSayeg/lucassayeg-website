@@ -81,6 +81,9 @@ function FieldHint({ id, status, message, validMessage, children }: FieldHintPro
 
 type ContactFormProps = ReturnType<typeof useContactForm> & {
   copy?: ContactFormContent;
+  /** CMS-resolved WhatsApp link. Falls back to the (number-less) constant only
+      when the page doesn't thread one through — e.g. PAYLOAD_ENABLED=false. */
+  whatsappHref?: string;
 };
 
 export function ContactForm({
@@ -90,6 +93,7 @@ export function ContactForm({
   submitResult,
   reset,
   copy = FALLBACK_CONTACT_FORM,
+  whatsappHref = WHATSAPP_HREF,
 }: ContactFormProps) {
   const {
     register,
@@ -269,7 +273,7 @@ export function ContactForm({
                 enviar pelo seu app de e-mail
               </UnderlineLink>{" "}
               (com o que você escreveu já preenchido), ou falar com Lucas pelo{" "}
-              <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
+              <UnderlineLink href={whatsappHref} external variant="tight" className="text-ink">
                 WhatsApp
               </UnderlineLink>
               .
@@ -317,7 +321,7 @@ export function ContactForm({
           </p>
           <p className="text-(length:--text-base) leading-relaxed text-ink-soft">
             {copy.successWhatsappPrompt}{" "}
-            <UnderlineLink href={WHATSAPP_HREF} external variant="tight" className="text-ink">
+            <UnderlineLink href={whatsappHref} external variant="tight" className="text-ink">
               {CONTACT_FORM.successWhatsappLabel}
             </UnderlineLink>
             .
