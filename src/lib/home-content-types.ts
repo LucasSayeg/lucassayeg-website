@@ -86,6 +86,9 @@ export type ContactFormContent = {
 export type SiteImage = {
   url: string;
   alt: string;
+  width?: number | null;
+  height?: number | null;
+  blurDataURL?: string | null;
 };
 
 /*

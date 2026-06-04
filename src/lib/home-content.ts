@@ -30,6 +30,7 @@ import {
   type SobreContent,
   type SobrePageContent,
 } from "@/lib/home-content-types";
+import { getBlurDataURL } from "@/lib/image-blur";
 import { getPayloadSafe } from "@/lib/payload";
 import { SECTION_KEYS, type SectionKey } from "@/lib/section-anchors";
 import type {
@@ -243,7 +244,26 @@ function resolveImage(
   const explicitAlt = typeof rawAlt === "string" ? rawAlt.trim() : "";
   const mediaAlt = typeof raw.alt === "string" ? raw.alt.trim() : "";
   const alt = explicitAlt || mediaAlt || fallbackAlt;
-  return { url, alt };
+  return {
+    url,
+    alt,
+    width: typeof raw.width === "number" ? raw.width : null,
+    height: typeof raw.height === "number" ? raw.height : null,
+  };
+}
+
+/* Attach a blur-data-URL to an already-resolved image, sourced from the
+   smallest available variant. Best-effort — leaves the image untouched on
+   failure (IllustrationSlot then uses its flat-putty placeholder). */
+async function withBlur(
+  image: SiteImage | null,
+  raw: number | Media | null | undefined,
+): Promise<SiteImage | null> {
+  if (!image || !raw || typeof raw === "number") return image;
+  const source = raw.sizes?.thumbnail?.url ?? raw.url ?? image.url;
+  if (!source) return image;
+  const blurDataURL = await getBlurDataURL(source, `${raw.id}:${raw.updatedAt}`);
+  return blurDataURL ? { ...image, blurDataURL } : image;
 }
 
 /* As resolveImage, plus intrinsic dimensions — the mask-rendered mark sizes
@@ -311,7 +331,7 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
         payload.findGlobal({ slug: "home-contact-form" }) as Promise<HomeContactForm>,
       ],
     );
-    return {
+    const base = {
       sections: mapSections(layout.sections, FALLBACK_SECTIONS),
       hero: mergeHero(hero, FALLBACK_HERO),
       comoAjuda: mergeComoAjuda(comoAjuda, FALLBACK_COMO_AJUDA),
@@ -320,6 +340,24 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
       faq: mergeFaq(faq, FALLBACK_FAQ),
       contato: mergeContato(contato, FALLBACK_CONTATO),
       contactForm: mergeContactForm(contactForm, FALLBACK_CONTACT_FORM),
+    };
+    // Spread into fresh objects — mergeSobre/mergeServicos may return shared
+    // fallback constants, so never mutate their fields in place.
+    return {
+      ...base,
+      sobre: {
+        ...base.sobre,
+        illustration: await withBlur(base.sobre.illustration, sobre?.illustration),
+      },
+      servicos: {
+        ...base.servicos,
+        items: await Promise.all(
+          base.servicos.items.map(async (item, i) => ({
+            ...item,
+            illustration: await withBlur(item.illustration, servicos?.items?.[i]?.illustration),
+          })),
+        ),
+      },
     };
   } catch (err) {
     console.warn("[home-content] fetch failed, using fallback", err);
@@ -335,7 +373,8 @@ export const getSiteInfo = cache(async (): Promise<SiteInfoContent> => {
       slug: "site-info",
       depth: 1,
     })) as SiteInfo;
-    return mergeSiteInfo(g, FALLBACK_SITE_INFO);
+    const info = mergeSiteInfo(g, FALLBACK_SITE_INFO);
+    return { ...info, portrait: await withBlur(info.portrait, g.portrait) };
   } catch (err) {
     console.warn("[site-info] fetch failed, using fallback", err);
     return FALLBACK_SITE_INFO;
