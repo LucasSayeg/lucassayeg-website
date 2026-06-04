@@ -85,6 +85,7 @@ export function Hero({
               shape="portrait"
               src={portrait?.url ?? lucasPortrait}
               alt={portrait?.alt ?? "Lucas Sayeg, psicólogo, sentado em seu consultório."}
+              blurDataURL={portrait?.blurDataURL}
               priority
               className="w-full"
             />
