@@ -55,14 +55,14 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
                 the photo so it peeks out lower-right, like a print tipped onto a
                 dark mat. The plate is decorative (aria-hidden) and sits behind
                 the photo via the wrapper's own isolate. */}
-            <div className="portrait-frame relative isolate w-full max-w-[320px] lg:max-w-none">
-              <div aria-hidden className="portrait-plate" />
+            <div className="relative w-full max-w-[320px] lg:max-w-none">
               <IllustrationSlot
                 concept="Mesa do consultório — caderno aberto, caneta, copo d'água, livro de cabeça para baixo. Detalhe, não cena."
                 shape="portrait"
                 src={content.illustration?.url}
                 alt={content.illustration?.alt}
                 blurDataURL={content.illustration?.blurDataURL}
+                priority
                 className="w-full"
               />
             </div>

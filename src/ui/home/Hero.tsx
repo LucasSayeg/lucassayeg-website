@@ -78,8 +78,7 @@ export function Hero({
               page center) since the photo sits in the right column. Plate is
               decorative, behind the photo; it lifts a touch further on hover
               (desktop). */}
-          <div className="portrait-frame relative isolate order-1 mx-auto w-full max-w-[360px] lg:order-2 lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none">
-            <div aria-hidden className="portrait-plate portrait-plate--mirror" />
+          <div className="relative order-1 mx-auto w-full max-w-[360px] lg:order-2 lg:col-span-5 lg:mx-0 lg:mt-[var(--space-sm)] lg:max-w-none">
             <IllustrationSlot
               concept="Retrato editorial — figura sentada, três-quartos, livros ao fundo, luz lateral. Linha solta, hatching contido."
               shape="portrait"

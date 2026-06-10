@@ -961,51 +961,6 @@
    classes under .on-dark; here we define the Sobre portrait plate.
    ───────────────────────────────────────────────────────────────── */
 
-/* Portrait plate — Sobre. A contained warm-taupe rectangle sitting behind the
-   portrait and offset down-and-right, so it peeks out on two edges like a print
-   tipped onto a warm mat. Decorative (aria-hidden), behind the photo via
-   z-index:-10 inside the wrapper's own isolate. Contained — it does NOT bleed
-   to the viewport edge, so it adds no horizontal scroll. A warm mid-tone (not
-   the footer ink) so it reads as a soft backing, not a second dark mass on the
-   page.
-
-   Desktop-only: the plate is a deliberate gesture for the side-by-side portrait
-   layout (lg+). On the centered single-column mobile layout it reads as clutter
-   rather than backing, so it's hidden below lg (64rem). */
-.portrait-plate {
-  display: none;
-  --plate-x: var(--space-md);
-  --plate-y: var(--space-md);
-  position: absolute;
-  inset: 0;
-  background: oklch(
-    0.52 0.028 58
-  ); /* warm taupe — clearly a plate against the
-                                       gesso, without the weight of the ink */
-  transform: translate(var(--plate-x), var(--plate-y));
-  transition: transform var(--dur-base) var(--ease-out-quart);
-  z-index: -10;
-}
-@media (min-width: 64rem) {
-  .portrait-plate {
-    display: block;
-  }
-}
-/* Mirror for a right-column portrait (Hero): peeks up-and-left, tucked into
-   the top corner toward the page center — the same tipped-in motif, composed
-   for the opposite side. */
-.portrait-plate--mirror {
-  --plate-x: calc(var(--space-md) * -1);
-  --plate-y: calc(var(--space-md) * -1);
-}
-/* Hover (desktop, motion OK): the plate peeks a touch further out, like the
-   print settling deeper into its mat. Direction-agnostic — it just amplifies
-   each plate's own offset. */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .portrait-frame:hover .portrait-plate {
-    transform: translate(calc(var(--plate-x) * 1.35), calc(var(--plate-y) * 1.35));
-  }
-}
 
 /* Reduced motion — site fully static */
 @media (prefers-reduced-motion: reduce) {
@@ -1057,8 +1012,10 @@
   }
 }
 
-/* Blur-up: own blurred backdrop, sharp image cross-fades in over it.
-   Reduced-motion users get no transition (image simply replaces blur). */
+/* Blur-up: own blurred backdrop, sharp image cross-fades in over it. Once the
+   sharp image lands, the backdrop fades away entirely — it must not linger as
+   a halo behind the photo. Reduced-motion users get no transition (image
+   simply replaces blur). */
 .blur-up-backdrop {
   position: absolute;
   inset: 0;
@@ -1066,11 +1023,20 @@
   background-position: center;
   filter: blur(12px);
   transform: scale(1.05);
+  transition: opacity 250ms var(--ease-out-quart);
+}
+
+.blur-up-backdrop.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 250ms var(--ease-out-quart),
+    visibility 0s 250ms;
 }
 
 .blur-up-fade {
   opacity: 0;
-  transition: opacity 500ms var(--ease-out-quart);
+  transition: opacity 250ms var(--ease-out-quart);
 }
 
 .blur-up-fade.is-loaded {
@@ -1078,7 +1044,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blur-up-fade {
+  .blur-up-fade,
+  .blur-up-backdrop {
     transition: none;
   }
 }

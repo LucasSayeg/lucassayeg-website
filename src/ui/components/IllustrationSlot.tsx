@@ -98,7 +98,7 @@ export function IllustrationSlot({
     const fit = isPortrait ? "object-cover object-[50%_60%]" : "object-contain";
     return (
       <div
-        className={`relative block select-none ${className ?? ""}`}
+        className={`relative block select-none [overflow:clip] ${className ?? ""}`}
         style={style}
         {...(isDecorative ? { "aria-hidden": true } : {})}
       >

@@ -61,7 +61,7 @@ export function BlurUpImage({
     <>
       <div
         aria-hidden
-        className="blur-up-backdrop"
+        className={`blur-up-backdrop${loaded ? " is-loaded" : ""}`}
         style={{ backgroundImage: `url("${backdrop}")` }}
       />
       <Image
