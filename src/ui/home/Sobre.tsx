@@ -63,6 +63,7 @@ export function Sobre({ content = FALLBACK_SOBRE, siteName = SITE_META.name }: S
                 src={content.illustration?.url}
                 alt={content.illustration?.alt}
                 blurDataURL={content.illustration?.blurDataURL}
+                priority
                 className="w-full"
               />
             </div>
