@@ -109,6 +109,7 @@ export type SiteInfoContent = {
   shortMark: string;
   logo: SiteLogo | null;
   slogan: string;
+  metaDescription: string;
   region: string;
   address: string;
   crp: string;
@@ -228,6 +229,7 @@ export const FALLBACK_SITE_INFO: SiteInfoContent = {
   shortMark: SITE_META.shortMark,
   logo: null,
   slogan: SITE_META.slogan,
+  metaDescription: SITE_META.metaDescription,
   region: SITE_META.region,
   address: SITE_META.address,
   crp: SITE_META.crp,

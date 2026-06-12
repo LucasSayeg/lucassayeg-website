@@ -8,6 +8,7 @@ export async function seedSiteInfo(payload: Payload, _opts: { force?: boolean })
       name: SITE_META.name,
       shortMark: SITE_META.shortMark,
       slogan: SITE_META.slogan,
+      metaDescription: SITE_META.metaDescription,
       region: SITE_META.region,
       address: SITE_META.address,
       crp: SITE_META.crp || "CRP 00/00000",

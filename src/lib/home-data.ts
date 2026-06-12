@@ -15,6 +15,8 @@ export const SITE_META = {
   name: "Lucas Sayeg",
   shortMark: "Lucas S.",
   slogan: "Psicólogo clínico e orientador profissional",
+  metaDescription:
+    "Psicoterapia clínica e orientação profissional com Lucas Sayeg, psicólogo formado pela USP. Atendimento online em todo o Brasil e presencial em Vila Leopoldina, São Paulo.",
   region: "Vila Leopoldina, São Paulo",
   address: "Vila Leopoldina · São Paulo · SP",
   email: "",

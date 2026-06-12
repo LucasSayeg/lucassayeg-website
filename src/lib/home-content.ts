@@ -290,6 +290,7 @@ function mergeSiteInfo(g: SiteInfo | null | undefined, fb: SiteInfoContent): Sit
     shortMark: g.shortMark || fb.shortMark,
     logo: resolveLogo(g.logo, g.logoAlt, `Marca de ${name}`),
     slogan: g.slogan || fb.slogan,
+    metaDescription: g.metaDescription || fb.metaDescription,
     region: g.region || fb.region,
     address: g.address || fb.address,
     crp: g.crp || fb.crp,
@@ -390,6 +391,53 @@ export const getHomeLayout = cache(async (): Promise<SectionLayout[]> => {
   } catch (err) {
     console.warn("[home-layout] fetch failed, using fallback", err);
     return FALLBACK_SECTIONS;
+  }
+});
+
+const HOME_GLOBAL_SLUGS = [
+  "home-layout",
+  "home-hero",
+  "home-como-ajuda",
+  "home-sobre",
+  "home-servicos",
+  "home-faq",
+  "home-contato",
+  "home-contact-form",
+] as const;
+
+export type ContentTimestamps = { home?: Date; sobre?: Date };
+
+function maxUpdatedAt(docs: Array<{ updatedAt?: string | null }>): Date | undefined {
+  const times = docs
+    .map((d) => (d.updatedAt ? Date.parse(d.updatedAt) : NaN))
+    .filter((t) => Number.isFinite(t));
+  return times.length > 0 ? new Date(Math.max(...times)) : undefined;
+}
+
+/*
+  Real last-modified dates for the sitemap: each page's timestamp is the
+  newest `updatedAt` across the globals it renders from. Both undefined when
+  Payload is disabled or the fetch fails — the sitemap then omits the field
+  rather than stamping a fake "now".
+*/
+export const getContentTimestamps = cache(async (): Promise<ContentTimestamps> => {
+  const payload = await getPayloadSafe();
+  if (!payload) return {};
+  try {
+    // Full fetches — nine tiny rows; `select` typing on findGlobal isn't
+    // worth the friction here.
+    const [siteInfo, sobrePage, ...homeGlobals] = await Promise.all([
+      payload.findGlobal({ slug: "site-info" }),
+      payload.findGlobal({ slug: "sobre-page" }),
+      ...HOME_GLOBAL_SLUGS.map((slug) => payload.findGlobal({ slug })),
+    ]);
+    return {
+      home: maxUpdatedAt([siteInfo, ...homeGlobals]),
+      sobre: maxUpdatedAt([siteInfo, sobrePage]),
+    };
+  } catch (err) {
+    console.warn("[content-timestamps] fetch failed, omitting lastModified", err);
+    return {};
   }
 });
 
