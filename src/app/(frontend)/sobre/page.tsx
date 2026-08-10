@@ -29,8 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: content.lede,
     alternates: { canonical: "/sobre" },
     // A child openGraph replaces the layout's wholesale (no deep merge), so
-    // shared fields are restated here. The og:image still cascades from the
-    // layout's opengraph-image.tsx file convention.
+    // shared fields are restated here. The og:image does NOT cascade either —
+    // it comes from this route's own ./opengraph-image.tsx, which re-exports
+    // the site-wide card. Delete that file and /sobre ships no og:image.
     openGraph: {
       title,
       description: content.lede,
