@@ -29,17 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: content.lede,
     alternates: { canonical: "/sobre" },
     // A child openGraph replaces the layout's wholesale (no deep merge), so
-    // shared fields are restated here.
-    //
-    // KNOWN GAP: og:image does NOT cascade either — it went with the replaced
-    // parent block, so /sobre currently ships no og:image and shares of this
-    // URL render as a bare text link. The fix needs a `sobre`-scoped
-    // opengraph-image route. Adding one that re-exports ../opengraph-image
-    // built fine locally but broke BOTH og routes on Vercel with
-    // "TypeError: u2 is not iterable" (only reproducible there, where static
-    // generation runs in a single worker). Do it by extracting the card into a
-    // shared non-route module that each route wraps — no route importing
-    // another route.
+    // shared fields are restated here. og:image does NOT cascade either — it
+    // comes from this route's own ./opengraph-image.tsx. Delete that file and
+    // /sobre silently ships no og:image.
     openGraph: {
       title,
       description: content.lede,
