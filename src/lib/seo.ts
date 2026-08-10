@@ -7,7 +7,7 @@
 */
 
 /** Flip to true (one-line commit) to allow indexing in production. */
-export const SEO_INDEXING_ENABLED = false;
+export const SEO_INDEXING_ENABLED = true;
 
 /** The flag AND a production deploy. Previews/dev stay noindex after the flip. */
 export function isIndexingEnabled(): boolean {
