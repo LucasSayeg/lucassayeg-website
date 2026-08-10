@@ -15,8 +15,10 @@ import { getSiteInfo } from "@/lib/home-content";
   colors (the site recolors it via CSS mask, which satori can't do), so it
   can't be guaranteed legible on these grounds. The favicon carries it.
 
-  Without a portrait (or with Payload off) the card degrades to the
-  typographic nameplate — no broken image, no empty slot.
+  The portrait is bundled in the repo, so the card stays portrait-led with
+  Payload off and with an empty CMS; a CMS portrait overrides it. Only if the
+  bundled file is unreadable too does the card degrade to the typographic
+  nameplate — no broken image, no empty slot.
 
   This lives outside the route tree on purpose. Every page that declares its
   own `openGraph` block needs its own opengraph-image route (Next replaces a
@@ -76,10 +78,35 @@ async function loadPortraitDataUri(url: string | null | undefined): Promise<stri
   }
 }
 
+/*
+  The portrait shipped in the repo — the same file the hero uses
+  (src/ui/home/Hero.tsx), so the card and the page show one face.
+
+  Read off disk rather than fetched, which is what makes it dependable: the
+  CMS path above has to resolve a relative upload URL against this site's own
+  domain and fetch it mid-build, and that is exactly what a preview
+  deployment's SSO interstitial poisons. This path has no network in it, like
+  the fonts. So the card is portrait-led by default and the CMS becomes an
+  override rather than a requirement.
+*/
+async function loadBundledPortraitDataUri(): Promise<string | null> {
+  try {
+    const buf = await readFile(path.join(process.cwd(), "src/assets/lucas-portrait.jpg"));
+    if (buf.byteLength === 0) return null;
+    return `data:image/jpeg;base64,${buf.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
 /** Renders the site-wide link-preview card. Shared by every opengraph-image route. */
 export async function renderSiteOgCard(): Promise<ImageResponse> {
   const info = await getSiteInfo();
-  const portrait = await loadPortraitDataUri(info.portrait?.url);
+  // CMS portrait wins so the client can swap the face without a deploy; the
+  // bundled one keeps the card portrait-led when the CMS has none (which is
+  // the case in production today) or serves something undecodable.
+  const portrait =
+    (await loadPortraitDataUri(info.portrait?.url)) ?? (await loadBundledPortraitDataUri());
   const [petrona400, petrona600] = await Promise.all([
     readFile(path.join(process.cwd(), "src/assets/og/petrona-400.ttf")),
     readFile(path.join(process.cwd(), "src/assets/og/petrona-600.ttf")),
