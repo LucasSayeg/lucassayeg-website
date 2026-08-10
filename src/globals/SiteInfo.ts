@@ -53,6 +53,16 @@ export const SiteInfo: GlobalConfig = {
     },
     { name: "slogan", type: "text", required: true, label: "Slogan" },
     {
+      name: "metaDescription",
+      type: "textarea",
+      label: "Descrição para buscadores",
+      admin: {
+        description:
+          "Resumo exibido no Google e em prévias de link (recomendado: 140–160 caracteres). " +
+          "Mencione psicoterapia, orientação profissional e Vila Leopoldina/São Paulo.",
+      },
+    },
+    {
       name: "region",
       type: "text",
       required: true,

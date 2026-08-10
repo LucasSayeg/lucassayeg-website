@@ -50,7 +50,13 @@ export default async function Home() {
     .filter((s) => s.enabled && s.navLabel)
     .map((s) => ({ href: `#${ANCHOR_BY_KEY[s.key]}`, label: s.navLabel }));
   const shared: SharedProps = { siteInfo, whatsappHref };
-  const jsonLd = buildStructuredData({ siteInfo, baseUrl: getBaseUrl(), faq: content.faq });
+  const jsonLd = buildStructuredData({
+    siteInfo,
+    baseUrl: getBaseUrl(),
+    page: "home",
+    faq: content.faq,
+    servicos: content.servicos,
+  });
 
   return (
     <>

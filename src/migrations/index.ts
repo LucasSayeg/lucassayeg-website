@@ -9,6 +9,7 @@ import * as migration_20260506_194234_reshape_como_ajuda from "./20260506_194234
 import * as migration_20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro from "./20260511_191517_drop_hero_cta_quickpick_intro_and_como_ajuda_intro";
 import * as migration_20260519_195653_add_illustration_uploads from "./20260519_195653_add_illustration_uploads";
 import * as migration_20260603_142852_add_site_logo from "./20260603_142852_add_site_logo";
+import * as migration_20260612_120327_add_site_info_meta_description from "./20260612_120327_add_site_info_meta_description";
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260603_142852_add_site_logo.up,
     down: migration_20260603_142852_add_site_logo.down,
     name: "20260603_142852_add_site_logo",
+  },
+  {
+    up: migration_20260612_120327_add_site_info_meta_description.up,
+    down: migration_20260612_120327_add_site_info_meta_description.down,
+    name: "20260612_120327_add_site_info_meta_description",
   },
 ];

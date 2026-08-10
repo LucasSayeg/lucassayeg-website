@@ -9,6 +9,8 @@ import {
   type PaletteId,
 } from "@/core/palettes";
 import { getBaseUrl } from "@/lib/base-url";
+import { getSiteInfo } from "@/lib/home-content";
+import { isIndexingEnabled } from "@/lib/seo";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
@@ -78,32 +80,39 @@ const bodySans = Atkinson_Hyperlegible({
   ],
 });
 
-const SITE_TITLE = "Lucas Sayeg — Psicólogo clínico e orientador profissional";
-const SITE_DESCRIPTION =
-  "Atendimento online e presencial em Vila Leopoldina, São Paulo. Psicoterapia clínica e orientação profissional.";
-
-export const metadata: Metadata = {
-  // Absolute base for og:image / canonical resolution — same convention as
-  // sitemap.ts / robots.ts.
-  metadataBase: new URL(getBaseUrl()),
-  title: {
-    default: SITE_TITLE,
-    template: "%s — Lucas Sayeg",
-  },
-  description: SITE_DESCRIPTION,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    type: "website",
-    locale: "pt_BR",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // react-cached — shared with the page/og-image fetches, so this adds no
+  // extra Payload round-trip and stays ISR-safe (no request APIs).
+  const siteInfo = await getSiteInfo();
+  const siteTitle = `${siteInfo.name} — ${siteInfo.slogan}`;
+  return {
+    // Absolute base for og:image / canonical resolution — same convention as
+    // sitemap.ts / robots.ts.
+    metadataBase: new URL(getBaseUrl()),
+    title: {
+      default: siteTitle,
+      template: `%s — ${siteInfo.name}`,
+    },
+    description: siteInfo.metaDescription,
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: siteTitle,
+      description: siteInfo.metaDescription,
+      siteName: siteInfo.name,
+      url: "/",
+      type: "website",
+      locale: "pt_BR",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteInfo.metaDescription,
+    },
+    // Belt-and-suspenders alongside X-Robots-Tag (next.config.ts) and
+    // robots.ts — all three branch on the same switch in lib/seo.
+    ...(isIndexingEnabled() ? {} : { robots: { index: false, follow: false } }),
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Production renders statically — no request APIs in the layout. The palette

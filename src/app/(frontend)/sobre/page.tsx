@@ -23,10 +23,28 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const [siteInfo, content] = await Promise.all([getSiteInfo(), getSobrePageContent()]);
+  const title = `Sobre — ${siteInfo.name}`;
   return {
-    title: { absolute: `Sobre — ${siteInfo.name}` },
+    title: { absolute: title },
     description: content.lede,
     alternates: { canonical: "/sobre" },
+    // A child openGraph replaces the layout's wholesale (no deep merge), so
+    // shared fields are restated here. og:image does NOT cascade either — it
+    // comes from this route's own ./opengraph-image.tsx. Delete that file and
+    // /sobre silently ships no og:image.
+    openGraph: {
+      title,
+      description: content.lede,
+      siteName: siteInfo.name,
+      url: "/sobre",
+      type: "profile",
+      locale: "pt_BR",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: content.lede,
+    },
   };
 }
 
@@ -66,7 +84,7 @@ export default async function SobrePage() {
     .filter((s) => s.enabled && s.navLabel)
     .map((s) => ({ href: `#${ANCHOR_BY_KEY[s.key]}`, label: s.navLabel }));
   const portrait = siteInfo.portrait;
-  const jsonLd = buildStructuredData({ siteInfo, baseUrl: getBaseUrl() });
+  const jsonLd = buildStructuredData({ siteInfo, baseUrl: getBaseUrl(), page: "sobre" });
 
   return (
     <>
