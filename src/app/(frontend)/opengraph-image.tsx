@@ -35,6 +35,20 @@ const C = {
   plate: "#2c2821", // --surface-deep (the Sobre portrait-plate gesture)
 };
 
+/*
+  satori decodes only PNG and JPEG. Anything else reaching the <img> below
+  throws inside the renderer, and because this route is prerendered that
+  failure exits the whole build ("TypeError: u2 is not iterable") rather than
+  degrading the card. Two realistic sources of a non-image body that still
+  answers 200: an upload stored as WebP/AVIF, and a blob URL that has gone
+  away and now serves an HTML error page.
+
+  So the content type is allow-listed rather than trusted, and every reject
+  path returns null — which is the documented degradation to the typographic
+  nameplate. A link-preview image must never be able to fail a deploy.
+*/
+const SATORI_DECODABLE = /^image\/(png|jpe?g)$/i;
+
 async function loadPortraitDataUri(url: string | null | undefined): Promise<string | null> {
   if (!url) return null;
   try {
@@ -42,8 +56,12 @@ async function loadPortraitDataUri(url: string | null | undefined): Promise<stri
     const abs = url.startsWith("http") ? url : `${base}${url}`;
     const res = await fetch(abs);
     if (!res.ok) return null;
-    const type = res.headers.get("content-type") ?? "image/jpeg";
+    // No `?? "image/jpeg"` default: an absent content-type used to be assumed
+    // decodable, which is precisely the assumption that broke the build.
+    const type = res.headers.get("content-type")?.split(";")[0]?.trim() ?? "";
+    if (!SATORI_DECODABLE.test(type)) return null;
     const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.byteLength === 0) return null;
     return `data:${type};base64,${buf.toString("base64")}`;
   } catch {
     return null;
