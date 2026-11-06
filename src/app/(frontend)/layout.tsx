@@ -11,6 +11,7 @@ import {
 import { getBaseUrl } from "@/lib/base-url";
 import { getSiteInfo } from "@/lib/home-content";
 import { isIndexingEnabled } from "@/lib/seo";
+import { GoogleTagManager } from "@/ui/components/GoogleTagManager";
 import { PalettePanel } from "@/ui/dev/PalettePanel";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
@@ -128,6 +129,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     palette = isPaletteId(cookiePalette) ? cookiePalette : DEFAULT_PALETTE_ID;
     showPalettePanel = store.get(PICKER_COOKIE_NAME)?.value === "1";
   }
+  // Production deploy only, so localhost and preview traffic never lands in
+  // the client's GTM/GA data. VERCEL_ENV is set at build and at runtime, so
+  // this stays static/ISR-safe.
+  const loadTagManager = process.env.VERCEL_ENV === "production";
 
   return (
     <html
@@ -136,6 +141,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       data-palette={palette}
       className={`${displaySerif.variable} ${bodySans.variable}`}
     >
+      <head>{loadTagManager ? <GoogleTagManager /> : null}</head>
       <body>
         <a href="#main" className="skip-link">
           Pular para o conteúdo
